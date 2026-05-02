@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" role="img" aria-label="Foggy graveyard stage placeholder">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#06060a"/>
+      <stop offset=".52" stop-color="#151020"/>
+      <stop offset="1" stop-color="#030304"/>
+    </linearGradient>
+    <radialGradient id="moon" cx="72%" cy="22%" r="18%">
+      <stop offset="0" stop-color="#f3ffea"/>
+      <stop offset=".42" stop-color="#caffd4" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#caffd4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1400" height="800" fill="url(#sky)"/>
+  <rect width="1400" height="800" fill="url(#moon)"/>
+  <circle cx="1010" cy="170" r="78" fill="#eefbe8" opacity=".9"/>
+  <g fill="#050507">
+    <path d="M0 610c130-60 214 20 360-48 123-57 225-76 366-20 168 67 280-17 674 55v203H0z"/>
+    <path d="M85 560h70v190H85zM65 560h110v28H65z"/>
+    <path d="M260 510h82v240h-82zM244 510h114v32H244zM286 458h30v80h-30z"/>
+    <path d="M1120 528h92v222h-92zM1098 528h136v34h-136z"/>
+    <path d="M950 585h54v165h-54zM934 585h86v24h-86z"/>
+  </g>
+  <g stroke="#3bff9f" stroke-width="8" stroke-linecap="round" opacity=".45">
+    <path d="M470 640c110-60 250-60 390 0"/>
+    <path d="M500 700c115-45 237-45 330 0"/>
+  </g>
+  <g fill="#d7d0bd" font-family="Arial Black, Impact, sans-serif" text-anchor="middle">
+    <text x="700" y="350" font-size="86" letter-spacing="5">GRAVE ROBBER PUNK</text>
+    <text x="700" y="420" font-size="30" letter-spacing="8" fill="#3bff9f">BAND PHOTO / ART GOES HERE</text>
+  </g>
+</svg>

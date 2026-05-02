@@ -1,0 +1,11 @@
+{
+  "name": "graverobberpunk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static website for Grave Robber Punk",
+  "scripts": {
+    "start": "npx serve . -l 8080",
+    "dev": "npx serve . -l 8080"
+  },
+  "devDependencies": {}
+}
