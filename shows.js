@@ -1,71 +1,38 @@
-// Shows data - add upcoming and past shows here.
-const shows = [
-  {
-    date: "2026-10-31",
-    venue: "The Crypt",
-    city: "Fort Wayne",
-    state: "IN",
-    time: "9:00 PM",
-    ticketUrl: "#",
-    details: "Halloween launch show — replace this placeholder with the real event."
-  }
-];
-
 function formatDate(dateString) {
-  const date = new Date(dateString + 'T00:00:00');
-  return date.toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
+  const date = new Date(dateString + "T00:00:00");
+  return date.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" });
 }
-
 function isPastShow(dateString) {
-  const showDate = new Date(dateString + 'T23:59:59');
-  const today = new Date();
-  return showDate < today;
+  return new Date(dateString + "T23:59:59") < new Date();
 }
-
 function generateShowHTML(show) {
-  const ticketButton = show.ticketUrl && show.ticketUrl !== '#'
-    ? `<a href="${show.ticketUrl}" target="_blank" rel="noopener noreferrer" class="show-ticket">Tickets</a>`
-    : `<span class="show-ticket disabled">Details Soon</span>`;
-
+  const cityState = [show.city, show.state].filter(Boolean).join(", ");
   return `
-    <article class="show-card">
-      <div class="show-date">
-        <span class="show-month">${new Date(show.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short' })}</span>
-        <span class="show-day">${new Date(show.date + 'T00:00:00').getDate()}</span>
-      </div>
+    <div class="show-card">
+      <div class="show-date">${formatDate(show.show_date)}</div>
       <div class="show-info">
-        <h2>${show.venue}</h2>
-        <p class="show-location">${show.city}, ${show.state}</p>
-        <p class="show-full-date">${formatDate(show.date)}${show.time ? ` • ${show.time}` : ''}</p>
-        ${show.details ? `<p class="show-details">${show.details}</p>` : ''}
+        <h3>${show.venue}</h3>
+        <p>${cityState}</p>
+        ${show.notes ? `<p>${show.notes}</p>` : ""}
       </div>
-      <div class="show-action">${ticketButton}</div>
-    </article>
-  `;
+      ${show.ticket_url ? `<a href="${show.ticket_url}" target="_blank" rel="noopener noreferrer" class="ticket-link">Get Tickets</a>` : ""}
+    </div>`;
 }
-
 function initShowsPage() {
-  const upcomingContainer = document.querySelector('#upcoming-shows');
-  const pastContainer = document.querySelector('#past-shows');
+  const upcomingContainer = document.getElementById("upcoming-shows");
+  const pastContainer = document.getElementById("past-shows");
+  const noShowsMessage = document.getElementById("no-shows-message");
   if (!upcomingContainer) return;
-
-  const sortedShows = [...shows].sort((a, b) => new Date(a.date) - new Date(b.date));
-  const upcomingShows = sortedShows.filter(show => !isPastShow(show.date));
-  const pastShows = sortedShows.filter(show => isPastShow(show.date)).reverse();
-
-  upcomingContainer.innerHTML = upcomingShows.length
-    ? upcomingShows.map(generateShowHTML).join('')
-    : `<div class="empty-state"><h2>Shows Rising Soon</h2><p>The fog is rolling in. Check back for the next Grave Robber Punk show.</p></div>`;
-
-  if (pastContainer && pastShows.length) {
-    pastContainer.innerHTML = pastShows.map(generateShowHTML).join('');
-    document.querySelector('.past-shows-section')?.classList.remove('hidden');
-  }
+  getShows().then(data => {
+    const shows = data.shows || [];
+    const upcomingShows = shows.filter(show => !isPastShow(show.show_date)).sort((a,b)=>new Date(a.show_date)-new Date(b.show_date));
+    const pastShows = shows.filter(show => isPastShow(show.show_date)).sort((a,b)=>new Date(b.show_date)-new Date(a.show_date));
+    upcomingContainer.innerHTML = upcomingShows.map(generateShowHTML).join("");
+    if (noShowsMessage) noShowsMessage.style.display = upcomingShows.length ? "none" : "block";
+    if (pastContainer && pastShows.length) {
+      pastContainer.innerHTML = pastShows.map(generateShowHTML).join("");
+      document.querySelector(".past-shows-section")?.classList.remove("hidden");
+    }
+  }).catch(() => { upcomingContainer.innerHTML = "<p>Unable to load shows right now.</p>"; });
 }
-
-document.addEventListener('DOMContentLoaded', initShowsPage);
+document.addEventListener("DOMContentLoaded", initShowsPage);

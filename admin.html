@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grave Robber Admin</title>
+  <style>
+    body{margin:0;font-family:Arial,sans-serif;background:#090014;color:white}
+    .admin-wrap{max-width:1200px;margin:0 auto;padding:30px}
+    h1,h2,h3{color:#39ff14}
+    .panel{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:20px;margin-bottom:24px}
+    input,textarea,select,button{width:100%;box-sizing:border-box;padding:12px;margin:8px 0 14px;border-radius:10px;border:1px solid #555;font-size:16px}
+    input,textarea,select{background:#111;color:white}
+    button{background:#8b3df4;color:white;font-weight:bold;cursor:pointer;border:none}
+    button:hover{background:#a55cff}
+    .danger{background:#b00020}
+    .small-btn{width:auto;display:inline-block;margin-right:8px;padding:8px 12px;font-size:14px}
+    .hidden{display:none}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .item{background:rgba(0,0,0,.35);border-radius:12px;padding:14px;margin-bottom:12px}
+    .small{font-size:13px;opacity:.75}
+    .media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+    .media-card img{width:100%;height:130px;object-fit:cover;border-radius:10px;background:#000}
+    .section-preview{border-left:4px solid #39ff14}
+    @media(max-width:800px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="admin-wrap">
+    <h1>Grave Robber Admin Panel</h1>
+
+    <section id="login-panel" class="panel">
+      <h2>Admin Login</h2>
+      <form id="login-form">
+        <label>Email</label>
+        <input type="email" id="login-email" value="admin@example.com" required>
+        <label>Password</label>
+        <input type="password" id="login-password" required>
+        <button type="submit">Login</button>
+      </form>
+      <p id="login-status"></p>
+    </section>
+
+    <section id="dashboard" class="hidden">
+      <button id="logout-button">Logout</button>
+
+      <div class="grid">
+        <section class="panel">
+          <h2>Change Password</h2>
+          <form id="password-form">
+            <label>Current Password</label>
+            <input type="password" id="current-password" required>
+            <label>New Password</label>
+            <input type="password" id="new-password" required>
+            <button type="submit">Change Password</button>
+          </form>
+          <p id="password-status"></p>
+        </section>
+
+        <section class="panel">
+          <h2>Site Design</h2>
+          <form id="settings-form">
+            <label>Site Title</label>
+            <input type="text" id="site-title">
+            <label>Tagline</label>
+            <input type="text" id="tagline">
+            <label>Homepage Text</label>
+            <textarea id="homepage-text" rows="4"></textarea>
+            <label>Main Color</label>
+            <input type="color" id="primary-color">
+            <label>Background Color</label>
+            <input type="color" id="background-color">
+            <label>Text Color</label>
+            <input type="color" id="text-color">
+            <label>Font</label>
+            <select id="font-family">
+              <option value="Arial, sans-serif">Simple</option>
+              <option value="'Orbitron', sans-serif">Retro Digital</option>
+              <option value="Georgia, serif">Classic</option>
+              <option value="'Courier New', monospace">Typewriter</option>
+            </select>
+            <label>Layout Style</label>
+            <select id="layout-style">
+              <option value="classic">Classic</option>
+              <option value="centered">Centered</option>
+              <option value="wide">Wide</option>
+            </select>
+            <label>Logo Image URL</label>
+            <input type="text" id="logo-url">
+            <label>Hero Image URL</label>
+            <input type="text" id="hero-image-url">
+            <label>Background Image URL</label>
+            <input type="text" id="background-image-url">
+            <button type="submit">Save Design</button>
+          </form>
+          <p id="settings-status"></p>
+        </section>
+      </div>
+
+      <section class="panel">
+        <h2>Media Library</h2>
+        <label>Image Label</label>
+        <input type="text" id="media-label" placeholder="Example: New band photo">
+        <label>Alt Text</label>
+        <input type="text" id="media-alt" placeholder="Describe the image">
+        <input type="file" id="image-upload" accept="image/*">
+        <button id="upload-button">Upload Image</button>
+        <p id="upload-status"></p>
+        <div id="media-list" class="media-grid"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Add / Edit Show</h2>
+        <form id="show-form">
+          <input type="hidden" id="editing-show-id">
+          <label>Date</label>
+          <input type="date" id="show-date" required>
+          <label>Venue</label>
+          <input type="text" id="show-venue" required>
+          <label>City</label>
+          <input type="text" id="show-city">
+          <label>State</label>
+          <input type="text" id="show-state">
+          <label>Ticket URL</label>
+          <input type="url" id="ticket-url">
+          <label>Notes</label>
+          <textarea id="show-notes" rows="3"></textarea>
+          <button type="submit">Save Show</button>
+          <button type="button" id="cancel-show-edit" class="danger">Cancel Edit</button>
+        </form>
+        <p id="show-status"></p>
+      </section>
+
+      <section class="panel">
+        <h2>Shows</h2>
+        <div id="shows-list"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Homepage Sections / Simple Page Builder</h2>
+        <form id="section-form">
+          <input type="hidden" id="editing-section-id">
+          <label>Section Type</label>
+          <select id="section-type">
+            <option value="text">Text</option>
+            <option value="image">Image</option>
+            <option value="text-image">Text + Image</option>
+            <option value="button">Button / Link</option>
+          </select>
+          <label>Title</label>
+          <input type="text" id="section-title">
+          <label>Body Text</label>
+          <textarea id="section-body" rows="4"></textarea>
+<label>Choose Image</label>
+<input type="text" id="section-image-url" placeholder="Click an image below to auto-fill" readonly>
+
+<div id="media-picker" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;"></div>
+
+<label>Button Text (what the button says)</label>
+<input type="text" id="section-button-text" placeholder="Example: Get Tickets">
+
+<label>Where should this button go?</label>
+<select id="section-link-select">
+  <option value="">-- Select a destination --</option>
+  <option value="shows.html">Shows Page</option>
+  <option value="signup.html">Signup Page</option>
+  <option value="https://facebook.com">Facebook</option>
+  <option value="https://instagram.com">Instagram</option>
+  <option value="custom">Custom URL (paste below)</option>
+</select>
+
+<input type="text" id="section-button-url" placeholder="Paste custom link here if needed">
+          <label>Order Number</label>
+          <input type="number" id="section-sort-order" value="0">
+          <label>
+            <input type="checkbox" id="section-visible" checked style="width:auto">
+            Visible
+          </label>
+          <button type="submit">Save Section</button>
+          <button type="button" id="cancel-section-edit" class="danger">Cancel Edit</button>
+        </form>
+        <p id="section-status"></p>
+        <h3>Current Homepage Sections</h3>
+        <div id="sections-list"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Fan Chat Messages</h2>
+        <div id="messages-list"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Signup Submissions</h2>
+        <div id="submissions-list"></div>
+      </section>
+    </section>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

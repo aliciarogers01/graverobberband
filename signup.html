@@ -3,38 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Join the Crypt List | Grave Robber Punk</title>
-  <meta name="description" content="Join the Grave Robber Punk mailing list for shows, news, and updates.">
-  <link rel="canonical" href="https://graverobberpunk.com/signup">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://graverobberpunk.com/signup">
-  <meta property="og:title" content="Join the Crypt List | Grave Robber Punk">
-  <meta property="og:description" content="Join the Grave Robber Punk mailing list for shows, news, and updates.">
-  <meta property="og:image" content="https://graverobberpunk.com/assets/logo.svg">
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Oswald:wght@400;500;700&family=Special+Elite&display=swap" rel="stylesheet">
+  <title>Join the Crypt List | Grave Robber</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="page-shell">
+  <main class="page-shell">
     <header class="page-header">
       <a href="index.html" class="back-link">← Back</a>
-      <a href="index.html"><img src="assets/logo.svg" alt="Grave Robber Punk" class="header-logo"></a>
+      <img src="assets/grave-robber-skull.png" alt="Grave Robber" class="header-logo">
     </header>
-    <main class="page-content narrow">
+    <section class="panel">
       <p class="eyebrow">Join the underground</p>
       <h1 class="page-title">Crypt List</h1>
-      <p class="page-description">This placeholder signup form keeps the site working locally. Replace it with the band’s real Google Form, Mailchimp embed, or booking form.</p>
-      <form class="signup-form" action="mailto:booking@graverobberpunk.com" method="post" enctype="text/plain">
-        <label>Name<input type="text" name="name" placeholder="Your name"></label>
-        <label>Email<input type="email" name="email" placeholder="you@example.com" required></label>
-        <label>Message<textarea name="message" rows="5" placeholder="Tell us what crawled out of the grave..."></textarea></label>
-        <button type="submit" class="primary-btn">Join the Crypt List</button>
+      <p class="page-description">Get show updates, music news, and dispatches from the grave.</p>
+      <form id="signup-form" class="custom-form">
+        <label>Name<input type="text" name="name" required></label>
+        <label>Email<input type="email" name="email" required></label>
+        <label>Phone<input type="tel" name="phone"></label>
+        <label>Message<textarea name="message" rows="5"></textarea></label>
+        <button type="submit">Join the Crypt List</button>
+        <p id="signup-status"></p>
       </form>
-      <p class="form-fallback">Temporary contact: <a href="mailto:booking@graverobberpunk.com">booking@graverobberpunk.com</a></p>
-    </main>
-  </div>
+    </section>
+  </main>
+  <script src="api.js"></script>
+  <script>
+    document.getElementById("signup-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const status = document.getElementById("signup-status");
+      status.textContent = "Submitting...";
+      submitSignup({ name: this.name.value, email: this.email.value, phone: this.phone.value, message: this.message.value })
+        .then(() => { status.textContent = "You're on the list."; this.reset(); })
+        .catch(() => { status.textContent = "Something went wrong. Try again."; });
+    });
+  </script>
 </body>
 </html>
