@@ -1,4 +1,4 @@
-const CHAT_API_BASE = "http://localhost:5000/api";
+const CHAT_API_BASE = window.BAND_API_BASE;
 const CHAT_SITE_SLUG = "graverobber";
 
 function applySiteSettings() {

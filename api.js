@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = window.BAND_API_BASE;
 
 function getShows() {
   return fetch(`${API_BASE}/shows/graverobber`).then(res => res.json());

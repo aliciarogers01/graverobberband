@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = window.BAND_API_BASE;
 const SITE_SLUG = "graverobber";
 
 let adminToken = localStorage.getItem("adminToken") || "";
