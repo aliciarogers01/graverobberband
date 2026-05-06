@@ -62,14 +62,19 @@ async function applyAdminSections() {
   const page = currentPageName();
   const response = await fetch(`${window.BAND_API_BASE}/sections/${CUSTOMIZER_SITE_SLUG}/${page}`);
   const data = await response.json();
-  const sections = (data.sections || []).filter(section => section.is_visible);
-  const main = document.querySelector(".main-content, .page-content, .signup-content, .shows-content");
-  if (!main || !sections.length) return;
-  const existing = document.querySelector(".custom-sections-wrap"); if (existing) existing.remove();
-  const wrapper = document.createElement("div"); wrapper.className = "custom-sections-wrap";
-  sections.forEach(section => wrapper.appendChild(renderSection(section)));
-  const anchor = document.querySelector(".cta-section, .shows-list, .signup-form-container, .form-container") || null;
-  if (anchor && anchor.parentElement === main) main.insertBefore(wrapper, anchor); else main.appendChild(wrapper);
+  const allSections = data.sections || [];
+  const visibleSections = allSections.filter(section => section.is_visible);
+  const main = document.querySelector(".main-content, .page-content, .signup-content, .shows-content, main");
+
+  // If the page has never been converted into admin-controlled sections, leave the hardcoded site alone.
+  if (!main || !allSections.length) return;
+
+  // Once admin sections exist, they become the real page. This prevents duplicates and lets Remove/Edit/Reorder affect the existing live page.
+  main.innerHTML = "";
+  const wrapper = document.createElement("div");
+  wrapper.className = "custom-sections-wrap admin-owned-page";
+  visibleSections.forEach(section => wrapper.appendChild(renderSection(section)));
+  main.appendChild(wrapper);
 }
 
 applyAdminSettings().catch(console.error);

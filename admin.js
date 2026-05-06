@@ -455,26 +455,16 @@ async function loadSections() {
   if (!allSections.length) {
     const factorySections = defaultSectionsForCurrentPage();
     if (!factorySections.length) {
-      container.innerHTML = "<p>No sections available for this page yet.</p>";
+      container.innerHTML = "<p>No editable sections available for this page yet. Use the form above to add one.</p>";
       return;
     }
-    container.innerHTML = `
-      <div class="builder-notice">
-        <strong>Current hardcoded page content</strong><br>
-        These are the sections already on the live site. Click Import All to make them editable, deletable, and reorderable from admin.
-        <br><button type="button" class="small-btn" onclick="importAllFactorySections()">Import All Current Page Sections</button>
-      </div>
-      ${factorySections.map(section => `
-        <div class="item section-preview factory-section" data-section-id="${section.id}">
-          <strong>${section.sort_order}. ${section.title || "Untitled section"}</strong><br>
-          <span class="small">${section.section_type} • currently hardcoded on site</span>
-          <p>${section.body || ""}</p>
-          ${section.image_url ? `<img src="${section.image_url}" style="max-width:180px;border-radius:10px">` : ""}
-          <br>
-          <button class="small-btn" onclick="importFactorySection('${section.id}')">Import This Section For Editing</button>
-        </div>
-      `).join("")}
-    `;
+
+    container.innerHTML = "<p>Converting the current live page into editable admin sections...</p>";
+    for (const section of factorySections) {
+      await createSectionFromData(section);
+    }
+
+    await loadSections();
     return;
   }
 
@@ -488,7 +478,7 @@ async function loadSections() {
       <button class="small-btn" onclick="moveSection('${section.id}', -1)">Move Up</button>
       <button class="small-btn" onclick="moveSection('${section.id}', 1)">Move Down</button>
       <button class="small-btn" onclick="editSection('${section.id}')">Edit</button>
-      <button class="small-btn danger" onclick="deleteSection('${section.id}')">Delete</button>
+      <button class="small-btn danger" onclick="deleteSection('${section.id}')">Remove From Page</button>
     </div>
   `).join("");
 
@@ -579,11 +569,15 @@ async function moveSection(sectionId, direction) {
 }
 
 async function deleteSection(sectionId) {
-  if (!confirm("Delete this page section?")) return;
+  if (!confirm("Remove this section from the live page? You can restore it later by editing it and checking Visible.")) return;
+
+  const section = allSections.find(item => item.id === sectionId);
+  if (!section) return;
 
   await fetch(`${API_BASE}/sections/${SITE_SLUG}/${sectionId}`, {
-    method: "DELETE",
-    headers: authHeaders()
+    method: "PUT",
+    headers: authHeaders(),
+    body: JSON.stringify({ ...section, is_visible: false })
   });
 
   loadSections();
