@@ -5,194 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Grave Robber Admin</title>
   <style>
-    body{margin:0;font-family:Arial,sans-serif;background:#090014;color:white}
-    .admin-wrap{max-width:1200px;margin:0 auto;padding:30px}
-    h1,h2,h3{color:#39ff14}
+    body{margin:0;font-family:Arial,sans-serif;background:#080000;color:white}
+    .admin-wrap{max-width:1280px;margin:0 auto;padding:30px}
+    h1,h2,h3{color:#c1121f}
     .panel{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:20px;margin-bottom:24px}
     input,textarea,select,button{width:100%;box-sizing:border-box;padding:12px;margin:8px 0 14px;border-radius:10px;border:1px solid #555;font-size:16px}
     input,textarea,select{background:#111;color:white}
-    button{background:#8b3df4;color:white;font-weight:bold;cursor:pointer;border:none}
-    button:hover{background:#a55cff}
+    button{background:#c1121f;color:white;font-weight:bold;cursor:pointer;border:none}
+    button:hover{background:#e3313d}
     .danger{background:#b00020}
     .small-btn{width:auto;display:inline-block;margin-right:8px;padding:8px 12px;font-size:14px}
     .hidden{display:none}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .three-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
     .item{background:rgba(0,0,0,.35);border-radius:12px;padding:14px;margin-bottom:12px}
     .small{font-size:13px;opacity:.75}
     .media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
     .media-card img{width:100%;height:130px;object-fit:cover;border-radius:10px;background:#000}
     .section-preview{border-left:4px solid #39ff14}
-    @media(max-width:800px){.grid{grid-template-columns:1fr}}
+    .section-preview[draggable="true"], .sortable-item[draggable="true"]{cursor:grab}
+    .section-preview.dragging,.sortable-item.dragging{opacity:.45}
+    .drag-help{font-size:13px;opacity:.75;margin-top:-8px}
+    .inline-row{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}
+    .inline-row button{margin-top:30px}
+    @media(max-width:900px){.grid,.three-grid,.inline-row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <div class="admin-wrap">
     <h1>Grave Robber Admin Panel</h1>
-
-    <section id="login-panel" class="panel">
-      <h2>Admin Login</h2>
-      <form id="login-form">
-        <label>Email</label>
-        <input type="email" id="login-email" value="admin@example.com" required>
-        <label>Password</label>
-        <input type="password" id="login-password" required>
-        <button type="submit">Login</button>
-      </form>
-      <p id="login-status"></p>
-    </section>
-
+    <section id="login-panel" class="panel"><h2>Admin Login</h2><form id="login-form"><label>Email</label><input type="email" id="login-email" value="admin@example.com" required><label>Password</label><input type="password" id="login-password" required><button type="submit">Login</button></form><p id="login-status"></p></section>
     <section id="dashboard" class="hidden">
       <button id="logout-button">Logout</button>
-
       <div class="grid">
-        <section class="panel">
-          <h2>Change Password</h2>
-          <form id="password-form">
-            <label>Current Password</label>
-            <input type="password" id="current-password" required>
-            <label>New Password</label>
-            <input type="password" id="new-password" required>
-            <button type="submit">Change Password</button>
-          </form>
-          <p id="password-status"></p>
-        </section>
-
-        <section class="panel">
-          <h2>Site Design</h2>
-          <form id="settings-form">
-            <label>Site Title</label>
-            <input type="text" id="site-title">
-            <label>Tagline</label>
-            <input type="text" id="tagline">
-            <label>Homepage Text</label>
-            <textarea id="homepage-text" rows="4"></textarea>
-            <label>Main Color</label>
-            <input type="color" id="primary-color">
-            <label>Background Color</label>
-            <input type="color" id="background-color">
-            <label>Text Color</label>
-            <input type="color" id="text-color">
-            <label>Font</label>
-            <select id="font-family">
-              <option value="Arial, sans-serif">Simple</option>
-              <option value="'Orbitron', sans-serif">Retro Digital</option>
-              <option value="Georgia, serif">Classic</option>
-              <option value="'Courier New', monospace">Typewriter</option>
-            </select>
-            <label>Layout Style</label>
-            <select id="layout-style">
-              <option value="classic">Classic</option>
-              <option value="centered">Centered</option>
-              <option value="wide">Wide</option>
-            </select>
-            <label>Logo Image URL</label>
-            <input type="text" id="logo-url">
-            <label>Hero Image URL</label>
-            <input type="text" id="hero-image-url">
-            <label>Background Image URL</label>
-            <input type="text" id="background-image-url">
-            <button type="submit">Save Design</button>
-          </form>
-          <p id="settings-status"></p>
-        </section>
+        <section class="panel"><h2>Change Password</h2><form id="password-form"><label>Current Password</label><input type="password" id="current-password" required><label>New Password</label><input type="password" id="new-password" required><button type="submit">Change Password</button></form><p id="password-status"></p></section>
+        <section class="panel"><h2>Site Design</h2><form id="settings-form"><label>Site Title</label><input type="text" id="site-title"><label>Tagline</label><input type="text" id="tagline"><label>Homepage Text</label><textarea id="homepage-text" rows="4"></textarea><label>Main Color</label><input type="color" id="primary-color"><label>Background Color</label><input type="color" id="background-color"><label>Text Color</label><input type="color" id="text-color"><label>Font</label><select id="font-family"><option value="Arial, sans-serif">Simple</option><option value="'Orbitron', sans-serif">Retro Digital</option><option value="Georgia, serif">Classic</option><option value="'Courier New', monospace">Typewriter</option></select><label>Layout Style</label><select id="layout-style"><option value="classic">Classic</option><option value="centered">Centered</option><option value="wide">Wide</option></select><label>Logo Image URL</label><input type="text" id="logo-url"><label>Hero Image URL</label><input type="text" id="hero-image-url"><label>Background Image URL</label><input type="text" id="background-image-url"><button type="submit">Save All Site Settings</button></form><p id="settings-status"></p></section>
       </div>
-
-      <section class="panel">
-        <h2>Media Library</h2>
-        <label>Image Label</label>
-        <input type="text" id="media-label" placeholder="Example: New band photo">
-        <label>Alt Text</label>
-        <input type="text" id="media-alt" placeholder="Describe the image">
-        <input type="file" id="image-upload" accept="image/*">
-        <button id="upload-button">Upload Image</button>
-        <p id="upload-status"></p>
-        <div id="media-list" class="media-grid"></div>
-      </section>
-
-      <section class="panel">
-        <h2>Add / Edit Show</h2>
-        <form id="show-form">
-          <input type="hidden" id="editing-show-id">
-          <label>Date</label>
-          <input type="date" id="show-date" required>
-          <label>Venue</label>
-          <input type="text" id="show-venue" required>
-          <label>City</label>
-          <input type="text" id="show-city">
-          <label>State</label>
-          <input type="text" id="show-state">
-          <label>Ticket URL</label>
-          <input type="url" id="ticket-url">
-          <label>Notes</label>
-          <textarea id="show-notes" rows="3"></textarea>
-          <button type="submit">Save Show</button>
-          <button type="button" id="cancel-show-edit" class="danger">Cancel Edit</button>
-        </form>
-        <p id="show-status"></p>
-      </section>
-
-      <section class="panel">
-        <h2>Shows</h2>
-        <div id="shows-list"></div>
-      </section>
-
-      <section class="panel">
-        <h2>Homepage Sections / Simple Page Builder</h2>
-        <form id="section-form">
-          <input type="hidden" id="editing-section-id">
-          <label>Section Type</label>
-          <select id="section-type">
-            <option value="text">Text</option>
-            <option value="image">Image</option>
-            <option value="text-image">Text + Image</option>
-            <option value="button">Button / Link</option>
-          </select>
-          <label>Title</label>
-          <input type="text" id="section-title">
-          <label>Body Text</label>
-          <textarea id="section-body" rows="4"></textarea>
-<label>Choose Image</label>
-<input type="text" id="section-image-url" placeholder="Click an image below to auto-fill" readonly>
-
-<div id="media-picker" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;"></div>
-
-<label>Button Text (what the button says)</label>
-<input type="text" id="section-button-text" placeholder="Example: Get Tickets">
-
-<label>Where should this button go?</label>
-<select id="section-link-select">
-  <option value="">-- Select a destination --</option>
-  <option value="shows.html">Shows Page</option>
-  <option value="signup.html">Signup Page</option>
-  <option value="https://facebook.com">Facebook</option>
-  <option value="https://instagram.com">Instagram</option>
-  <option value="custom">Custom URL (paste below)</option>
-</select>
-
-<input type="text" id="section-button-url" placeholder="Paste custom link here if needed">
-          <label>Order Number</label>
-          <input type="number" id="section-sort-order" value="0">
-          <label>
-            <input type="checkbox" id="section-visible" checked style="width:auto">
-            Visible
-          </label>
-          <button type="submit">Save Section</button>
-          <button type="button" id="cancel-section-edit" class="danger">Cancel Edit</button>
-        </form>
-        <p id="section-status"></p>
-        <h3>Current Homepage Sections</h3>
-        <div id="sections-list"></div>
-      </section>
-
-      <section class="panel">
-        <h2>Fan Chat Messages</h2>
-        <div id="messages-list"></div>
-      </section>
-
-      <section class="panel">
-        <h2>Signup Submissions</h2>
-        <div id="submissions-list"></div>
-      </section>
+      <section class="panel"><h2>Navigation Links</h2><p class="small">Edit, add, delete, and drag to reorder the website/app menu.</p><div class="inline-row"><label>Label<input type="text" id="nav-label" placeholder="Shows"></label><label>URL<input type="text" id="nav-url" placeholder="shows.html"></label><button type="button" id="add-nav-link">Add Link</button></div><div id="nav-links-list"></div></section>
+      <section class="panel"><h2>Social / Footer Links</h2><div class="inline-row"><label>Label<input type="text" id="social-label" placeholder="Facebook"></label><label>URL<input type="text" id="social-url" placeholder="https://facebook.com/..."></label><button type="button" id="add-social-link">Add Link</button></div><div id="social-links-list"></div></section>
+      <section class="panel"><h2>Signup + Show Notification Forms</h2><div class="grid"><div><label>Signup Page Title</label><input type="text" id="signup-title"><label>Signup Description</label><textarea id="signup-description" rows="4"></textarea><label>Signup Button Text</label><input type="text" id="signup-button-text"><label>Signup Success Message</label><input type="text" id="signup-success-text"></div><div><label>Shows Notify Title</label><input type="text" id="notify-title"><label>Shows Notify Description</label><textarea id="notify-description" rows="4"></textarea><label>Shows Notify Button Text</label><input type="text" id="notify-button-text"></div></div><p class="small">These settings control the signup page and the get-notified callout on the shows page.</p></section>
+      <section class="panel"><h2>Media Library</h2><label>Image Label</label><input type="text" id="media-label" placeholder="Example: New band photo"><label>Alt Text</label><input type="text" id="media-alt" placeholder="Describe the image"><input type="file" id="image-upload" accept="image/*"><button id="upload-button">Upload Image</button><p id="upload-status"></p><div id="media-list" class="media-grid"></div></section>
+      <section class="panel"><h2>Add / Edit Show</h2><form id="show-form"><input type="hidden" id="editing-show-id"><label>Date</label><input type="date" id="show-date" required><label>Venue</label><input type="text" id="show-venue" required><label>City</label><input type="text" id="show-city"><label>State</label><input type="text" id="show-state"><label>Ticket URL</label><input type="url" id="ticket-url"><label>Notes</label><textarea id="show-notes" rows="3"></textarea><button type="submit">Save Show</button><button type="button" id="cancel-show-edit" class="danger">Cancel Edit</button></form><p id="show-status"></p></section>
+      <section class="panel"><h2>Shows</h2><div id="shows-list"></div></section>
+      <section class="panel"><h2>Full Page Builder</h2><p class="small">Add sections for home, shows, or signup pages. Use sections for text, images, buttons, videos/embeds, HTML, and spacers. Drag cards to reorder.</p><form id="section-form"><input type="hidden" id="editing-section-id"><label>Page</label><select id="section-page"><option value="home">Home</option><option value="shows">Shows</option><option value="signup">Signup</option></select><label>Section Type</label><select id="section-type"><option value="text">Text</option><option value="image">Image</option><option value="text-image">Text + Image</option><option value="button">Button / Link</option><option value="embed">Video / Embed</option><option value="html">Custom HTML</option><option value="spacer">Spacer</option></select><label>Title</label><input type="text" id="section-title"><label>Body Text / Embed Code / HTML</label><textarea id="section-body" rows="5"></textarea><label>Choose Image</label><input type="text" id="section-image-url" placeholder="Click an image below to auto-fill"><div id="media-picker" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;"></div><label>Button Text</label><input type="text" id="section-button-text"><label>Button URL</label><input type="text" id="section-button-url"><label>Order Number</label><input type="number" id="section-sort-order" value="0"><label><input type="checkbox" id="section-visible" checked style="width:auto"> Visible</label><button type="submit">Save Section</button><button type="button" id="cancel-section-edit" class="danger">Cancel Edit</button></form><p id="section-status"></p><h3>Live Page Preview</h3><p class="drag-help">Use this preview to see the selected page while editing. Imported sections appear here after saving and refreshing.</p><iframe id="visual-page-preview" title="Live page preview" style="width:100%;min-height:520px;border:1px solid rgba(255,255,255,.25);border-radius:14px;background:#fff;margin-bottom:18px;"></iframe><h3>Current Sections</h3><p class="drag-help">Drag editable section cards below to reorder within the selected page. If the list shows hardcoded sections, import them first to make them editable.</p><div id="sections-list"></div></section>
+      <section class="panel"><h2>Fan Chat Messages</h2><div id="messages-list"></div></section>
+      <section class="panel"><h2>Signup / Notification Submissions</h2><div id="submissions-list"></div></section>
     </section>
   </div>
   <script src="api-config.js"></script>
