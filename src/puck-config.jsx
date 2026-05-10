@@ -587,7 +587,7 @@ function createPageContent(pageName = "home") {
 export function createDefaultPuckData(pageName = "home") {
   const pageTitle = pageName.charAt(0).toUpperCase() + pageName.slice(1);
   return {
-    root: { props: { title: `Driver 8 ${pageTitle}` } },
+    root: { props: { title: `Grave Robber ${pageTitle}` } },
     content: createPageContent(pageName)
   };
 }
@@ -654,7 +654,7 @@ export const puckConfig = {
         backText: "Back",
         backUrl: "index.html",
         logoUrl: "assets/logo.jpg",
-        logoAlt: "Driver 8 Logo",
+        logoAlt: "Grave Robber Logo",
         logoSize: "45px",
         logoPlacement: "left",
         width: "100%",

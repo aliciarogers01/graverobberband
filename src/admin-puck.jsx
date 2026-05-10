@@ -391,7 +391,7 @@ function AdminApp() {
       <style>{puckEditorCss}</style>
       <div className="admin-toolbar">
         <div>
-          <h1>Driver 8 Visual Builder</h1>
+          <h1>Grave Robber Visual Builder</h1>
           <p>{status}</p>
         </div>
         <div className="admin-toolbar-actions">
