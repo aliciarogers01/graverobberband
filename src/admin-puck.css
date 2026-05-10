@@ -1,0 +1,458 @@
+body { 
+  margin: 0;
+  background: #090014;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+.admin-login-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.admin-card {
+  width: min(460px, 100%);
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 18px;
+  padding: 24px;
+}
+
+.admin-card h1,
+.admin-toolbar h1 {
+  color: #39ff14;
+  margin-top: 0;
+}
+
+.admin-card input,
+.admin-card button,
+.admin-toolbar button {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  margin: 8px 0 14px;
+  border-radius: 10px;
+  border: 1px solid #555;
+  font-size: 16px;
+}
+
+.admin-card input {
+  background: #111;
+  color: #fff;
+}
+
+.admin-card button,
+.admin-toolbar button {
+  background: #8b3df4;
+  color: #fff;
+  border: 0;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-toolbar button.danger {
+  background: #b00020;
+}
+
+.admin-puck-page {
+  min-height: 100vh;
+}
+
+.admin-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 24px;
+  background: #090014;
+  border-bottom: 1px solid rgba(255,255,255,.16);
+}
+
+.admin-toolbar p {
+  margin: 4px 0 0;
+  opacity: .78;
+}
+
+.admin-toolbar-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-toolbar-actions button {
+  width: auto;
+  min-width: 130px;
+  margin: 0;
+}
+
+.puck-wrapper {
+  height: calc(100vh - 90px);
+  background: #fff;
+}
+
+.puck-wrapper .Puck {
+  height: 100%;
+}
+
+@media(max-width: 800px) {
+  .admin-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .admin-toolbar-actions button {
+    width: 100%;
+  }
+  .puck-wrapper {
+    height: 900px;
+  }
+}
+
+/* Puck custom control helpers */
+.puck-custom-field,
+.puck-upload-field {
+  display: grid;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.puck-custom-field label,
+.puck-upload-field label {
+  font-weight: 700;
+}
+
+.puck-custom-field input,
+.puck-custom-field select,
+.puck-upload-field input,
+.puck-upload-field button {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+}
+
+.puck-color-row {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 8px;
+  align-items: center;
+}
+
+.puck-color-row input[type="color"] {
+  padding: 0;
+  height: 38px;
+}
+
+.puck-upload-preview {
+  display: grid;
+  gap: 8px;
+}
+
+.puck-upload-preview img {
+  width: 100%;
+  max-height: 160px;
+  object-fit: contain;
+  background: #111;
+  border-radius: 8px;
+}
+
+.puck-upload-preview code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+  opacity: .75;
+}
+
+.puck-upload-empty,
+.puck-upload-status,
+.puck-custom-field small {
+  margin: 0;
+  font-size: 12px;
+  opacity: .78;
+}
+
+.puck-wrapper .puck-social-letter {
+  font-weight: 900;
+  font-size: 15px;
+}
+
+.page-select-label {
+  display: grid;
+  gap: 6px;
+  color: #f5f0e6;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.page-select-label select {
+  min-width: 180px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: #111;
+  color: #fff;
+}
+
+.puck-wrapper .primary-btn::before,
+.puck-wrapper .secondary-btn::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* ===================================== */
+/* PUCK EDITOR UI VISIBILITY FIXES */
+/* ===================================== */
+
+.puck-wrapper,
+.puck-wrapper * {
+  color-scheme: light !important;
+}
+
+.puck-wrapper button,
+.puck-wrapper [role="button"],
+.puck-wrapper [aria-label],
+.puck-wrapper svg,
+.puck-wrapper span,
+.puck-wrapper div {
+  opacity: 1 !important;
+}
+
+.puck-wrapper svg {
+  color: #111 !important;
+  stroke: currentColor !important;
+}
+
+.puck-wrapper button svg,
+.puck-wrapper [role="button"] svg {
+  color: #111 !important;
+}
+
+.puck-wrapper aside,
+.puck-wrapper nav,
+.puck-wrapper [class*="Sidebar"],
+.puck-wrapper [class*="sidebar"],
+.puck-wrapper [class*="Panel"],
+.puck-wrapper [class*="panel"] {
+  color: #111 !important;
+}
+
+.puck-wrapper [class*="Component"],
+.puck-wrapper [class*="component"],
+.puck-wrapper [class*="Draggable"],
+.puck-wrapper [class*="draggable"],
+.puck-wrapper [class*="Item"],
+.puck-wrapper [class*="item"] {
+  color: #111 !important;
+}
+
+.puck-wrapper [class*="Component"] *,
+.puck-wrapper [class*="component"] *,
+.puck-wrapper [class*="Draggable"] *,
+.puck-wrapper [class*="draggable"] *,
+.puck-wrapper [class*="Item"] *,
+.puck-wrapper [class*="item"] * {
+  color: #111 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.puck-wrapper [class*="Viewport"],
+.puck-wrapper [class*="viewport"],
+.puck-wrapper [class*="Toolbar"],
+.puck-wrapper [class*="toolbar"] {
+  color: #111 !important;
+}
+
+.puck-wrapper [class*="Viewport"] button,
+.puck-wrapper [class*="viewport"] button,
+.puck-wrapper [class*="Toolbar"] button,
+.puck-wrapper [class*="toolbar"] button {
+  color: #111 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.puck-wrapper [class*="Viewport"] button svg,
+.puck-wrapper [class*="viewport"] button svg,
+.puck-wrapper [class*="Toolbar"] button svg,
+.puck-wrapper [class*="toolbar"] button svg {
+  color: #111 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* ===================================== */
+/* ADMIN SHOWS + FAN CHAT PANELS */
+/* ===================================== */
+
+.admin-management-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 24px;
+  background: #090014;
+}
+
+.admin-panel {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 18px;
+  padding: 20px;
+  color: #fff;
+}
+
+.admin-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.admin-panel-header h2 {
+  margin: 0;
+  color: #39ff14;
+}
+
+.admin-panel-header button,
+.admin-form-actions button,
+.admin-item-actions button,
+.admin-list-item > button {
+  width: auto;
+  min-width: 120px;
+  margin: 0;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: #8b3df4;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-form-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-form-grid input,
+.admin-form-grid textarea,
+.admin-list-item textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.24);
+  background: #12051f;
+  color: #fff;
+  font: inherit;
+}
+
+.admin-form-grid textarea,
+.admin-list-item textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.admin-form-actions,
+.admin-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.admin-form-actions .secondary {
+  background: #333;
+}
+
+.admin-item-actions .danger {
+  background: #b00020;
+}
+
+.admin-inline-status {
+  color: #f5f0e6;
+  opacity: .85;
+}
+
+.admin-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.admin-list-item {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(0,0,0,.28);
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+.admin-list-item strong {
+  color: #fff;
+}
+
+.admin-list-item small {
+  color: rgba(255,255,255,.68);
+}
+
+.admin-list-item p {
+  margin: 0;
+  color: rgba(255,255,255,.86);
+}
+
+.admin-reply-box {
+  border-left: 3px solid #39ff14;
+  padding: 10px 12px;
+  background: rgba(57,255,20,.08);
+  border-radius: 10px;
+}
+
+.admin-upload-row {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px dashed rgba(255,255,255,.24);
+  border-radius: 12px;
+  background: rgba(255,255,255,.04);
+}
+
+.admin-upload-row label {
+  font-weight: 800;
+  color: #fff;
+}
+
+.admin-upload-row input[type="file"] {
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(0,0,0,.3);
+  color: #fff;
+}
+
+.admin-upload-row .secondary {
+  width: max-content;
+  min-width: 0;
+  background: #333;
+}
+
+.admin-upload-preview,
+.admin-list-image {
+  display: block;
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: 0 12px 30px rgba(0,0,0,.28);
+}
+
+@media(max-width: 900px) {
+  .admin-management-grid {
+    grid-template-columns: 1fr;
+  }
+}
