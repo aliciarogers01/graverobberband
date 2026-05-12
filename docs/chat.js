@@ -264,15 +264,7 @@ async function renderPageSections() {
     console.warn("Published visual page failed to load.", error);
 
     if (root) {
-      root.innerHTML = `
-        <section style="min-height:70vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px;">
-          <div>
-            <h1>Grave Robber</h1>
-            <p>Horror punk from beyond the grave.</p>
-            <p>The live page could not load. Check api-config.js and backend status.</p>
-          </div>
-        </section>
-      `;
+      root.innerHTML = `<main class="home-shell"><section class="hero"><div class="logo-wrap"><img src="assets/grave-robber-skull.png" alt="Grave Robber skull logo" class="logo"></div><p class="eyebrow">AMERICAN HORROR PUNK</p><h1>Grave Robber</h1><p class="description">Horror punk from beyond the grave. Shows, music, merch, booking, and updates.</p><div class="action-buttons"><a href="shows.html" class="primary-btn">Shows</a><a href="signup.html" class="secondary-btn">Join the Crypt List</a><a href="mailto:graverobber.punk@gmail.com" class="secondary-btn">Booking</a></div></section><section class="social-section"><p class="teaser">Follow Grave Robber</p><div class="social-links"><a href="https://www.facebook.com/graverobberpunk">Facebook</a><a href="https://www.instagram.com/graverobberpunk">Instagram</a><a href="https://open.spotify.com/artist/4D34aUp0OsDs8mAEWPIP7c">Spotify</a></div></section></main>`;
     }
   }
 }

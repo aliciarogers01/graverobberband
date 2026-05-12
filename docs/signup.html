@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join the Crypt List | Grave Robber</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="signup">
+  <main id="editable-page-root" class="page-shell">
+    <header class="page-header">
+      <a href="index.html" class="back-link">← Back</a>
+      <img src="assets/grave-robber-skull.png" alt="Grave Robber" class="header-logo">
+    </header>
+    <section class="panel">
+      <p class="eyebrow">Join the underground</p>
+      <h1 class="page-title">Crypt List</h1>
+      <p class="page-description">Get show updates, music news, and dispatches from the grave.</p>
+      <form id="signup-form" class="custom-form">
+        <label>Name<input type="text" name="name" required></label>
+        <label>Email<input type="email" name="email" required></label>
+        <label>Phone<input type="tel" name="phone"></label>
+        <label>Message<textarea name="message" rows="5"></textarea></label>
+        <button type="submit">Join the Crypt List</button>
+        <p id="signup-status"></p>
+      </form>
+    </section>
+  </main>
+  <script src="api-config.js"></script>
+  <script src="api.js"></script>
+  <script>
+    document.getElementById("signup-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const status = document.getElementById("signup-status");
+      status.textContent = "Submitting...";
+      submitSignup({ name: this.name.value, email: this.email.value, phone: this.phone.value, message: this.message.value })
+        .then(() => { status.textContent = "You're on the list."; this.reset(); })
+        .catch(() => { status.textContent = "Something went wrong. Try again."; });
+    });
+  </script>
+</body>
+</html>

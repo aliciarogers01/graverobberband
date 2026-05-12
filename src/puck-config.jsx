@@ -56,6 +56,20 @@ function ColorField({ value, onChange, label }) {
   );
 }
 
+const placementOptions = [
+  { label: "Left", value: "left" },
+  { label: "Center", value: "center" },
+  { label: "Right", value: "right" }
+];
+
+function unitNumberField(label, options = {}) {
+  return {
+    type: "text",
+    label,
+    placeholder: options.placeholder || "Example: 100px"
+  };
+}
+
 function colorField(label) {
   return {
     type: "custom",
@@ -357,7 +371,7 @@ const defaultContent = [
       bodyWeight: "400",
       bodyLetterSpacing: "normal",
       imageWidth: "300px",
-      imageRadius: "50%",
+      imageRadius: "0px",
       imageShadow: "0 0 55px rgba(198,40,40,.45)",
       maxWidth: 1000,
       gap: 35,
@@ -581,7 +595,135 @@ function createPageContent(pageName = "home") {
     ];
   }
 
-  return clone(defaultContent);
+  return [
+    {
+      type: "GraveRobberHero",
+      props: {
+        id: "graverobber-home-hero-1",
+        title: "Grave Robber",
+        subtitle: "AMERICAN HORROR PUNK",
+        body: "Horror punk from beyond the grave. Shows, music, merch, booking, and updates.",
+        imageUrl: "assets/grave-robber-skull.png",
+        imageAlt: "Grave Robber skull logo",
+        layout: "image-top",
+        imageWidth: "300px",
+        imageRadius: "0px",
+        imageShadow: "0 0 90px rgba(198,40,40,.38)",
+        titleSize: "44px",
+        titleColor: "#f5f0e6",
+        titleFont: "Oswald, sans-serif",
+        titleWeight: "700",
+        subtitleSize: "18px",
+        subtitleColor: "#e52b2b",
+        subtitleFont: "Oswald, sans-serif",
+        subtitleWeight: "700",
+        subtitleLetterSpacing: ".45em",
+        subtitleTransform: "uppercase",
+        bodySize: "18px",
+        bodyColor: "#cfd3d6",
+        bodyFont: "Oswald, sans-serif",
+        bodyWeight: "400",
+        backgroundColor: "transparent",
+        textColor: "#ffffff",
+        paddingY: 120,
+        paddingX: 24,
+        maxWidth: 900,
+        gap: 34,
+        buttons: [
+          {
+            text: "Shows",
+            url: "shows.html",
+            backgroundColor: "#c62828",
+            textColor: "#ffffff",
+            fontFamily: "Oswald, sans-serif",
+            fontSize: "16px",
+            borderWidth: "0px",
+            borderColor: "transparent",
+            boxShadow: "0 0 24px rgba(198,40,40,.45)",
+            textTransform: "uppercase",
+            radius: "999px",
+            padding: "16px 34px"
+          },
+          {
+            text: "Join the Crypt List",
+            url: "signup.html",
+            backgroundColor: "transparent",
+            textColor: "#ffffff",
+            fontFamily: "Oswald, sans-serif",
+            fontSize: "16px",
+            borderWidth: "1px",
+            borderColor: "rgba(255,255,255,.35)",
+            boxShadow: "none",
+            textTransform: "uppercase",
+            radius: "999px",
+            padding: "16px 34px"
+          },
+          {
+            text: "Booking",
+            url: "contact.html",
+            backgroundColor: "transparent",
+            textColor: "#ffffff",
+            fontFamily: "Oswald, sans-serif",
+            fontSize: "16px",
+            borderWidth: "1px",
+            borderColor: "rgba(255,255,255,.35)",
+            boxShadow: "none",
+            textTransform: "uppercase",
+            radius: "999px",
+            padding: "16px 34px"
+          }
+        ]
+      }
+    },
+    {
+      type: "Spacer",
+      props: {
+        id: "graverobber-home-divider-space-1",
+        height: 1,
+        backgroundColor: "rgba(255,255,255,.16)"
+      }
+    },
+    {
+      type: "GraveRobberSocial",
+      props: {
+        id: "graverobber-home-social-1",
+        title: "Follow Grave Robber",
+        titleColor: "#ffffff",
+        titleFont: "Oswald, sans-serif",
+        titleSize: "1rem",
+        backgroundColor: "transparent",
+        textColor: "#ffffff",
+        paddingY: 50,
+        paddingX: 24,
+        links: [
+          {
+            platform: "custom",
+            label: "Facebook",
+            url: "https://www.facebook.com/graverobberpunk",
+            iconColor: "#ffffff",
+            backgroundColor: "transparent",
+            borderColor: "rgba(255,255,255,.35)"
+          },
+          {
+            platform: "custom",
+            label: "Instagram",
+            url: "https://www.instagram.com/graverobberpunk",
+            iconColor: "#ffffff",
+            backgroundColor: "transparent",
+            borderColor: "rgba(255,255,255,.35)"
+          },
+          {
+            platform: "spotify",
+            label: "Spotify",
+            url: "https://open.spotify.com/artist/4D34aUp0OsDs8mAEWPIP7c",
+            iconColor: "#ffffff",
+            backgroundColor: "transparent",
+            borderColor: "rgba(255,255,255,.35)"
+          }
+        ]
+      }
+    }
+  ];
 }
 
 export function createDefaultPuckData(pageName = "home") {
@@ -596,8 +738,40 @@ export const defaultPuckData = createDefaultPuckData("home");
 
 export const puckConfig = {
   components: {
+
+    GraveRobberHero: {
+      label: "01 Site Block: Grave Robber Main Horror Hero",
+
+      fields: {
+        title: { type: "text", label: "Title" },
+        subtitle: { type: "text", label: "Subtitle" },
+        body: { type: "textarea", label: "Body Text" },
+        imageUrl: imageUploadField("Image"),
+        imageAlt: { type: "text", label: "Image Alt Text" },
+        layout: { type: "select", label: "Layout", options: [{ label: "Centered", value: "center" }, { label: "Image Top", value: "image-top" }, { label: "Text Left / Image Right", value: "text-left" }, { label: "Text Right / Image Left", value: "text-right" }] },
+        imageWidth: unitNumberField("Image Width", { units: ["px", "%", "rem", "vw"], defaultUnit: "px", step: 10, min: 0, placeholder: "Example: 900px" }),
+        imageRadius: unitNumberField("Image Rounded Corners", { units: ["px", "%", "rem"], defaultUnit: "px", step: 1, min: 0, placeholder: "Example: 50%" }),
+        imageShadow: { type: "text", label: "Image Shadow / Glow CSS", placeholder: "Example: 0 0 40px currentColor" },
+        titleSize: unitNumberField("Title Font Size", { units: ["px", "rem", "vw"], defaultUnit: "px", step: 1, min: 0, placeholder: "Example: 72px" }),
+        titleColor: colorField("Title Color"),
+        titleFont: fontField("Title Font"),
+        subtitleColor: colorField("Subtitle Color"),
+        bodyColor: colorField("Body Color"),
+        backgroundColor: colorField("Section Background"),
+        textColor: colorField("Default Text Color"),
+        paddingY: { type: "number", label: "Top/Bottom Padding" },
+        paddingX: { type: "number", label: "Left/Right Padding" },
+        buttons: buttonArrayField
+      },
+
+      defaultProps: { title: "Grave Robber", subtitle: "AMERICAN HORROR PUNK", body: "Horror punk from beyond the grave. Shows, music, merch, booking, and updates.", imageUrl: "assets/grave-robber-skull.png", imageAlt: "Grave Robber skull logo", layout: "center", imageWidth: "300px", imageRadius: "0px", imageShadow: "0 0 55px rgba(198,40,40,.45)", titleSize: "80px", titleColor: "#f2f2f2", titleFont: "Creepster, cursive", subtitleColor: "#c62828", bodyColor: "#d6d6d6", backgroundColor: "transparent", textColor: "#ffffff", paddingY: 70, paddingX: 24, buttons: [{ text: "Shows", url: "shows.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "16px", borderWidth: "0px", borderColor: "transparent", boxShadow: "0 0 24px rgba(198,40,40,.35)", textTransform: "uppercase", radius: "999px", padding: "16px 34px" }, { text: "Join the Crypt List", url: "signup.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "16px", borderWidth: "1px", borderColor: "rgba(255,255,255,.35)", radius: "999px", padding: "16px 34px" }] },
+      render: props => puckConfig.components.Hero.render(props)
+    },
+    GraveRobberLogo: { label: "01 Site Block: Grave Robber Stacked Logo", fields: { imageUrl: imageUploadField("Logo Image"), imageAlt: { type: "text", label: "Image Alt Text" }, width: unitNumberField("Image Width", { units: ["px", "%", "vw"], defaultUnit: "px", step: 10, min: 0, placeholder: "Example: 520px" }), radius: unitNumberField("Rounded Corners", { units: ["px", "%", "rem"], defaultUnit: "px", step: 1, min: 0, placeholder: "Example: 12px" }), shadow: { type: "text", label: "Image Shadow / Glow CSS" }, align: { type: "select", label: "Image Placement", options: placementOptions }, backgroundColor: colorField("Section Background"), paddingY: { type: "number", label: "Top/Bottom Padding" }, paddingX: { type: "number", label: "Left/Right Padding" } }, defaultProps: { imageUrl: "assets/grave-robber-logo-stacked.png", imageAlt: "Grave Robber logo", width: "520px", radius: "12px", shadow: "0 20px 60px rgba(0,0,0,.55)", align: "center", backgroundColor: "transparent", paddingY: 30, paddingX: 24 }, render: props => puckConfig.components.ImageBlock.render(props) },
+    GraveRobberSocial: { label: "01 Site Block: Grave Robber Social / Merch Links", fields: { title: { type: "text", label: "Title" }, titleColor: colorField("Title Color"), titleFont: fontField("Title Font"), titleSize: { type: "text", label: "Title Font Size" }, backgroundColor: colorField("Section Background"), paddingY: { type: "number", label: "Top/Bottom Padding" }, paddingX: { type: "number", label: "Left/Right Padding" }, links: { type: "array", label: "Links", arrayFields: { platform: { type: "select", label: "Platform", options: socialPlatformOptions }, label: { type: "text", label: "Label" }, url: { type: "text", label: "URL" }, iconColor: colorField("Icon Color"), backgroundColor: colorField("Icon Background"), borderColor: colorField("Icon Border") }, defaultItemProps: { platform: "custom", label: "Link", url: "#", iconColor: "#ffffff", backgroundColor: "rgba(198,40,40,.18)", borderColor: "rgba(198,40,40,.65)" } } }, defaultProps: { title: "Follow Grave Robber", titleColor: "#ffffff", titleFont: "Oswald, sans-serif", titleSize: "1rem", backgroundColor: "transparent", paddingY: 50, paddingX: 24, links: [{ platform: "facebook", label: "Facebook", url: "https://www.facebook.com/graverobberpunk", iconColor: "#ffffff", backgroundColor: "rgba(198,40,40,.18)", borderColor: "rgba(198,40,40,.65)" }, { platform: "instagram", label: "Instagram", url: "https://www.instagram.com/graverobberpunk", iconColor: "#ffffff", backgroundColor: "rgba(198,40,40,.18)", borderColor: "rgba(198,40,40,.65)" }, { platform: "spotify", label: "Spotify", url: "https://open.spotify.com/artist/4D34aUp0OsDs8mAEWPIP7c", iconColor: "#ffffff", backgroundColor: "rgba(198,40,40,.18)", borderColor: "rgba(198,40,40,.65)" }] }, render: props => puckConfig.components.SocialIcons.render(props) },
+
     HeaderNav: {
-      label: "Header / Page Navigation",
+      label: "02 Add Block: Header / Page Navigation",
       fields: {
         backgroundColor: colorField("Header Background"),
         lineColor: colorField("Bottom Line Color"),
@@ -653,7 +827,7 @@ export const puckConfig = {
         showBack: "show",
         backText: "Back",
         backUrl: "index.html",
-        logoUrl: "assets/logo.jpg",
+        logoUrl: "assets/grave-robber-skull.png",
         logoAlt: "Grave Robber Logo",
         logoSize: "45px",
         logoPlacement: "left",
@@ -707,7 +881,7 @@ export const puckConfig = {
     },
 
     SongScroll: {
-      label: "Song Scroll",
+      label: "02 Add Block: Song Scroll",
       fields: {
         backgroundColor: colorField("Scroll Background"),
         lineColor: colorField("Bottom Line Color"),
@@ -793,17 +967,8 @@ style={{
         );
       }
     },
-    FontLoader: {
-      label: "External Font Loader",
-      fields: {
-        fontUrl: externalFontField("Font CSS URL"),
-        note: { type: "textarea", label: "Notes" }
-      },
-      defaultProps: { fontUrl: "https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap", note: "Paste a Google Fonts CSS URL here, then use the font-family name in any font field." },
-      render: props => <div className="puck-font-loader-note">{applyFontImport(props.fontUrl)}External font loaded. Use its font-family name in any font field.</div>
-    },
     Hero: {
-      label: "Hero: Text + Image",
+      label: "02 Add Block: Hero: Text + Image",
       fields: {
         customFontUrl: externalFontField("External Font URL For This Block"),
         title: { type: "text", label: "Title" },
@@ -849,7 +1014,7 @@ defaultProps: clone(defaultContent[0].props),
       )
     },
     TextBlock: {
-      label: "Text Block",
+      label: "02 Add Block: Text Block",
       fields: {
         customFontUrl: externalFontField("External Font URL For This Block"),
         eyebrow: { type: "text", label: "Small Top Text" },
@@ -867,7 +1032,7 @@ defaultProps: clone(defaultContent[0].props),
       render: props => <SectionShell {...props}>{applyFontImport(props.customFontUrl)}<div className="puck-inner puck-text" style={{ textAlign: props.align || "center", maxWidth: props.maxWidth || "850px" }}>{props.eyebrow && <p className="teaser" style={{ color: props.eyebrowColor || "inherit", fontFamily: props.eyebrowFont || "inherit", fontSize: props.eyebrowSize || "inherit", fontWeight: props.eyebrowWeight || "inherit", letterSpacing: props.eyebrowLetterSpacing || "normal" }}>{props.eyebrow}</p>}{props.title && <h2 className="puck-title" style={{ fontSize: props.titleSize || "3rem", color: props.titleColor || "inherit", fontFamily: props.titleFont || "inherit", fontWeight: props.titleWeight || "inherit", letterSpacing: props.titleLetterSpacing || "normal" }}>{props.title}</h2>}{props.body && <p className="puck-body" style={{ fontSize: props.bodySize || "1rem", color: props.bodyColor || "inherit", fontFamily: props.bodyFont || "inherit", fontWeight: props.bodyWeight || "inherit", letterSpacing: props.bodyLetterSpacing || "normal" }}>{props.body}</p>}<div className="puck-buttons">{(props.buttons || []).map((button, index) => <ButtonPreview key={index} button={button} index={index} />)}</div></div></SectionShell>
     },
     ImageBlock: {
-      label: "Image",
+      label: "02 Add Block: Image",
       fields: {
         customFontUrl: externalFontField("External Font URL For This Block"),
         title: { type: "text", label: "Optional Title" },
@@ -930,13 +1095,13 @@ defaultProps: clone(defaultContent[1].props),
       )
     },
     ButtonRow: {
-      label: "Button Row",
+      label: "02 Add Block: Button Row",
       fields: { customFontUrl: externalFontField("External Font URL For Buttons"), ...sectionFields, buttons: buttonArrayField },
 defaultProps: clone(defaultContent[2].props),
       render: props => <SectionShell {...props}>{applyFontImport(props.customFontUrl)}<div className="puck-inner"><div className="puck-buttons">{(props.buttons || []).map((button, index) => <ButtonPreview key={index} button={button} index={index} />)}</div></div></SectionShell>
     },
     SocialIcons: {
-      label: "Social Icons",
+      label: "02 Add Block: Social Icons",
       fields: {
         title: { type: "text", label: "Title" },
         titleColor: colorField("Title Color"),
@@ -956,21 +1121,20 @@ defaultProps: clone(defaultContent[2].props),
             borderColor: colorField("Icon Border Color")
           },
 defaultItemProps: {
-  text: "New Button",
-  url: "#",
-  backgroundColor: "#8b3df4",
-  textColor: "#ffffff",
-  fontFamily: "inherit",
-  fontSize: "16px",
-  borderWidth: "0px",
-  borderColor: "rgba(255,255,255,.25)", }
+  platform: "facebook",
+  label: "Facebook",
+  url: "https://facebook.com",
+  iconColor: "#ffffff",
+  backgroundColor: "rgba(198,40,40,.14)",
+  borderColor: "rgba(198,40,40,.55)"
+}
         }
       },
 defaultProps: clone(defaultContent[3].props),
       render: props => <SectionShell {...props}><div className="puck-inner" style={{ textAlign: "center" }}>{props.title && <p className="teaser" style={{ color: props.titleColor || "inherit", fontFamily: props.titleFont || "inherit", fontSize: props.titleSize || "inherit", fontWeight: props.titleWeight || "inherit" }}>{props.title}</p>}<nav className="puck-social-links social-links">{(props.links || []).filter(link => link.url).map((link, index) => <a key={index} className="social-link" href={link.url || "#"} title={link.label || link.platform} style={{ color: link.iconColor || "inherit", background: link.backgroundColor || "rgba(255,255,255,.03)", borderColor: link.borderColor || "rgba(255,255,255,.18)" }}><SocialIcon platform={link.platform} label={link.label} /></a>)}</nav></div></SectionShell>
     },
     Columns: {
-      label: "Columns / Cards",
+      label: "02 Add Block: Columns / Cards",
       fields: {
         customFontUrl: externalFontField("External Font URL For This Block"),
         columns: { type: "number", label: "Columns" },
@@ -1023,13 +1187,13 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
       render: props => <SectionShell {...props}>{applyFontImport(props.customFontUrl)}<div className="puck-inner"><div className="puck-columns" style={{ "--cols": props.columns || 2, "--gap": `${props.gap || 24}px` }}>{(props.items || []).map((item, index) => <div className="puck-card" key={index}>{item.imageUrl && <img className="puck-image" src={item.imageUrl} alt={item.title || "Column image"} style={{ width: "100%", borderRadius: props.imageRadius || "8px", marginBottom: 16 }} />}{item.title && <h3 style={{ color: item.titleColor || "inherit", fontFamily: item.titleFont || "inherit", fontSize: item.titleSize || "inherit" }}>{item.title}</h3>}{item.body && <p style={{ color: item.bodyColor || "inherit", fontFamily: item.bodyFont || "inherit", fontSize: item.bodySize || "inherit" }}>{item.body}</p>}{item.buttonText && <ButtonPreview button={{ text: item.buttonText, url: item.buttonUrl, backgroundColor: item.buttonBackgroundColor, textColor: item.buttonTextColor, fontFamily: item.buttonFont, fontSize: item.buttonFontSize, borderWidth: item.buttonBorderWidth, borderColor: item.buttonBorderColor, radius: item.buttonRadius, boxShadow: item.buttonBoxShadow, textTransform: item.buttonTextTransform }} />}</div>)}</div></div></SectionShell>
     },
     Spacer: {
-      label: "Spacer",
+      label: "02 Add Block: Spacer",
       fields: { height: { type: "number", label: "Height" }, backgroundColor: colorField("Background Color") },
       defaultProps: { height: 40, backgroundColor: "transparent" },
       render: props => <div className="puck-spacer" style={{ height: props.height || 40, background: props.backgroundColor || "transparent" }} />
     },
     Embed: {
-      label: "Custom HTML Embed",
+      label: "02 Add Block: Custom HTML Embed",
       fields: { html: { type: "textarea", label: "HTML" }, backgroundColor: colorField("Background Color"), paddingY: { type: "number", label: "Top/Bottom Padding" }, paddingX: { type: "number", label: "Left/Right Padding" } },
       defaultProps: { html: "<p>Custom HTML here</p>", backgroundColor: "transparent", paddingY: 30, paddingX: 24 },
       render: props => <section className="puck-section" style={{ padding: `${props.paddingY || 30}px ${props.paddingX || 24}px`, background: props.backgroundColor || "transparent" }}><div className="puck-inner" dangerouslySetInnerHTML={{ __html: props.html || "" }} /></section>
@@ -1037,7 +1201,36 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
   }
 };
 
+const livePreviewCss = puckPageCss();
+const adminPreviewCss = livePreviewCss.replaceAll("#editable-page-root", "[data-puck-entry]");
+
 export const puckEditorCss = `
-${puckPageCss()}
-.puck-font-loader-note{padding:16px;border:1px dashed rgba(255,255,255,.35);border-radius:12px;text-align:center;opacity:.75;}
+${livePreviewCss}
+${adminPreviewCss}
+
+[data-puck-entry] {
+  background:
+    radial-gradient(circle at center 18%, rgba(198,40,40,.18), transparent 34%),
+    #030000;
+  color: #f5f0e6;
+  font-family: "Oswald", sans-serif;
+  min-height: 100vh;
+}
+
+[data-puck-entry] .puck-flex.layout-image-top {
+  flex-direction: column-reverse;
+  text-align: center;
+}
+
+[data-puck-entry] .puck-image {
+  object-fit: contain;
+}
+
+.puck-font-loader-note {
+  padding: 16px;
+  border: 1px dashed rgba(255,255,255,.35);
+  border-radius: 12px;
+  text-align: center;
+  opacity: .75;
+}
 `;

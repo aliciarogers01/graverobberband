@@ -25,6 +25,35 @@ function uploadAuthHeaders(token) {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
+class AdminEditorErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, message: "" };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, message: error?.message || "The editor crashed while rendering a saved block." };
+  }
+
+  componentDidCatch(error, info) {
+    console.error("Puck editor crashed:", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="admin-editor-crash-panel">
+          <h2>Editor recovery mode</h2>
+          <p>{this.state.message}</p>
+          <p>A saved block was incompatible with the current editor. Click Reset This Page, then Publish to save the clean default layout.</p>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 function freshDefaultData(pageName) {
   return createDefaultPuckData(pageName);
 }
@@ -37,9 +66,12 @@ function makeSafeBlockId(type, pageName, index) {
 function normalizePageData(data, pageName) {
   const fallback = freshDefaultData(pageName);
   const sourceContent = Array.isArray(data?.content) ? data.content.filter(Boolean) : fallback.content;
+  const allowedTypes = new Set(Object.keys(puckConfig.components || {}));
+  const safeSourceContent = sourceContent.filter(block => block?.type && allowedTypes.has(block.type));
+  const blocksToUse = safeSourceContent.length ? safeSourceContent : fallback.content;
   const seenIds = new Set();
 
-  const content = sourceContent.map((block, index) => {
+  const content = blocksToUse.map((block, index) => {
     const props = { ...(block.props || {}) };
     const proposedId = props.id || makeSafeBlockId(block.type, pageName, index);
     const safeId = seenIds.has(proposedId) ? makeSafeBlockId(block.type, pageName, index) : proposedId;
@@ -68,7 +100,30 @@ function normalizePageData(data, pageName) {
   };
 }
 
+function savedDataBelongsToAnotherSite(saved) {
+  const text = JSON.stringify(saved || "").toLowerCase();
+
+  return (
+    text.includes("driver 8") ||
+    text.includes("driver8") ||
+    text.includes("driver8remband") ||
+    text.includes("the music of r.e.m.") ||
+    text.includes("orange crush") ||
+    text.includes("radio free europe") ||
+    text.includes("weird science") ||
+    text.includes("weirdsciencefw")
+  );
+}
+
 function cleanSavedData(saved, pageName) {
+  if (savedDataBelongsToAnotherSite(saved)) {
+    return freshDefaultData(pageName);
+  }
+
+  if (!saved?.content || !Array.isArray(saved.content)) {
+    return freshDefaultData(pageName);
+  }
+
   return normalizePageData(saved, pageName);
 }
 
@@ -374,7 +429,7 @@ function AdminApp() {
     return (
       <main className="admin-login-page">
         <form className="admin-card" onSubmit={login}>
-          <h1>Driver 8 Admin</h1>
+          <h1>Grave Robber Admin</h1>
           <label>Email</label>
           <input type="email" value={email} onChange={event => setEmail(event.target.value)} required />
           <label>Password</label>
@@ -408,12 +463,14 @@ function AdminApp() {
       </div>
 
       <div className="puck-wrapper">
-        <Puck
-          key={`${currentPage}-${editorKey}`}
-          config={puckConfig}
-          data={pageData}
-          onPublish={savePage}
-        />
+        <AdminEditorErrorBoundary key={`boundary-${currentPage}-${editorKey}`}>
+          <Puck
+            key={`${currentPage}-${editorKey}`}
+            config={puckConfig}
+            data={pageData}
+            onPublish={savePage}
+          />
+        </AdminEditorErrorBoundary>
       </div>
 
       <section className="admin-management-grid">

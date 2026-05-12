@@ -586,6 +586,9 @@ function renderEmbed(props) {
 }
 
 const renderers = {
+  GraveRobberHero: renderHero,
+  GraveRobberLogo: renderImage,
+  GraveRobberSocial: renderSocial,
   HeaderNav: renderHeaderNav,
   SongScroll: renderSongScroll,
   FontLoader: renderFontLoader,
