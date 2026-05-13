@@ -331,7 +331,25 @@ function ButtonPreview({ button }) {
 }
 
 function SocialIcon({ platform, label }) {
-  return <span dangerouslySetInnerHTML={{ __html: socialIcon(platform, label) }} />;
+  const name = String(platform || "custom").toLowerCase().trim();
+
+  if (name === "facebook") {
+    return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.019 4.388 10.994 10.125 11.854v-8.385H7.078v-3.469h3.047V9.431c0-3.007 1.791-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953h-1.514c-1.491 0-1.956.925-1.956 1.874v2.249h3.328l-.532 3.469h-2.796v8.385C19.612 23.067 24 18.092 24 12.073z" /></svg>;
+  }
+
+  if (name === "instagram") {
+    return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H7zm5 3.5A4.5 4.5 0 1112 16a4.5 4.5 0 010-9zm0 2A2.5 2.5 0 1012 14a2.5 2.5 0 000-5zm5.25-3.25a1.25 1.25 0 11-1.25 1.25 1.25 1.25 0 011.25-1.25z" /></svg>;
+  }
+
+  if (name === "spotify") {
+    return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.8A10.2 10.2 0 1022.2 12 10.2 10.2 0 0012 1.8zm4.68 14.72a.76.76 0 01-1.05.25 9.58 9.58 0 00-7.28-.78.76.76 0 11-.44-1.46 11.13 11.13 0 018.52.94.76.76 0 01.25 1.05zm1.25-2.77a.9.9 0 01-1.24.3 11.75 11.75 0 00-8.62-.96.9.9 0 11-.52-1.72 13.5 13.5 0 019.96 1.14.9.9 0 01.42 1.24zm.13-2.94a14.15 14.15 0 00-10.4-1.13 1.05 1.05 0 11-.61-2.01 16.3 16.3 0 0112.08 1.32 1.05 1.05 0 11-1.07 1.82z" /></svg>;
+  }
+
+  if (name === "youtube") {
+    return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 00.5 6.2 31.5 31.5 0 000 12a31.5 31.5 0 00.5 5.8 3 3 0 002.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 002.1-2.1A31.5 31.5 0 0024 12a31.5 31.5 0 00-.5-5.8zM9.6 15.6V8.4L15.8 12l-6.2 3.6z" /></svg>;
+  }
+
+  return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M8 12h8M12 8v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>;
 }
 
 function SectionShell({ children, backgroundColor = "transparent", textColor = "inherit", paddingY = 50, paddingX = 24 }) {
@@ -808,7 +826,7 @@ function createPageContent(pageName = "home") {
         paddingX: 24,
         links: [
           {
-            platform: "custom",
+            platform: "facebook",
             label: "Facebook",
             url: "https://www.facebook.com/graverobberpunk",
             iconColor: "#ffffff",
@@ -816,7 +834,7 @@ function createPageContent(pageName = "home") {
             borderColor: "rgba(255,255,255,.35)"
           },
           {
-            platform: "custom",
+            platform: "instagram",
             label: "Instagram",
             url: "https://www.instagram.com/graverobberpunk",
             iconColor: "#ffffff",
