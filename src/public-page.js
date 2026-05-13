@@ -1,7 +1,7 @@
 import { createDefaultPuckData } from "./puck-config.jsx";
 import { renderPuckHtml, puckPageCss } from "./puck-render-html.js";
 
-const SITE_SLUG = "graverobberpunk";
+const SITE_SLUG = "graverobber";
 
 async function loadPublicPage() {
   const root = document.getElementById("editable-page-root");
