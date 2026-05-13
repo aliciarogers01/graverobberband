@@ -15,11 +15,21 @@ async function loadPublicPage() {
 
   try {
     const response = await fetch(`${window.BAND_API_BASE}/visual-pages/${SITE_SLUG}/${pageName}?_=${Date.now()}`);
-    const data = await response.json();
-    const html = data?.page?.html || data?.html || "";
 
-    if (html.trim()) {
-      root.innerHTML = html;
+    if (!response.ok) {
+      throw new Error(`Public page fetch failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const page = data?.page || data || {};
+
+    if (page.project_data?.content?.length) {
+      root.innerHTML = renderPuckHtml(page.project_data);
+      return;
+    }
+
+    if (page.html && page.html.trim()) {
+      root.innerHTML = page.html;
       return;
     }
   } catch (error) {
