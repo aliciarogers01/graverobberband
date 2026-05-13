@@ -457,47 +457,118 @@ const defaultContent = [
 const backgroundStyleOptions = [
   { label: "Grave Robber Ombre", value: "grave-ombre" },
   { label: "Solid Color", value: "solid" },
-  { label: "Radial Glow", value: "radial-glow" },
-  { label: "Top Horror Glow", value: "top-glow" },
   { label: "Vertical Gradient", value: "vertical-gradient" },
+  { label: "Horizontal Gradient", value: "horizontal-gradient" },
+  { label: "Diagonal Gradient", value: "diagonal-gradient" },
+  { label: "Radial Center Glow", value: "radial-glow" },
+  { label: "Top Spotlight", value: "top-glow" },
+  { label: "Bottom Spotlight", value: "bottom-glow" },
+  { label: "Left Glow", value: "left-glow" },
+  { label: "Right Glow", value: "right-glow" },
+  { label: "Double Glow", value: "double-glow" },
+  { label: "Triple Horror Fog", value: "triple-fog" },
+  { label: "Red Black Vignette", value: "red-vignette" },
   { label: "Custom CSS", value: "custom" }
 ];
 
 export const defaultPageBackgroundProps = {
   backgroundStyle: "grave-ombre",
+
   pageBaseColor: "#030000",
-  pageGlowColor: "rgba(198,40,40,.18)",
   pageSecondColor: "#160000",
+  pageThirdColor: "#000000",
+
+  pageGlowColor: "rgba(198,40,40,.18)",
+  pageSecondGlowColor: "rgba(198,40,40,.10)",
+  pageThirdGlowColor: "rgba(0,0,0,.65)",
+
   pageTextColor: "#f5f0e6",
+
+  pageGradientAngle: "180deg",
+
   pageGlowPosition: "center 18%",
   pageGlowSize: "34%",
+
+  pageSecondGlowPosition: "center 70%",
+  pageSecondGlowSize: "45%",
+
+  pageThirdGlowPosition: "center center",
+  pageThirdGlowSize: "75%",
+
   customBackgroundCss: ""
 };
 
 export function pageBackgroundCss(props = {}) {
   const settings = { ...defaultPageBackgroundProps, ...(props || {}) };
 
+  const base = settings.pageBaseColor || "#030000";
+  const color2 = settings.pageSecondColor || "#160000";
+  const color3 = settings.pageThirdColor || "#000000";
+  const glow1 = settings.pageGlowColor || "rgba(198,40,40,.18)";
+  const glow2 = settings.pageSecondGlowColor || "rgba(198,40,40,.10)";
+  const glow3 = settings.pageThirdGlowColor || "rgba(0,0,0,.65)";
+  const angle = settings.pageGradientAngle || "180deg";
+
+  const pos1 = settings.pageGlowPosition || "center 18%";
+  const size1 = settings.pageGlowSize || "34%";
+  const pos2 = settings.pageSecondGlowPosition || "center 70%";
+  const size2 = settings.pageSecondGlowSize || "45%";
+  const pos3 = settings.pageThirdGlowPosition || "center center";
+  const size3 = settings.pageThirdGlowSize || "75%";
+
   if (settings.backgroundStyle === "solid") {
-    return settings.pageBaseColor;
-  }
-
-  if (settings.backgroundStyle === "radial-glow") {
-    return `radial-gradient(circle at ${settings.pageGlowPosition}, ${settings.pageGlowColor}, transparent ${settings.pageGlowSize}), ${settings.pageBaseColor}`;
-  }
-
-  if (settings.backgroundStyle === "top-glow") {
-    return `radial-gradient(circle at top center, ${settings.pageGlowColor}, transparent ${settings.pageGlowSize}), ${settings.pageBaseColor}`;
+    return base;
   }
 
   if (settings.backgroundStyle === "vertical-gradient") {
-    return `linear-gradient(180deg, ${settings.pageSecondColor}, ${settings.pageBaseColor})`;
+    return `linear-gradient(180deg, ${color2} 0%, ${base} 55%, ${color3} 100%)`;
+  }
+
+  if (settings.backgroundStyle === "horizontal-gradient") {
+    return `linear-gradient(90deg, ${color2} 0%, ${base} 50%, ${color3} 100%)`;
+  }
+
+  if (settings.backgroundStyle === "diagonal-gradient") {
+    return `linear-gradient(${angle}, ${color2} 0%, ${base} 52%, ${color3} 100%)`;
+  }
+
+  if (settings.backgroundStyle === "radial-glow") {
+    return `radial-gradient(circle at ${pos1}, ${glow1}, transparent ${size1}), ${base}`;
+  }
+
+  if (settings.backgroundStyle === "top-glow") {
+    return `radial-gradient(circle at top center, ${glow1}, transparent ${size1}), linear-gradient(180deg, ${color2}, ${base})`;
+  }
+
+  if (settings.backgroundStyle === "bottom-glow") {
+    return `radial-gradient(circle at bottom center, ${glow1}, transparent ${size1}), linear-gradient(180deg, ${base}, ${color2})`;
+  }
+
+  if (settings.backgroundStyle === "left-glow") {
+    return `radial-gradient(circle at left center, ${glow1}, transparent ${size1}), linear-gradient(90deg, ${color2}, ${base})`;
+  }
+
+  if (settings.backgroundStyle === "right-glow") {
+    return `radial-gradient(circle at right center, ${glow1}, transparent ${size1}), linear-gradient(90deg, ${base}, ${color2})`;
+  }
+
+  if (settings.backgroundStyle === "double-glow") {
+    return `radial-gradient(circle at ${pos1}, ${glow1}, transparent ${size1}), radial-gradient(circle at ${pos2}, ${glow2}, transparent ${size2}), ${base}`;
+  }
+
+  if (settings.backgroundStyle === "triple-fog") {
+    return `radial-gradient(circle at ${pos1}, ${glow1}, transparent ${size1}), radial-gradient(circle at ${pos2}, ${glow2}, transparent ${size2}), radial-gradient(circle at ${pos3}, ${glow3}, transparent ${size3}), linear-gradient(${angle}, ${color2}, ${base}, ${color3})`;
+  }
+
+  if (settings.backgroundStyle === "red-vignette") {
+    return `radial-gradient(circle at ${pos1}, ${glow1}, transparent ${size1}), radial-gradient(circle at center, transparent 0%, transparent 52%, ${glow3} 100%), linear-gradient(${angle}, ${color2}, ${base}, ${color3})`;
   }
 
   if (settings.backgroundStyle === "custom") {
-    return settings.customBackgroundCss || settings.pageBaseColor;
+    return settings.customBackgroundCss || base;
   }
 
-  return `radial-gradient(circle at ${settings.pageGlowPosition}, ${settings.pageGlowColor}, transparent ${settings.pageGlowSize}), ${settings.pageBaseColor}`;
+  return `radial-gradient(circle at ${pos1}, ${glow1}, transparent ${size1}), radial-gradient(circle at ${pos2}, ${glow2}, transparent ${size2}), linear-gradient(180deg, ${color2}, ${base})`;
 }
 
 function createPageContent(pageName = "home") {
@@ -796,20 +867,55 @@ export const puckConfig = {
         label: "Page Background Style",
         options: backgroundStyleOptions
       },
-      pageBaseColor: colorField("Page Base Color"),
-      pageGlowColor: colorField("Page Glow / Ombre Color"),
-      pageSecondColor: colorField("Second Gradient Color"),
+      pageBaseColor: colorField("Base Color"),
+      pageSecondColor: colorField("Second Color"),
+      pageThirdColor: colorField("Third / Vignette Color"),
+
+      pageGlowColor: colorField("Main Glow / Ombre Color"),
+      pageSecondGlowColor: colorField("Second Glow Color"),
+      pageThirdGlowColor: colorField("Third Glow / Darkness Color"),
+
       pageTextColor: colorField("Default Page Text Color"),
+
+      pageGradientAngle: {
+        type: "text",
+        label: "Gradient Direction / Angle",
+        placeholder: "Example: 180deg, 135deg, 90deg"
+      },
+
       pageGlowPosition: {
         type: "text",
-        label: "Glow Position",
+        label: "Main Glow Position",
         placeholder: "Example: center 18%, top center, left 20%"
       },
       pageGlowSize: {
         type: "text",
-        label: "Glow Spread / Size",
+        label: "Main Glow Spread / Size",
         placeholder: "Example: 34%, 50%, 420px"
       },
+
+      pageSecondGlowPosition: {
+        type: "text",
+        label: "Second Glow Position",
+        placeholder: "Example: center 70%, right center"
+      },
+      pageSecondGlowSize: {
+        type: "text",
+        label: "Second Glow Spread / Size",
+        placeholder: "Example: 45%, 600px"
+      },
+
+      pageThirdGlowPosition: {
+        type: "text",
+        label: "Third Glow Position",
+        placeholder: "Example: center center, bottom center"
+      },
+      pageThirdGlowSize: {
+        type: "text",
+        label: "Third Glow Spread / Size",
+        placeholder: "Example: 75%, 900px"
+      },
+
       customBackgroundCss: {
         type: "textarea",
         label: "Custom Background CSS",
