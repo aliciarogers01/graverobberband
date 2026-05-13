@@ -14,6 +14,8 @@ const PAGE_OPTIONS = [
   { value: "home", label: "Home Page" },
   { value: "shows", label: "Shows Page" },
   { value: "signup", label: "Signup Page" },
+  { value: "merch", label: "Merch Page" },
+  { value: "gallery", label: "Gallery Page" },
   { value: "contact", label: "Contact Page" }
 ];
 

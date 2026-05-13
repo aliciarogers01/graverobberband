@@ -84,6 +84,14 @@ function socialIcon(platform, customLabel = "") {
   return icons[normalized] || icons.custom;
 }
 
+const musicDropdownLinks = [
+  { text: "Spotify", url: "https://open.spotify.com/artist/4D34aUp0OsDs8mAEWPIP7c" },
+  { text: "Apple Music", url: "https://music.apple.com/us/artist/grave-robber/279558434" },
+  { text: "Bandcamp", url: "https://graverobberpunk.bandcamp.com/" },
+  { text: "SoundCloud", url: "https://soundcloud.com/graverobberofficial" },
+  { text: "YouTube", url: "https://www.youtube.com/@GraveRobberPunk" }
+];
+
 function buttonHtml(button = {}) {
   if (!hasText(button.text)) return "";
 
@@ -106,6 +114,14 @@ function buttonHtml(button = {}) {
     alignItems: "center",
     justifyContent: "center"
   });
+
+  if (String(button.text || "").toLowerCase().trim() === "music") {
+    const menuItems = musicDropdownLinks
+      .map(item => `<a href="${attr(item.url)}" target="_blank" rel="noopener noreferrer">${esc(item.text)}</a>`)
+      .join("");
+
+    return `<div class="puck-dropdown"><a class="puck-btn puck-dropdown-trigger" href="${attr(button.url || "#music")}" style="${style}">${esc(button.text)}</a><div class="puck-dropdown-menu">${menuItems}</div></div>`;
+  }
 
   return `<a class="puck-btn" href="${attr(button.url || "#")}" style="${style}">${esc(button.text)}</a>`;
 }
@@ -130,6 +146,45 @@ export function puckPageCss() {
 #editable-page-root .puck-body{line-height:1.65;margin:0 0 20px;}
 #editable-page-root .puck-image{display:block;max-width:100%;height:auto;object-fit:cover;}
 #editable-page-root .puck-buttons{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px;justify-content:center;}
+#editable-page-root .puck-dropdown{
+  position:relative;
+  display:inline-flex;
+}
+
+#editable-page-root .puck-dropdown-menu{
+  display:none;
+  position:absolute;
+  top:calc(100% + 10px);
+  left:50%;
+  transform:translateX(-50%);
+  min-width:190px;
+  padding:10px;
+  background:rgba(0,0,0,.94);
+  border:1px solid rgba(57,255,20,.45);
+  border-radius:16px;
+  box-shadow:0 0 24px rgba(57,255,20,.28);
+  z-index:9999;
+}
+
+#editable-page-root .puck-dropdown:hover .puck-dropdown-menu,
+#editable-page-root .puck-dropdown:focus-within .puck-dropdown-menu{
+  display:grid;
+  gap:6px;
+}
+
+#editable-page-root .puck-dropdown-menu a{
+  color:#ffffff;
+  text-decoration:none;
+  font-weight:700;
+  font-size:14px;
+  padding:10px 12px;
+  border-radius:10px;
+  text-transform:uppercase;
+}
+
+#editable-page-root .puck-dropdown-menu a:hover{
+  background:rgba(57,255,20,.16);
+}
 #editable-page-root .puck-buttons .primary-btn:hover,#editable-page-root .puck-buttons .secondary-btn:hover{box-shadow:inherit;}
 #editable-page-root .layout-text-left .puck-buttons,#editable-page-root .layout-text-right .puck-buttons{justify-content:flex-start;}
 #editable-page-root .puck-social-links{

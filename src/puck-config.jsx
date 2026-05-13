@@ -724,6 +724,135 @@ function createPageContent(pageName = "home") {
     ];
   }
 
+  if (pageName === "merch") {
+    return [
+      {
+        type: "HeaderNav",
+        props: {
+          id: "graverobber-merch-header-1",
+          backgroundColor: "rgba(0,0,0,.86)",
+          lineColor: "rgba(198,40,40,.65)",
+          lineShadow: "0 0 24px rgba(198,40,40,.28)",
+          showBack: "show",
+          backText: "Back",
+          backUrl: "index.html",
+          logoUrl: "assets/grave-robber-skull.png",
+          logoAlt: "Grave Robber",
+          logoSize: "52px",
+          logoPlacement: "right",
+          width: "100%",
+          maxWidth: "none",
+          margin: "0",
+          padding: "18px 28px",
+          navPlacement: "center",
+          headerPosition: "full",
+          buttons: [
+            { text: "Home", url: "index.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "Shows", url: "shows.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "Merch", url: "merch.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "0px", borderColor: "transparent", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "Gallery", url: "gallery.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
+          ]
+        }
+      },
+      {
+        type: "TextBlock",
+        props: {
+          id: "graverobber-merch-title-1",
+          eyebrow: "Official Grave Robber merch",
+          title: "Merch",
+          body: "Add merch items, store links, photos, and announcements here.",
+          align: "center",
+          maxWidth: "850px",
+          backgroundColor: "transparent",
+          textColor: "#ffffff",
+          paddingY: 70,
+          paddingX: 24,
+          titleColor: "#ffffff",
+          titleFont: "Creepster, cursive",
+          titleSize: "4rem",
+          bodyColor: "#d6d6d6",
+          bodyFont: "Oswald, sans-serif",
+          bodySize: "1.1rem",
+          buttons: [
+            { text: "Visit Merch Store", url: "https://graverobber.bigcartel.com/", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "16px", borderWidth: "0px", borderColor: "transparent", boxShadow: "0 0 24px rgba(198,40,40,.35)", textTransform: "uppercase", radius: "999px", padding: "16px 34px" }
+          ]
+        }
+      }
+    ];
+  }
+
+  if (pageName === "gallery") {
+    return [
+      {
+        type: "HeaderNav",
+        props: {
+          id: "graverobber-gallery-header-1",
+          backgroundColor: "rgba(0,0,0,.86)",
+          lineColor: "rgba(198,40,40,.65)",
+          lineShadow: "0 0 24px rgba(198,40,40,.28)",
+          showBack: "show",
+          backText: "Back",
+          backUrl: "index.html",
+          logoUrl: "assets/grave-robber-skull.png",
+          logoAlt: "Grave Robber",
+          logoSize: "52px",
+          logoPlacement: "right",
+          width: "100%",
+          maxWidth: "none",
+          margin: "0",
+          padding: "18px 28px",
+          navPlacement: "center",
+          headerPosition: "full",
+          buttons: [
+            { text: "Home", url: "index.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "Shows", url: "shows.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "Merch", url: "merch.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "Gallery", url: "gallery.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "0px", borderColor: "transparent", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
+          ]
+        }
+      },
+      {
+        type: "TextBlock",
+        props: {
+          id: "graverobber-gallery-title-1",
+          eyebrow: "Photos from the crypt",
+          title: "Gallery",
+          body: "Add photos, flyers, videos, and live shots here.",
+          align: "center",
+          maxWidth: "850px",
+          backgroundColor: "transparent",
+          textColor: "#ffffff",
+          paddingY: 70,
+          paddingX: 24,
+          titleColor: "#ffffff",
+          titleFont: "Creepster, cursive",
+          titleSize: "4rem",
+          bodyColor: "#d6d6d6",
+          bodyFont: "Oswald, sans-serif",
+          bodySize: "1.1rem",
+          buttons: []
+        }
+      },
+      {
+        type: "ImageBlock",
+        props: {
+          id: "graverobber-gallery-image-1",
+          title: "",
+          imageUrl: "assets/grave-robber-logo-stacked.png",
+          imageAlt: "Grave Robber gallery image",
+          width: "520px",
+          radius: "12px",
+          shadow: "0 20px 60px rgba(0,0,0,.55)",
+          align: "center",
+          maxWidth: "900px",
+          backgroundColor: "transparent",
+          paddingY: 30,
+          paddingX: 24
+        }
+      }
+    ];
+  }
+
   return [
     {
       type: "GraveRobberHero",
@@ -774,14 +903,56 @@ function createPageContent(pageName = "home") {
             padding: "16px 34px"
           },
           {
-            text: "Join the Crypt List",
-            url: "signup.html",
-            backgroundColor: "transparent",
+            text: "Music",
+            url: "#music",
+            backgroundColor: "#8b3df4",
             textColor: "#ffffff",
             fontFamily: "Oswald, sans-serif",
             fontSize: "16px",
-            borderWidth: "1px",
-            borderColor: "rgba(255,255,255,.35)",
+            borderWidth: "0px",
+            borderColor: "transparent",
+            boxShadow: "0 0 24px rgba(57,255,20,.45)",
+            textTransform: "uppercase",
+            radius: "999px",
+            padding: "16px 34px"
+          },
+          {
+            text: "Join the Army of the Dead",
+            url: "signup.html",
+            backgroundColor: "#b000ff",
+            textColor: "#ffffff",
+            fontFamily: "Oswald, sans-serif",
+            fontSize: "16px",
+            borderWidth: "0px",
+            borderColor: "transparent",
+            boxShadow: "0 0 24px rgba(57,255,20,.55)",
+            textTransform: "uppercase",
+            radius: "999px",
+            padding: "16px 34px"
+          },
+          {
+            text: "Gallery",
+            url: "gallery.html",
+            backgroundColor: "#8b3df4",
+            textColor: "#ffffff",
+            fontFamily: "Oswald, sans-serif",
+            fontSize: "16px",
+            borderWidth: "0px",
+            borderColor: "transparent",
+            boxShadow: "none",
+            textTransform: "uppercase",
+            radius: "999px",
+            padding: "16px 34px"
+          },
+          {
+            text: "Merch",
+            url: "merch.html",
+            backgroundColor: "#8b3df4",
+            textColor: "#ffffff",
+            fontFamily: "Oswald, sans-serif",
+            fontSize: "16px",
+            borderWidth: "0px",
+            borderColor: "transparent",
             boxShadow: "none",
             textTransform: "uppercase",
             radius: "999px",
@@ -790,13 +961,13 @@ function createPageContent(pageName = "home") {
           {
             text: "Booking",
             url: "contact.html",
-            backgroundColor: "transparent",
+            backgroundColor: "#b000ff",
             textColor: "#ffffff",
             fontFamily: "Oswald, sans-serif",
             fontSize: "16px",
-            borderWidth: "1px",
-            borderColor: "rgba(255,255,255,.35)",
-            boxShadow: "none",
+            borderWidth: "0px",
+            borderColor: "transparent",
+            boxShadow: "0 0 24px rgba(57,255,20,.45)",
             textTransform: "uppercase",
             radius: "999px",
             padding: "16px 34px"
