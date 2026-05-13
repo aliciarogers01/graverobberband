@@ -1,4 +1,4 @@
-import{p as h,r as g,c as m}from"./puck-config-DVx9EZZi.js";const p="graverobber";async function b(){var i,s,d;const r=document.getElementById("editable-page-root");if(!r)return;const c=document.createElement("style");c.textContent=`
+import{p as h,r as g,c as m}from"./puck-config-Cck_yRjb.js";const p="graverobber";async function b(){var i,s,d;const r=document.getElementById("editable-page-root");if(!r)return;const c=document.createElement("style");c.textContent=`
   html,
   body {
     margin: 0;

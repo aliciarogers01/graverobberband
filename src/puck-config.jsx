@@ -1233,4 +1233,47 @@ ${adminPreviewCss}
   text-align: center;
   opacity: .75;
 }
+
+.puck-social-links {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.puck-social-links .social-link {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  max-width: 44px !important;
+  max-height: 44px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 999px;
+  box-sizing: border-box;
+}
+
+.puck-social-links .social-link svg {
+  display: block !important;
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  fill: currentColor !important;
+}
+
+.puck-social-letter {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
 `;
