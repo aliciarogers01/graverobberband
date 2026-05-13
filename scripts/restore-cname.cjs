@@ -1,3 +1,3 @@
 const fs = require("fs");
 
-fs.writeFileSync("docs/CNAME", "graverobberband.com\n");
+fs.writeFileSync("docs/CNAME", "graverobberpunk.com\n");
