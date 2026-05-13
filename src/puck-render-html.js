@@ -132,8 +132,52 @@ export function puckPageCss() {
 #editable-page-root .puck-buttons{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px;justify-content:center;}
 #editable-page-root .puck-buttons .primary-btn:hover,#editable-page-root .puck-buttons .secondary-btn:hover{box-shadow:inherit;}
 #editable-page-root .layout-text-left .puck-buttons,#editable-page-root .layout-text-right .puck-buttons{justify-content:flex-start;}
-#editable-page-root .puck-social-links{display:flex;gap:20px;justify-content:center;align-items:center;flex-wrap:wrap;}
-#editable-page-root .puck-social-letter{font-weight:900;font-size:16px;letter-spacing:.02em;}
+#editable-page-root .puck-social-links{
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+#editable-page-root .puck-social-links .social-link{
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  max-width:44px!important;
+  max-height:44px!important;
+  padding:0!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border-style:solid!important;
+  border-width:1px!important;
+  border-radius:999px!important;
+  box-sizing:border-box!important;
+  text-decoration:none!important;
+}
+
+#editable-page-root .puck-social-links .social-link svg{
+  display:block!important;
+  width:22px!important;
+  height:22px!important;
+  min-width:22px!important;
+  min-height:22px!important;
+  max-width:22px!important;
+  max-height:22px!important;
+  fill:currentColor!important;
+}
+
+#editable-page-root .puck-social-letter{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-weight:900;
+  font-size:16px;
+  line-height:1;
+  letter-spacing:.02em;
+}
 #editable-page-root .puck-columns{display:grid;grid-template-columns:repeat(var(--cols,2),1fr);gap:var(--gap,24px);}
 #editable-page-root .puck-card{padding:24px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(255,255,255,.03);}
 #editable-page-root{
