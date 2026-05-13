@@ -7,9 +7,28 @@ async function loadPublicPage() {
   const root = document.getElementById("editable-page-root");
   if (!root) return;
 
-  const style = document.createElement("style");
-  style.textContent = puckPageCss();
-  document.head.appendChild(style);
+const style = document.createElement("style");
+style.textContent = `
+  html,
+  body {
+    margin: 0;
+    min-height: 100%;
+    background:
+      radial-gradient(circle at center 18%, rgba(198,40,40,.18), transparent 34%),
+      #030000;
+    color: #f5f0e6;
+  }
+
+  #editable-page-root {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at center 18%, rgba(198,40,40,.18), transparent 34%),
+      #030000;
+  }
+
+  ${puckPageCss()}
+`;
+document.head.appendChild(style);
 
   const pageName = document.body?.dataset?.page || "home";
 
