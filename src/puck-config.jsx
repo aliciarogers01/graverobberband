@@ -454,6 +454,52 @@ const defaultContent = [
   }
 ];
 
+const backgroundStyleOptions = [
+  { label: "Grave Robber Ombre", value: "grave-ombre" },
+  { label: "Solid Color", value: "solid" },
+  { label: "Radial Glow", value: "radial-glow" },
+  { label: "Top Horror Glow", value: "top-glow" },
+  { label: "Vertical Gradient", value: "vertical-gradient" },
+  { label: "Custom CSS", value: "custom" }
+];
+
+export const defaultPageBackgroundProps = {
+  backgroundStyle: "grave-ombre",
+  pageBaseColor: "#030000",
+  pageGlowColor: "rgba(198,40,40,.18)",
+  pageSecondColor: "#160000",
+  pageTextColor: "#f5f0e6",
+  pageGlowPosition: "center 18%",
+  pageGlowSize: "34%",
+  customBackgroundCss: ""
+};
+
+export function pageBackgroundCss(props = {}) {
+  const settings = { ...defaultPageBackgroundProps, ...(props || {}) };
+
+  if (settings.backgroundStyle === "solid") {
+    return settings.pageBaseColor;
+  }
+
+  if (settings.backgroundStyle === "radial-glow") {
+    return `radial-gradient(circle at ${settings.pageGlowPosition}, ${settings.pageGlowColor}, transparent ${settings.pageGlowSize}), ${settings.pageBaseColor}`;
+  }
+
+  if (settings.backgroundStyle === "top-glow") {
+    return `radial-gradient(circle at top center, ${settings.pageGlowColor}, transparent ${settings.pageGlowSize}), ${settings.pageBaseColor}`;
+  }
+
+  if (settings.backgroundStyle === "vertical-gradient") {
+    return `linear-gradient(180deg, ${settings.pageSecondColor}, ${settings.pageBaseColor})`;
+  }
+
+  if (settings.backgroundStyle === "custom") {
+    return settings.customBackgroundCss || settings.pageBaseColor;
+  }
+
+  return `radial-gradient(circle at ${settings.pageGlowPosition}, ${settings.pageGlowColor}, transparent ${settings.pageGlowSize}), ${settings.pageBaseColor}`;
+}
+
 function createPageContent(pageName = "home") {
   if (pageName === "shows") {
     return [
@@ -729,7 +775,12 @@ function createPageContent(pageName = "home") {
 export function createDefaultPuckData(pageName = "home") {
   const pageTitle = pageName.charAt(0).toUpperCase() + pageName.slice(1);
   return {
-    root: { props: { title: `Grave Robber ${pageTitle}` } },
+root: {
+  props: {
+    title: `Grave Robber ${pageTitle}`,
+    ...defaultPageBackgroundProps
+  }
+},
     content: createPageContent(pageName)
   };
 }
@@ -737,6 +788,47 @@ export function createDefaultPuckData(pageName = "home") {
 export const defaultPuckData = createDefaultPuckData("home");
 
 export const puckConfig = {
+  root: {
+    fields: {
+      title: { type: "text", label: "Page Title" },
+      backgroundStyle: {
+        type: "select",
+        label: "Page Background Style",
+        options: backgroundStyleOptions
+      },
+      pageBaseColor: colorField("Page Base Color"),
+      pageGlowColor: colorField("Page Glow / Ombre Color"),
+      pageSecondColor: colorField("Second Gradient Color"),
+      pageTextColor: colorField("Default Page Text Color"),
+      pageGlowPosition: {
+        type: "text",
+        label: "Glow Position",
+        placeholder: "Example: center 18%, top center, left 20%"
+      },
+      pageGlowSize: {
+        type: "text",
+        label: "Glow Spread / Size",
+        placeholder: "Example: 34%, 50%, 420px"
+      },
+      customBackgroundCss: {
+        type: "textarea",
+        label: "Custom Background CSS",
+        placeholder: "Example: radial-gradient(circle, red, black)"
+      }
+    },
+    render: ({ children, ...props }) => (
+      <div
+        style={{
+          minHeight: "100vh",
+          background: pageBackgroundCss(props),
+          color: props.pageTextColor || "#f5f0e6"
+        }}
+      >
+        {children}
+      </div>
+    )
+  },
+
   components: {
 
     GraveRobberHero: {

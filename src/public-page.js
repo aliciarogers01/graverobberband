@@ -1,4 +1,4 @@
-import { createDefaultPuckData } from "./puck-config.jsx";
+import { createDefaultPuckData, pageBackgroundCss, defaultPageBackgroundProps } from "./puck-config.jsx";
 import { renderPuckHtml, puckPageCss } from "./puck-render-html.js";
 
 const SITE_SLUG = "graverobber";
@@ -8,27 +8,24 @@ async function loadPublicPage() {
   if (!root) return;
 
 const style = document.createElement("style");
-style.textContent = `
-  html,
-  body {
-    margin: 0;
-    min-height: 100%;
-    background:
-      radial-gradient(circle at center 18%, rgba(198,40,40,.18), transparent 34%),
-      #030000;
-    color: #f5f0e6;
-  }
-
-  #editable-page-root {
-    min-height: 100vh;
-    background:
-      radial-gradient(circle at center 18%, rgba(198,40,40,.18), transparent 34%),
-      #030000;
-  }
-
-  ${puckPageCss()}
-`;
+style.textContent = puckPageCss();
 document.head.appendChild(style);
+
+function applyPageBackground(rootProps = {}) {
+  const pageSettings = { ...defaultPageBackgroundProps, ...(rootProps || {}) };
+  const background = pageBackgroundCss(pageSettings);
+
+  document.documentElement.style.background = background;
+  document.body.style.background = background;
+  document.body.style.color = pageSettings.pageTextColor || "#f5f0e6";
+
+  const root = document.getElementById("editable-page-root");
+  if (root) {
+    root.style.minHeight = "100vh";
+    root.style.background = background;
+    root.style.color = pageSettings.pageTextColor || "#f5f0e6";
+  }
+}
 
   const pageName = document.body?.dataset?.page || "home";
 
@@ -67,11 +64,12 @@ document.head.appendChild(style);
       }
     }
 
-    if (projectData?.content?.length) {
-      console.log("Rendering published project_data", projectData);
-      root.innerHTML = renderPuckHtml(projectData);
-      return;
-    }
+if (projectData?.content?.length) {
+  console.log("Rendering published project_data", projectData);
+  applyPageBackground(projectData.root?.props);
+  root.innerHTML = renderPuckHtml(projectData);
+  return;
+}
 
     if (page.html && page.html.trim()) {
       console.log("Rendering published html", page.html.slice(0, 200));
@@ -84,7 +82,9 @@ document.head.appendChild(style);
     console.warn("Published page failed to load. Rendering default page.", error);
   }
 
-  root.innerHTML = renderPuckHtml(createDefaultPuckData(pageName));
+const fallbackData = createDefaultPuckData(pageName);
+applyPageBackground(fallbackData.root?.props);
+root.innerHTML = renderPuckHtml(fallbackData);
 }
 
 loadPublicPage();
