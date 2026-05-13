@@ -84,14 +84,6 @@ function socialIcon(platform, customLabel = "") {
   return icons[normalized] || icons.custom;
 }
 
-const musicDropdownLinks = [
-  { text: "Spotify", url: "https://open.spotify.com/artist/4D34aUp0OsDs8mAEWPIP7c" },
-  { text: "Apple Music", url: "https://music.apple.com/us/artist/grave-robber/279558434" },
-  { text: "Bandcamp", url: "https://graverobberpunk.bandcamp.com/" },
-  { text: "SoundCloud", url: "https://soundcloud.com/graverobberofficial" },
-  { text: "YouTube", url: "https://www.youtube.com/@GraveRobberPunk" }
-];
-
 function buttonHtml(button = {}) {
   if (!hasText(button.text)) return "";
 
@@ -112,23 +104,40 @@ function buttonHtml(button = {}) {
     textDecoration: "none",
     display: "inline-flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    cursor: "pointer"
   });
 
-  if (String(button.text || "").toLowerCase().trim() === "music") {
-    const menuItems = musicDropdownLinks
-      .map(item => `<a href="${attr(item.url)}" target="_blank" rel="noopener noreferrer">${esc(item.text)}</a>`)
+  if (button.buttonType === "dropdown") {
+    const menuStyle = styleObj({
+      background: button.dropdownBackgroundColor || "rgba(0,0,0,.96)",
+      borderColor: button.dropdownBorderColor || "rgba(57,255,20,.55)",
+      boxShadow: button.dropdownBoxShadow || "0 0 24px rgba(57,255,20,.35)",
+      borderRadius: button.dropdownRadius || "16px",
+      padding: button.dropdownPadding || "10px",
+      minWidth: button.dropdownMinWidth || "190px"
+    });
+
+    const linksHtml = (button.dropdownLinks || [])
+      .filter(item => hasText(item.text))
+      .map(item => {
+        const linkStyle = styleObj({
+          background: item.backgroundColor || "transparent",
+          color: item.textColor || "#ffffff",
+          fontFamily: item.fontFamily || "inherit",
+          fontSize: item.fontSize || "14px",
+          borderColor: item.borderColor || "transparent",
+          boxShadow: item.boxShadow || "none",
+          textTransform: item.textTransform || "uppercase",
+          borderRadius: item.radius || "10px",
+          padding: item.padding || "10px 12px"
+        });
+
+        return `<a href="${attr(item.url || "#")}" target="_blank" rel="noopener noreferrer" style="${linkStyle}">${esc(item.text)}</a>`;
+      })
       .join("");
 
-    return `<div class="puck-dropdown"><a class="puck-btn puck-dropdown-trigger" href="${attr(button.url || "#music")}" style="${style}">${esc(button.text)}</a><div class="puck-dropdown-menu">${menuItems}</div></div>`;
-  }
-
-  if (String(button.text || "").toLowerCase().trim() === "music") {
-    const menuItems = musicDropdownLinks
-      .map(item => `<a href="${attr(item.url)}" target="_blank" rel="noopener noreferrer">${esc(item.text)}</a>`)
-      .join("");
-
-    return `<div class="puck-dropdown"><button class="puck-btn puck-dropdown-trigger" type="button" style="${style}">${esc(button.text)}</button><div class="puck-dropdown-menu">${menuItems}</div></div>`;
+    return `<div class="puck-dropdown"><button class="puck-btn puck-dropdown-trigger" type="button" style="${style}">${esc(button.text)}</button><div class="puck-dropdown-menu" style="${menuStyle}">${linksHtml}</div></div>`;
   }
 
   return `<a class="puck-btn" href="${attr(button.url || "#")}" style="${style}">${esc(button.text)}</a>`;

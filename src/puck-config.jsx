@@ -246,35 +246,105 @@ const buttonArrayField = {
   arrayFields: {
     text: { type: "text", label: "Button Text" },
     url: { type: "text", label: "Button Link" },
+
+    buttonType: {
+      type: "select",
+      label: "Button Type",
+      options: [
+        { label: "Normal Link Button", value: "link" },
+        { label: "Dropdown Button", value: "dropdown" }
+      ]
+    },
+
+    dropdownLinks: {
+      type: "array",
+      label: "Dropdown Links",
+      arrayFields: {
+        text: { type: "text", label: "Dropdown Link Text" },
+        url: { type: "text", label: "Dropdown Link URL" },
+        backgroundColor: colorField("Dropdown Link Background"),
+        textColor: colorField("Dropdown Link Text Color"),
+        fontFamily: fontField("Dropdown Link Font"),
+        fontSize: { type: "text", label: "Dropdown Link Font Size", placeholder: "14px" },
+        borderColor: colorField("Dropdown Link Border Color"),
+        boxShadow: { type: "text", label: "Dropdown Link Glow / Shadow", placeholder: "none or 0 0 14px #00ff04" },
+        textTransform: {
+          type: "select",
+          label: "Dropdown Link Text Case",
+          options: [
+            { label: "Default", value: "" },
+            { label: "Uppercase", value: "uppercase" },
+            { label: "Normal", value: "none" },
+            { label: "Lowercase", value: "lowercase" },
+            { label: "Capitalize", value: "capitalize" }
+          ]
+        },
+        radius: { type: "text", label: "Dropdown Link Rounded Corners", placeholder: "10px" },
+        padding: { type: "text", label: "Dropdown Link Padding", placeholder: "10px 12px" }
+      },
+      defaultItemProps: {
+        text: "New Dropdown Link",
+        url: "#",
+        backgroundColor: "transparent",
+        textColor: "#ffffff",
+        fontFamily: "inherit",
+        fontSize: "14px",
+        borderColor: "transparent",
+        boxShadow: "none",
+        textTransform: "uppercase",
+        radius: "10px",
+        padding: "10px 12px"
+      }
+    },
+
+    dropdownBackgroundColor: colorField("Dropdown Menu Background"),
+    dropdownBorderColor: colorField("Dropdown Menu Border Color"),
+    dropdownBoxShadow: { type: "text", label: "Dropdown Menu Glow / Shadow", placeholder: "0 0 24px rgba(57,255,20,.35)" },
+    dropdownRadius: { type: "text", label: "Dropdown Menu Rounded Corners", placeholder: "16px" },
+    dropdownPadding: { type: "text", label: "Dropdown Menu Padding", placeholder: "10px" },
+    dropdownMinWidth: { type: "text", label: "Dropdown Menu Width", placeholder: "190px" },
+
     backgroundColor: colorField("Button Background"),
     textColor: colorField("Button Text Color"),
     fontFamily: fontField("Button Font"),
     fontSize: { type: "text", label: "Button Font Size", placeholder: "16px" },
-borderWidth: {
-  type: "select",
-  label: "Border",
-  options: [
-    { label: "No Border", value: "0px" },
-    { label: "Thin Border", value: "1px" },
-    { label: "Medium Border", value: "2px" },
-    { label: "Thick Border", value: "4px" }
-  ]
-},
-borderColor: colorField("Border Color"),
+    borderWidth: {
+      type: "select",
+      label: "Border",
+      options: [
+        { label: "No Border", value: "0px" },
+        { label: "Thin Border", value: "1px" },
+        { label: "Medium Border", value: "2px" },
+        { label: "Thick Border", value: "4px" }
+      ]
+    },
+    borderColor: colorField("Border Color"),
     boxShadow: { type: "text", label: "Button Glow / Shadow", placeholder: "none or 0 0 20px #22d3ee" },
-    textTransform: { type: "select", label: "Text Case", options: [
-      { label: "Default", value: "" },
-      { label: "Uppercase", value: "uppercase" },
-      { label: "Normal", value: "none" },
-      { label: "Lowercase", value: "lowercase" },
-      { label: "Capitalize", value: "capitalize" }
-    ] },
+    textTransform: {
+      type: "select",
+      label: "Text Case",
+      options: [
+        { label: "Default", value: "" },
+        { label: "Uppercase", value: "uppercase" },
+        { label: "Normal", value: "none" },
+        { label: "Lowercase", value: "lowercase" },
+        { label: "Capitalize", value: "capitalize" }
+      ]
+    },
     radius: { type: "text", label: "Button Rounded Corners", placeholder: "999px" },
     padding: { type: "text", label: "Button Padding", placeholder: "14px 24px" }
   },
   defaultItemProps: {
     text: "New Button",
     url: "#",
+    buttonType: "link",
+    dropdownLinks: [],
+    dropdownBackgroundColor: "rgba(0,0,0,.96)",
+    dropdownBorderColor: "rgba(57,255,20,.55)",
+    dropdownBoxShadow: "0 0 24px rgba(57,255,20,.35)",
+    dropdownRadius: "16px",
+    dropdownPadding: "10px",
+    dropdownMinWidth: "190px",
     backgroundColor: "#8b3df4",
     textColor: "#ffffff",
     fontFamily: "inherit",
@@ -320,8 +390,51 @@ function ButtonPreview({ button }) {
     textDecoration: "none",
     display: "inline-flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    cursor: "pointer"
   };
+
+  if (button.buttonType === "dropdown") {
+    return (
+      <div className="puck-dropdown">
+        <button className="puck-btn puck-dropdown-trigger" type="button" style={style}>
+          {button.text}
+        </button>
+
+        <div
+          className="puck-dropdown-menu"
+          style={{
+            background: button.dropdownBackgroundColor || "rgba(0,0,0,.96)",
+            borderColor: button.dropdownBorderColor || "rgba(57,255,20,.55)",
+            boxShadow: button.dropdownBoxShadow || "0 0 24px rgba(57,255,20,.35)",
+            borderRadius: button.dropdownRadius || "16px",
+            padding: button.dropdownPadding || "10px",
+            minWidth: button.dropdownMinWidth || "190px"
+          }}
+        >
+          {(button.dropdownLinks || []).map((item, index) => (
+            <a
+              key={index}
+              href={item.url || "#"}
+              style={{
+                background: item.backgroundColor || "transparent",
+                color: item.textColor || "#ffffff",
+                fontFamily: item.fontFamily || "inherit",
+                fontSize: item.fontSize || "14px",
+                borderColor: item.borderColor || "transparent",
+                boxShadow: item.boxShadow || "none",
+                textTransform: item.textTransform || "uppercase",
+                borderRadius: item.radius || "10px",
+                padding: item.padding || "10px 12px"
+              }}
+            >
+              {item.text || "Dropdown Link"}
+            </a>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <a className="puck-btn" href={button.url || "#"} style={style}>
