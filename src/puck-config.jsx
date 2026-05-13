@@ -1567,6 +1567,63 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
       defaultProps: { columns: 2, gap: 24, imageRadius: "8px", backgroundColor: "transparent", textColor: "#ffffff", paddingY: 50, paddingX: 24, customFontUrl: "", items: [{ title: "First Card", body: "Edit this card.", imageUrl: "", buttonText: "", buttonUrl: "#", buttonBorderWidth: "0px", buttonBorderColor: "transparent" }, { title: "Second Card", body: "Edit this card.", imageUrl: "", buttonText: "", buttonUrl: "#" }] },
       render: props => <SectionShell {...props}>{applyFontImport(props.customFontUrl)}<div className="puck-inner"><div className="puck-columns" style={{ "--cols": props.columns || 2, "--gap": `${props.gap || 24}px` }}>{(props.items || []).map((item, index) => <div className="puck-card" key={index}>{item.imageUrl && <img className="puck-image" src={item.imageUrl} alt={item.title || "Column image"} style={{ width: "100%", borderRadius: props.imageRadius || "8px", marginBottom: 16 }} />}{item.title && <h3 style={{ color: item.titleColor || "inherit", fontFamily: item.titleFont || "inherit", fontSize: item.titleSize || "inherit" }}>{item.title}</h3>}{item.body && <p style={{ color: item.bodyColor || "inherit", fontFamily: item.bodyFont || "inherit", fontSize: item.bodySize || "inherit" }}>{item.body}</p>}{item.buttonText && <ButtonPreview button={{ text: item.buttonText, url: item.buttonUrl, backgroundColor: item.buttonBackgroundColor, textColor: item.buttonTextColor, fontFamily: item.buttonFont, fontSize: item.buttonFontSize, borderWidth: item.buttonBorderWidth, borderColor: item.buttonBorderColor, radius: item.buttonRadius, boxShadow: item.buttonBoxShadow, textTransform: item.buttonTextTransform }} />}</div>)}</div></div></SectionShell>
     },
+    GalleryGrid: {
+      label: "02 Add Block: Gallery Grid",
+      fields: {
+        title: { type: "text", label: "Title" },
+        titleColor: colorField("Title Color"),
+        titleFont: fontField("Title Font"),
+        titleSize: { type: "text", label: "Title Size" },
+        backgroundColor: colorField("Section Background"),
+        textColor: colorField("Default Text Color"),
+        paddingY: { type: "number", label: "Top/Bottom Padding" },
+        paddingX: { type: "number", label: "Left/Right Padding" },
+        columns: { type: "number", label: "Columns" },
+        gap: { type: "number", label: "Gap" },
+        images: {
+          type: "array",
+          label: "Gallery Images",
+          arrayFields: {
+            imageUrl: imageUploadField("Image"),
+            imageAlt: { type: "text", label: "Alt Text" },
+            caption: { type: "text", label: "Caption" }
+          },
+          defaultItemProps: {
+            imageUrl: "",
+            imageAlt: "Gallery image",
+            caption: ""
+          }
+        }
+      },
+      defaultProps: {
+        title: "Gallery",
+        titleColor: "#ffffff",
+        titleFont: "Oswald, sans-serif",
+        titleSize: "2.5rem",
+        backgroundColor: "transparent",
+        textColor: "#ffffff",
+        paddingY: 40,
+        paddingX: 24,
+        columns: 3,
+        gap: 18,
+        images: []
+      },
+      render: props => (
+        <SectionShell {...props}>
+          <div className="puck-inner">
+            {props.title && <h2 className="puck-title" style={{ textAlign: "center", color: props.titleColor || "inherit", fontFamily: props.titleFont || "inherit", fontSize: props.titleSize || "2.5rem" }}>{props.title}</h2>}
+            <div className="puck-gallery-grid" style={{ "--cols": props.columns || 3, "--gap": `${props.gap || 18}px` }}>
+              {(props.images || []).filter(image => image.imageUrl).map((image, index) => (
+                <figure className="puck-gallery-item" key={index}>
+                  <img src={image.imageUrl} alt={image.imageAlt || "Gallery image"} />
+                  {image.caption && <figcaption>{image.caption}</figcaption>}
+                </figure>
+              ))}
+            </div>
+          </div>
+        </SectionShell>
+      )
+    },
     Spacer: {
       label: "02 Add Block: Spacer",
       fields: { height: { type: "number", label: "Height" }, backgroundColor: colorField("Background Color") },

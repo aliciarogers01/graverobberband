@@ -123,6 +123,14 @@ function buttonHtml(button = {}) {
     return `<div class="puck-dropdown"><a class="puck-btn puck-dropdown-trigger" href="${attr(button.url || "#music")}" style="${style}">${esc(button.text)}</a><div class="puck-dropdown-menu">${menuItems}</div></div>`;
   }
 
+  if (String(button.text || "").toLowerCase().trim() === "music") {
+    const menuItems = musicDropdownLinks
+      .map(item => `<a href="${attr(item.url)}" target="_blank" rel="noopener noreferrer">${esc(item.text)}</a>`)
+      .join("");
+
+    return `<div class="puck-dropdown"><button class="puck-btn puck-dropdown-trigger" type="button" style="${style}">${esc(button.text)}</button><div class="puck-dropdown-menu">${menuItems}</div></div>`;
+  }
+
   return `<a class="puck-btn" href="${attr(button.url || "#")}" style="${style}">${esc(button.text)}</a>`;
 }
 
@@ -146,6 +154,46 @@ export function puckPageCss() {
 #editable-page-root .puck-body{line-height:1.65;margin:0 0 20px;}
 #editable-page-root .puck-image{display:block;max-width:100%;height:auto;object-fit:cover;}
 #editable-page-root .puck-buttons{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px;justify-content:center;}
+#editable-page-root .puck-dropdown{
+  position:relative;
+  display:inline-flex;
+}
+
+#editable-page-root .puck-dropdown-menu{
+  display:none;
+  position:absolute;
+  top:calc(100% + 10px);
+  left:50%;
+  transform:translateX(-50%);
+  min-width:190px;
+  padding:10px;
+  background:rgba(0,0,0,.96);
+  border:1px solid rgba(57,255,20,.55);
+  border-radius:16px;
+  box-shadow:0 0 24px rgba(57,255,20,.35);
+  z-index:9999;
+}
+
+#editable-page-root .puck-dropdown:hover .puck-dropdown-menu,
+#editable-page-root .puck-dropdown:focus-within .puck-dropdown-menu{
+  display:grid;
+  gap:6px;
+}
+
+#editable-page-root .puck-dropdown-menu a{
+  color:#ffffff;
+  text-decoration:none;
+  font-weight:700;
+  font-size:14px;
+  padding:10px 12px;
+  border-radius:10px;
+  text-transform:uppercase;
+}
+
+#editable-page-root .puck-dropdown-menu a:hover{
+  background:rgba(57,255,20,.16);
+}
+
 #editable-page-root .puck-dropdown{
   position:relative;
   display:inline-flex;
@@ -323,6 +371,33 @@ export function puckPageCss() {
   overflow:hidden;
   box-sizing:border-box;
   padding:14px 0;
+}
+
+#editable-page-root .puck-gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(var(--cols,3),1fr);
+  gap:var(--gap,18px);
+}
+
+#editable-page-root .puck-gallery-item{
+  margin:0;
+  border-radius:16px;
+  overflow:hidden;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.12);
+}
+
+#editable-page-root .puck-gallery-item img{
+  display:block;
+  width:100%;
+  height:260px;
+  object-fit:cover;
+}
+
+#editable-page-root .puck-gallery-item figcaption{
+  padding:10px 12px;
+  font-size:14px;
+  color:inherit;
 }
 
 #editable-page-root .songs-scroll-container{
@@ -664,6 +739,30 @@ function renderSocial(props) {
   return `<footer class="puck-section social-section is-full-width" style="${sectionStyle}"><div class="puck-inner">${titleHtml}${linkHtml ? `<nav class="puck-social-links social-links">${linkHtml}</nav>` : ""}</div></footer>`;
 }
 
+function renderGalleryGrid(props) {
+  const sectionStyle = styleObj({
+    background: props.backgroundColor || "transparent",
+    color: props.textColor || "inherit",
+    padding: `${props.paddingY || 40}px ${props.paddingX || 24}px`,
+    textAlign: "center"
+  });
+
+  const titleHtml = hasText(props.title)
+    ? `<h2 class="puck-title" style="${styleObj({
+        color: props.titleColor || "inherit",
+        fontFamily: props.titleFont || "inherit",
+        fontSize: props.titleSize || "2.5rem"
+      })}">${esc(props.title)}</h2>`
+    : "";
+
+  const imagesHtml = (props.images || [])
+    .filter(image => hasText(image.imageUrl))
+    .map(image => `<figure class="puck-gallery-item"><img src="${attr(image.imageUrl)}" alt="${attr(image.imageAlt || "Gallery image")}">${hasText(image.caption) ? `<figcaption>${esc(image.caption)}</figcaption>` : ""}</figure>`)
+    .join("");
+
+  return `<section class="puck-section" style="${sectionStyle}"><div class="puck-inner">${titleHtml}<div class="puck-gallery-grid" style="--cols:${Number(props.columns || 3)};--gap:${Number(props.gap || 18)}px">${imagesHtml}</div></div></section>`;
+}
+
 function renderSpacer(props) {
   return `<div class="puck-spacer" style="height:${Number(props.height || 40)}px;background:${attr(props.backgroundColor || "transparent")}"></div>`;
 }
@@ -688,6 +787,7 @@ function renderEmbed(props) {
 }
 
 const renderers = {
+     GalleryGrid: renderGalleryGrid,
   GraveRobberHero: renderHero,
   GraveRobberLogo: renderImage,
   GraveRobberSocial: renderSocial,

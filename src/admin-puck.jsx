@@ -155,6 +155,8 @@ function AdminApp() {
   const [messageStatus, setMessageStatus] = useState("");
   const [replyDrafts, setReplyDrafts] = useState({});
   const [replyImages, setReplyImages] = useState({});
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [galleryStatus, setGalleryStatus] = useState("");
 
   async function login(event) {
     event.preventDefault();
@@ -287,6 +289,128 @@ if (saved?.content?.length) {
 
     onUploaded(data.url);
     setStatus("Image uploaded. Save to keep it.");
+  }
+
+  function galleryBlock(images) {
+    return {
+      type: "GalleryGrid",
+      props: {
+        id: "graverobber-gallery-grid-1",
+        title: "Gallery",
+        titleColor: "#ffffff",
+        titleFont: "Oswald, sans-serif",
+        titleSize: "2.5rem",
+        backgroundColor: "transparent",
+        textColor: "#ffffff",
+        paddingY: 40,
+        paddingX: 24,
+        columns: 3,
+        gap: 18,
+        images
+      }
+    };
+  }
+
+  function dataWithGalleryImages(data, images) {
+    const base = normalizePageData(data || freshDefaultData("gallery"), "gallery");
+    const contentWithoutOldGallery = (base.content || []).filter(block => block.type !== "GalleryGrid");
+
+    return normalizePageData({
+      ...base,
+      content: [
+        ...contentWithoutOldGallery,
+        galleryBlock(images)
+      ]
+    }, "gallery");
+  }
+
+  function extractGalleryImages(data) {
+    const block = (data?.content || []).find(item => item.type === "GalleryGrid");
+    return Array.isArray(block?.props?.images) ? block.props.images : [];
+  }
+
+  async function loadGalleryImages() {
+    setGalleryStatus("Loading gallery images...");
+
+    try {
+      const response = await fetch(`${API_BASE}/visual-pages/${SITE_SLUG}/gallery?_=${Date.now()}`);
+      const data = await response.json();
+      const page = data?.page || data || {};
+      let saved = page.project_data;
+
+      if (typeof saved === "string") {
+        saved = JSON.parse(saved);
+      }
+
+      const clean = cleanSavedData(saved, "gallery");
+      setGalleryImages(extractGalleryImages(clean));
+      setGalleryStatus("");
+    } catch (error) {
+      const fallback = freshDefaultData("gallery");
+      setGalleryImages(extractGalleryImages(fallback));
+      setGalleryStatus("");
+    }
+  }
+
+  async function saveGalleryImages(nextImages) {
+    const galleryData = dataWithGalleryImages(freshDefaultData("gallery"), nextImages);
+
+    const response = await fetch(`${API_BASE}/visual-pages/${SITE_SLUG}/gallery`, {
+      method: "PUT",
+      headers: authHeaders(token),
+      body: JSON.stringify({
+        project_data: galleryData,
+        html: renderPuckHtml(galleryData),
+        css: puckPageCss()
+      })
+    });
+
+    if (!response.ok) {
+      setGalleryStatus("Gallery save failed.");
+      return;
+    }
+
+    setGalleryImages(nextImages);
+    setGalleryStatus("Gallery saved.");
+  }
+
+  async function uploadGalleryImages(files) {
+    const imageFiles = Array.from(files || []).filter(file => file.type.startsWith("image/"));
+
+    if (!imageFiles.length) {
+      setGalleryStatus("Choose one or more image files.");
+      return;
+    }
+
+    setGalleryStatus(`Uploading ${imageFiles.length} image(s)...`);
+
+    const uploaded = [];
+
+    for (const file of imageFiles) {
+      await uploadAdminImage(file, url => {
+        uploaded.push({
+          imageUrl: url,
+          imageAlt: file.name,
+          caption: ""
+        });
+      });
+    }
+
+    const nextImages = [...galleryImages, ...uploaded];
+    await saveGalleryImages(nextImages);
+  }
+
+  function updateGalleryImage(index, field, value) {
+    const nextImages = galleryImages.map((image, imageIndex) => (
+      imageIndex === index ? { ...image, [field]: value } : image
+    ));
+
+    saveGalleryImages(nextImages);
+  }
+
+  function removeGalleryImage(index) {
+    const nextImages = galleryImages.filter((_, imageIndex) => imageIndex !== index);
+    saveGalleryImages(nextImages);
   }
 
   async function loadShows() {
@@ -433,6 +557,7 @@ if (saved?.content?.length) {
       loadPage(currentPage);
       loadShows();
       loadMessages();
+      loadGalleryImages();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
@@ -614,6 +739,51 @@ if (saved?.content?.length) {
                 <button type="button" onClick={() => sendReply(message.id)}>Save Reply</button>
               </article>
             )) : <p>No fan messages yet.</p>}
+          </div>
+        </div>
+
+        <div className="admin-panel">
+          <div className="admin-panel-header">
+            <h2>Gallery Uploads</h2>
+            <button type="button" onClick={loadGalleryImages}>Reload Gallery</button>
+          </div>
+
+          <div className="admin-upload-row">
+            <label>Upload Gallery Images</label>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={event => uploadGalleryImages(event.target.files)}
+            />
+          </div>
+
+          {galleryStatus && <p className="admin-inline-status">{galleryStatus}</p>}
+
+          <div className="admin-list">
+            {galleryImages.length ? galleryImages.map((image, index) => (
+              <article className="admin-list-item" key={`${image.imageUrl}-${index}`}>
+                {image.imageUrl && <img src={image.imageUrl} alt={image.imageAlt || "Gallery"} className="admin-list-image" />}
+
+                <input
+                  type="text"
+                  placeholder="Alt text"
+                  value={image.imageAlt || ""}
+                  onChange={event => updateGalleryImage(index, "imageAlt", event.target.value)}
+                />
+
+                <input
+                  type="text"
+                  placeholder="Caption"
+                  value={image.caption || ""}
+                  onChange={event => updateGalleryImage(index, "caption", event.target.value)}
+                />
+
+                <div className="admin-item-actions">
+                  <button type="button" className="danger" onClick={() => removeGalleryImage(index)}>Remove Image</button>
+                </div>
+              </article>
+            )) : <p>No gallery images yet.</p>}
           </div>
         </div>
       </section>
