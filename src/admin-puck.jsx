@@ -186,14 +186,24 @@ function AdminApp() {
     try {
       const response = await fetch(`${API_BASE}/visual-pages/${SITE_SLUG}/${pageName}?_=${Date.now()}`);
       if (response.ok) {
-        const data = await response.json();
-        const saved = data.page?.project_data;
-        if (saved?.content) {
-          setPageData(cleanSavedData(saved, pageName));
-          setEditorKey(key => key + 1);
-          setStatus(`Loaded saved ${pageName} page. Edit blocks, then click Publish.`);
-          return;
-        }
+const data = await response.json();
+const page = data?.page || data || {};
+let saved = page.project_data;
+
+if (typeof saved === "string") {
+  try {
+    saved = JSON.parse(saved);
+  } catch (error) {
+    console.warn("Saved project_data was a string but could not be parsed:", error, saved);
+  }
+}
+
+if (saved?.content?.length) {
+  setPageData(cleanSavedData(saved, pageName));
+  setEditorKey(key => key + 1);
+  setStatus(`Loaded saved ${pageName} page. Edit blocks, then click Publish.`);
+  return;
+}
       }
     } catch (error) {
       console.warn("Saved page failed to load, using defaults:", error);
