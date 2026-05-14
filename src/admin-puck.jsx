@@ -56,6 +56,10 @@ class AdminEditorErrorBoundary extends React.Component {
   }
 }
 
+function clone(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
 function freshDefaultData(pageName) {
   return createDefaultPuckData(pageName);
 }
@@ -157,6 +161,16 @@ function AdminApp() {
   const [replyImages, setReplyImages] = useState({});
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryStatus, setGalleryStatus] = useState("");
+
+  const [savedBlocks, setSavedBlocks] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem(`${SITE_SLUG}-saved-blocks`) || "[]");
+    } catch {
+      return [];
+    }
+  });
+  const [selectedBlockId, setSelectedBlockId] = useState("");
+  const [savedBlockName, setSavedBlockName] = useState("");
 
   async function login(event) {
     event.preventDefault();
@@ -413,6 +427,62 @@ if (saved?.content?.length) {
     saveGalleryImages(nextImages);
   }
 
+  function saveSavedBlocks(nextBlocks) {
+    setSavedBlocks(nextBlocks);
+    localStorage.setItem(`${SITE_SLUG}-saved-blocks`, JSON.stringify(nextBlocks));
+  }
+
+function currentPageBlocks() {
+  return Array.isArray(pageData?.content) ? pageData.content : [];
+}
+
+  function saveSelectedBlockTemplate() {
+    const block = currentPageBlocks().find(item => item.props?.id === selectedBlockId);
+
+    if (!block) {
+      alert("Choose a block to save first.");
+      return;
+    }
+
+    const templateName = savedBlockName.trim() || `${block.type} Template`;
+
+    const nextTemplate = {
+      id: `template-${Date.now()}`,
+      name: templateName,
+      block: {
+        type: block.type,
+props: {
+  ...clone(block.props || {}),
+  id: makeSafeBlockId(block.type, currentPage, Date.now())
+}
+      }
+    };
+
+    saveSavedBlocks([...savedBlocks, nextTemplate]);
+    setSavedBlockName("");
+  }
+
+function insertSavedBlockTemplate(template) {
+  const newBlock = {
+    type: template.block.type,
+props: {
+  ...clone(template.block.props || {}),
+  id: makeSafeBlockId(template.block.type, currentPage, Date.now())
+}
+  };
+
+  setPageData(normalizePageData({
+    ...pageData,
+    content: [...currentPageBlocks(), newBlock]
+  }, currentPage));
+
+  setEditorKey(key => key + 1);
+}
+
+  function deleteSavedBlockTemplate(templateId) {
+    saveSavedBlocks(savedBlocks.filter(template => template.id !== templateId));
+  }
+
   async function loadShows() {
     try {
       const response = await fetch(`${API_BASE}/shows/${SITE_SLUG}?_=${Date.now()}`);
@@ -601,14 +671,64 @@ if (saved?.content?.length) {
 
       <div className="puck-wrapper">
         <AdminEditorErrorBoundary key={`boundary-${currentPage}-${editorKey}`}>
-          <Puck
-            key={`${currentPage}-${editorKey}`}
-            config={puckConfig}
-            data={pageData}
-            onPublish={savePage}
-          />
+<Puck
+  key={`${currentPage}-${editorKey}-${pageData?.content?.length || 0}`}
+  config={puckConfig}
+  data={pageData}
+  onPublish={savePage}
+/>
         </AdminEditorErrorBoundary>
       </div>
+
+      <section className="admin-panel saved-blocks-panel">
+        <div className="admin-panel-header">
+          <h2>Saved Blocks / Templates</h2>
+        </div>
+
+        <div className="admin-form-row">
+          <label>Template Name</label>
+          <input
+            type="text"
+            value={savedBlockName}
+            placeholder="Example: Green Glow Music Button Row"
+            onChange={event => setSavedBlockName(event.target.value)}
+          />
+        </div>
+
+        <div className="admin-form-row">
+          <label>Choose Block From This Page</label>
+          <select value={selectedBlockId} onChange={event => setSelectedBlockId(event.target.value)}>
+            <option value="">Choose a block...</option>
+            {currentPageBlocks().map((block, index) => (
+              <option key={block.props?.id || index} value={block.props?.id || ""}>
+                {index + 1}. {block.type} {block.props?.title ? `- ${block.props.title}` : ""}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button type="button" onClick={saveSelectedBlockTemplate}>
+          Save Selected Block
+        </button>
+
+        <div className="admin-list saved-template-list">
+          {savedBlocks.length ? savedBlocks.map(template => (
+            <article className="admin-list-item saved-template-item" key={template.id}>
+              <strong>{template.name}</strong>
+              <small>{template.block?.type}</small>
+
+              <div className="admin-item-actions">
+                <button type="button" onClick={() => insertSavedBlockTemplate(template)}>
+                  Insert
+                </button>
+                <button type="button" className="danger" onClick={() => deleteSavedBlockTemplate(template.id)}>
+                  Delete
+                </button>
+              </div>
+            </article>
+          )) : <p>No saved blocks yet.</p>}
+        </div>
+      </section>
 
       <section className="admin-management-grid">
         <div className="admin-panel">

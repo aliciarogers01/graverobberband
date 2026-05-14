@@ -451,6 +451,34 @@ body {
   box-shadow: 0 12px 30px rgba(0,0,0,.28);
 }
 
+.saved-blocks-panel {
+  margin: 24px;
+}
+
+.saved-template-list {
+  margin-top: 18px;
+}
+
+.saved-template-item {
+  display: grid;
+  gap: 8px;
+}
+
+.saved-template-item small {
+  opacity: .7;
+}
+
+.admin-form-row {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.admin-form-row input,
+.admin-form-row select {
+  width: 100%;
+}
+
 @media(max-width: 900px) {
   .admin-management-grid {
     grid-template-columns: 1fr;
