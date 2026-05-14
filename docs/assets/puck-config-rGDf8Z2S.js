@@ -464,6 +464,65 @@ function he(e,t){for(var r=0;r<t.length;r++){const l=t[r];if(typeof l!="string"&
   justify-self:end!important;
 }
 
+#editable-page-root #upcoming-shows,
+#editable-page-root #past-shows {
+  display: grid;
+  gap: 18px;
+  width: 100%;
+  max-width: 900px;
+  margin: 24px auto;
+}
+
+#editable-page-root .show-card {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 18px;
+  align-items: center;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(0,0,0,.32);
+  border: 1px solid rgba(0,255,4,.32);
+  box-shadow: 0 0 22px rgba(0,255,4,.14);
+}
+
+#editable-page-root .show-card-image {
+  width: 180px !important;
+  height: 180px !important;
+  max-width: 180px !important;
+  max-height: 180px !important;
+  object-fit: contain !important;
+  border-radius: 14px;
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(255,255,255,.16);
+}
+
+#editable-page-root .show-card-content {
+  text-align: left;
+}
+
+#editable-page-root .show-card-content h3 {
+  margin: 6px 0;
+}
+
+#editable-page-root .show-date {
+  color: #00ff04;
+}
+
+@media(max-width: 700px) {
+  #editable-page-root .show-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  #editable-page-root .show-card-image {
+    margin: 0 auto;
+  }
+
+  #editable-page-root .show-card-content {
+    text-align: center;
+  }
+}
+
 @media(max-width:800px){
   html,
   body{
