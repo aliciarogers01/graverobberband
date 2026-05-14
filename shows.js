@@ -41,10 +41,9 @@ async function renderShows() {
   const pastSection = document.querySelector(".past-shows-section");
 
   if (!upcomingRoot) return;
-
   if (showsAlreadyRendered) return;
-  showsAlreadyRendered = true;
 
+  showsAlreadyRendered = true;
   upcomingRoot.innerHTML = "<p>Loading shows...</p>";
 
   try {

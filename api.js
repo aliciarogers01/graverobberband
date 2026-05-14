@@ -1,7 +1,7 @@
 const API_BASE = window.BAND_API_BASE;
 
 function getShows() {
-  return fetch(`${API_BASE}/shows/graverobberpunk`).then(res => res.json());
+  return fetch(`${API_BASE}/shows/graverobber`).then(res => res.json());
 }
 
 function submitSignup(data) {
