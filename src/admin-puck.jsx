@@ -493,10 +493,11 @@ props: {
     }
   }
 
-  async function saveShow(event) {
-    event.preventDefault();
-    setShowStatus("Saving show...");
+async function saveShow(event) {
+  event.preventDefault();
+  setShowStatus("Saving show...");
 
+  try {
     const url = editingShowId
       ? `${API_BASE}/shows/${SITE_SLUG}/${editingShowId}`
       : `${API_BASE}/shows/${SITE_SLUG}`;
@@ -507,8 +508,10 @@ props: {
       body: JSON.stringify(showForm)
     });
 
+    const data = await response.json().catch(() => ({}));
+
     if (!response.ok) {
-      setShowStatus("Show save failed.");
+      setShowStatus(data.error || "Show save failed. Check backend/login.");
       return;
     }
 
@@ -523,8 +526,13 @@ props: {
       image_url: "",
       notes: ""
     });
-    loadShows();
+
+    await loadShows();
+  } catch (error) {
+    console.error("Show save failed:", error);
+    setShowStatus("Show save failed. Check API_BASE, backend, or network.");
   }
+}
 
   function editShow(show) {
     setEditingShowId(show.id);
