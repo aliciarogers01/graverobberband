@@ -8,7 +8,7 @@ import { puckConfig, createDefaultPuckData, defaultPuckData, puckEditorCss } fro
 import { renderPuckHtml, puckPageCss } from "./puck-render-html.js";
 
 const API_BASE = window.BAND_API_BASE;
-const SITE_SLUG = "graverobberband";
+const SITE_SLUG = "graverobber";
 
 const PAGE_OPTIONS = [
   { value: "home", label: "Home Page" },
