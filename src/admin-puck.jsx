@@ -145,15 +145,20 @@ function AdminApp() {
   const [shows, setShows] = useState([]);
   const [showStatus, setShowStatus] = useState("");
   const [editingShowId, setEditingShowId] = useState("");
-  const [showForm, setShowForm] = useState({
-    show_date: "",
-    venue: "",
-    city: "",
-    state: "",
-    ticket_url: "",
-    image_url: "",
-    notes: ""
-  });
+const emptyShowForm = {
+  show_date: "",
+  end_date: "",
+  start_time: "",
+  end_time: "",
+  venue: "",
+  city: "",
+  state: "",
+  social_urls: [],
+  image_url: "",
+  notes: ""
+};
+
+const [showForm, setShowForm] = useState(emptyShowForm);
 
   const [messages, setMessages] = useState([]);
   const [messageStatus, setMessageStatus] = useState("");
@@ -274,6 +279,32 @@ if (saved?.content?.length) {
   function updateShowForm(field, value) {
     setShowForm(form => ({ ...form, [field]: value }));
   }
+
+function addShowSocialUrl() {
+  setShowForm(form => ({
+    ...form,
+    social_urls: [
+      ...(form.social_urls || []),
+      { label: "Link", url: "" }
+    ]
+  }));
+}
+
+function updateShowSocialUrl(index, field, value) {
+  setShowForm(form => ({
+    ...form,
+    social_urls: (form.social_urls || []).map((item, itemIndex) => (
+      itemIndex === index ? { ...item, [field]: value } : item
+    ))
+  }));
+}
+
+function removeShowSocialUrl(index) {
+  setShowForm(form => ({
+    ...form,
+    social_urls: (form.social_urls || []).filter((_, itemIndex) => itemIndex !== index)
+  }));
+}
 
   async function uploadAdminImage(file, onUploaded) {
     if (!file) return;
@@ -517,15 +548,7 @@ async function saveShow(event) {
 
     setShowStatus("Show saved.");
     setEditingShowId("");
-    setShowForm({
-      show_date: "",
-      venue: "",
-      city: "",
-      state: "",
-      ticket_url: "",
-      image_url: "",
-      notes: ""
-    });
+setShowForm(emptyShowForm);
 
     await loadShows();
   } catch (error) {
@@ -534,30 +557,26 @@ async function saveShow(event) {
   }
 }
 
-  function editShow(show) {
-    setEditingShowId(show.id);
-    setShowForm({
-      show_date: String(show.show_date || "").slice(0, 10),
-      venue: show.venue || "",
-      city: show.city || "",
-      state: show.state || "",
-      ticket_url: show.ticket_url || "",
-      image_url: show.image_url || "",
-      notes: show.notes || ""
-    });
-  }
+function editShow(show) {
+  setEditingShowId(show.id);
+
+  setShowForm({
+    show_date: String(show.show_date || "").slice(0, 10),
+    end_date: String(show.end_date || "").slice(0, 10),
+    start_time: show.start_time || "",
+    end_time: show.end_time || "",
+    venue: show.venue || "",
+    city: show.city || "",
+    state: show.state || "",
+    social_urls: Array.isArray(show.social_urls) ? show.social_urls : [],
+    image_url: show.image_url || "",
+    notes: show.notes || ""
+  });
+}
 
   function cancelShowEdit() {
     setEditingShowId("");
-    setShowForm({
-      show_date: "",
-      venue: "",
-      city: "",
-      state: "",
-      ticket_url: "",
-      image_url: "",
-      notes: ""
-    });
+setShowForm(emptyShowForm);
   }
 
   async function deleteShow(showId) {
@@ -771,12 +790,57 @@ async function saveShow(event) {
               value={showForm.state}
               onChange={event => updateShowForm("state", event.target.value)}
             />
-            <input
-              type="url"
-              placeholder="Ticket URL"
-              value={showForm.ticket_url}
-              onChange={event => updateShowForm("ticket_url", event.target.value)}
-            />
+<input
+  type="date"
+  value={showForm.end_date}
+  onChange={event => updateShowForm("end_date", event.target.value)}
+/>
+
+<input
+  type="time"
+  value={showForm.start_time}
+  onChange={event => updateShowForm("start_time", event.target.value)}
+/>
+
+<input
+  type="time"
+  value={showForm.end_time}
+  onChange={event => updateShowForm("end_time", event.target.value)}
+/>
+
+<div className="admin-upload-row">
+  <label>Show Social Links</label>
+
+  {(showForm.social_urls || []).map((item, index) => (
+    <div className="admin-social-url-row" key={index}>
+      <input
+        type="text"
+        placeholder="Label"
+        value={item.label || ""}
+        onChange={event => updateShowSocialUrl(index, "label", event.target.value)}
+      />
+
+      <input
+        type="url"
+        placeholder="URL"
+        value={item.url || ""}
+        onChange={event => updateShowSocialUrl(index, "url", event.target.value)}
+      />
+
+      <button
+        type="button"
+        className="danger"
+        onClick={() => removeShowSocialUrl(index)}
+      >
+        Remove Link
+      </button>
+    </div>
+  ))}
+
+  <button type="button" onClick={addShowSocialUrl}>
+    Add Social Link
+  </button>
+</div>
             <div className="admin-upload-row">
               <label>Show Photo</label>
               {showForm.image_url && <img src={showForm.image_url} alt="Show" className="admin-upload-preview" />}
