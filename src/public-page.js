@@ -68,12 +68,20 @@ if (projectData?.content?.length) {
   console.log("Rendering published project_data", projectData);
   applyPageBackground(projectData.root?.props);
   root.innerHTML = renderPuckHtml(projectData);
+
+  window.dispatchEvent(new CustomEvent("visualPageRendered", {
+    detail: { pageName }
+  }));
+
   return;
 }
 
     if (page.html && page.html.trim()) {
       console.log("Rendering published html", page.html.slice(0, 200));
       root.innerHTML = page.html;
+window.dispatchEvent(new CustomEvent("visualPageRendered", {
+  detail: { pageName }
+}));
       return;
     }
 
@@ -85,6 +93,10 @@ if (projectData?.content?.length) {
 const fallbackData = createDefaultPuckData(pageName);
 applyPageBackground(fallbackData.root?.props);
 root.innerHTML = renderPuckHtml(fallbackData);
+
+window.dispatchEvent(new CustomEvent("visualPageRendered", {
+  detail: { pageName }
+}));
 }
 
 loadPublicPage();
