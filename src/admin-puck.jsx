@@ -530,7 +530,7 @@ async function saveShow(event) {
     await loadShows();
   } catch (error) {
     console.error("Show save failed:", error);
-    setShowStatus("Show save failed. Check API_BASE, backend, or network.");
+    setShowStatus(`Show save failed. API_BASE: ${API_BASE}, SITE_SLUG: ${SITE_SLUG}`);
   }
 }
 
