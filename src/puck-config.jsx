@@ -1088,14 +1088,14 @@ function createPageContent(pageName = "home") {
         ]
       }
     },
-    {
-      type: "Spacer",
-      props: {
-        id: "graverobber-home-divider-space-1",
-        height: 1,
-        backgroundColor: "rgba(255,255,255,.16)"
-      }
-    },
+{
+  type: "Spacer",
+  props: {
+    id: "graverobber-home-divider-space-1",
+    height: 40,
+    backgroundColor: "transparent"
+  }
+},
     {
       type: "GraveRobberSocial",
       props: {

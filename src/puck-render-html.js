@@ -312,6 +312,20 @@ export function puckPageCss() {
   display:none!important;
 }
 
+#editable-page-root .puck-section,
+#editable-page-root .puck-spacer,
+#editable-page-root .puck-flex,
+#editable-page-root .puck-inner,
+#editable-page-root .puck-text,
+#editable-page-root .puck-title,
+#editable-page-root .band-name,
+#editable-page-root .tagline,
+#editable-page-root .description{
+  border:0!important;
+  outline:0!important;
+  text-decoration:none!important;
+}
+
 #editable-page-root .puck-site-header{
   display:grid;
   grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
