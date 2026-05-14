@@ -158,7 +158,13 @@ export function puckPageCss() {
 #editable-page-root .layout-text-right{flex-direction:row-reverse;text-align:left;}
 #editable-page-root .layout-image-top{flex-direction:column-reverse;text-align:center;}
 #editable-page-root .puck-text{max-width:700px;}
-#editable-page-root .puck-title{font-family:'Playfair Display',serif;margin:0 0 14px;line-height:1.05;}
+#editable-page-root .puck-title{
+  font-family:'Playfair Display',serif;
+  margin:0 0 14px;
+  line-height:1.05;
+  text-decoration:none;
+  border:0;
+}
 #editable-page-root .puck-subtitle{margin:0 0 14px;color:var(--amber);font-style:italic;}
 #editable-page-root .puck-body{line-height:1.65;margin:0 0 20px;}
 #editable-page-root .puck-image{display:block;max-width:100%;height:auto;object-fit:cover;}
