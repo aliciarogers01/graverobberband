@@ -403,6 +403,81 @@ export function puckPageCss() {
   object-fit:cover;
 }
 
+#editable-page-root .puck-gallery-open{
+  display:block;
+  cursor:zoom-in;
+}
+
+#editable-page-root .puck-gallery-item{
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+
+#editable-page-root .puck-gallery-item:hover{
+  transform:scale(1.04);
+  box-shadow:0 0 34px rgba(57,255,20,.35);
+}
+
+#editable-page-root .puck-gallery-modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:999999;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+#editable-page-root .puck-gallery-modal:target{
+  display:flex;
+}
+
+#editable-page-root .puck-gallery-modal-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.88);
+}
+
+#editable-page-root .puck-gallery-modal-content{
+  position:relative;
+  z-index:1;
+  max-width:min(1100px, 94vw);
+  max-height:92vh;
+  text-align:center;
+}
+
+#editable-page-root .puck-gallery-modal-content img{
+  display:block;
+  max-width:100%;
+  max-height:82vh;
+  object-fit:contain;
+  border-radius:16px;
+  box-shadow:0 0 50px rgba(57,255,20,.28);
+}
+
+#editable-page-root .puck-gallery-close{
+  position:absolute;
+  top:-18px;
+  right:-18px;
+  width:42px;
+  height:42px;
+  border-radius:999px;
+  background:#000;
+  color:#fff;
+  border:1px solid rgba(57,255,20,.65);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  font-size:30px;
+  line-height:1;
+  box-shadow:0 0 22px rgba(57,255,20,.35);
+}
+
+#editable-page-root .puck-gallery-modal-content p{
+  color:#fff;
+  margin:12px 0 0;
+}
+
 #editable-page-root .puck-gallery-item figcaption{
   padding:10px 12px;
   font-size:14px;
@@ -766,7 +841,26 @@ function renderGalleryGrid(props) {
 
   const imagesHtml = (props.images || [])
     .filter(image => hasText(image.imageUrl))
-    .map(image => `<figure class="puck-gallery-item"><img src="${attr(image.imageUrl)}" alt="${attr(image.imageAlt || "Gallery image")}">${hasText(image.caption) ? `<figcaption>${esc(image.caption)}</figcaption>` : ""}</figure>`)
+    .map((image, index) => {
+      const modalId = `gallery-modal-${index}`;
+      return `
+        <figure class="puck-gallery-item">
+          <a href="#${modalId}" class="puck-gallery-open">
+            <img src="${attr(image.imageUrl)}" alt="${attr(image.imageAlt || "Gallery image")}">
+          </a>
+          ${hasText(image.caption) ? `<figcaption>${esc(image.caption)}</figcaption>` : ""}
+        </figure>
+
+        <div id="${modalId}" class="puck-gallery-modal">
+          <a href="#" class="puck-gallery-modal-backdrop" aria-label="Close gallery image"></a>
+          <div class="puck-gallery-modal-content">
+            <a href="#" class="puck-gallery-close" aria-label="Close gallery image">×</a>
+            <img src="${attr(image.imageUrl)}" alt="${attr(image.imageAlt || "Gallery image")}">
+            ${hasText(image.caption) ? `<p>${esc(image.caption)}</p>` : ""}
+          </div>
+        </div>
+      `;
+    })
     .join("");
 
   return `<section class="puck-section" style="${sectionStyle}"><div class="puck-inner">${titleHtml}<div class="puck-gallery-grid" style="--cols:${Number(props.columns || 3)};--gap:${Number(props.gap || 18)}px">${imagesHtml}</div></div></section>`;
