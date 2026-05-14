@@ -614,15 +614,21 @@ export function puckPageCss() {
   box-shadow: 0 0 22px rgba(0,255,4,.14);
 }
 
-#editable-page-root .show-card-image {
-  width: 180px !important;
-  height: 180px !important;
-  max-width: 180px !important;
-  max-height: 180px !important;
-  object-fit: contain !important;
-  border-radius: 14px;
-  background: rgba(0,0,0,.35);
-  border: 1px solid rgba(255,255,255,.16);
+#editable-page-root .show-card > .show-card-image,
+#editable-page-root img.show-card-image {
+  display:block!important;
+  width:180px!important;
+  height:180px!important;
+  min-width:180px!important;
+  min-height:180px!important;
+  max-width:180px!important;
+  max-height:180px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  border-radius:14px!important;
+  background:rgba(0,0,0,.35)!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  box-sizing:border-box!important;
 }
 
 #editable-page-root .show-card-content {
@@ -720,15 +726,22 @@ export function puckPageCss() {
     gap:20px!important;
   }
 
-  #editable-page-root img,
-  #editable-page-root video,
-  #editable-page-root iframe,
-  #editable-page-root .puck-image{
-    display:block!important;
-    width:100%!important;
-    max-width:100%!important;
-    height:auto!important;
-  }
+#editable-page-root img:not(.show-card-image),
+#editable-page-root video,
+#editable-page-root iframe,
+#editable-page-root .puck-image{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  height:auto!important;
+}
+
+#editable-page-root img.show-card-image{
+  width:180px!important;
+  height:180px!important;
+  max-width:180px!important;
+  max-height:180px!important;
+}
 
   #editable-page-root .puck-site-header{
     display:flex!important;
