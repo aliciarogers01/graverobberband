@@ -968,6 +968,34 @@ function createPageContent(pageName = "home") {
 
   return [
     {
+      type: "HeaderNav",
+      props: {
+        id: "graverobber-home-header-1",
+        backgroundColor: "rgba(0,0,0,.86)",
+        lineColor: "rgba(198,40,40,.65)",
+        lineShadow: "0 0 24px rgba(198,40,40,.28)",
+        showBack: "hide",
+        backText: "Back",
+        backUrl: "index.html",
+        logoUrl: "assets/grave-robber-skull.png",
+        logoAlt: "Grave Robber",
+        logoSize: "52px",
+        logoPlacement: "left",
+        width: "100%",
+        maxWidth: "none",
+        margin: "0",
+        padding: "18px 28px",
+        navPlacement: "center",
+        headerPosition: "full",
+        buttons: [
+          { text: "Home", url: "index.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "0px", borderColor: "transparent", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+          { text: "Shows", url: "shows.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+          { text: "Crypt List", url: "signup.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+          { text: "Merch", url: "merch.html", buttonType: "dropdown", dropdownLinks: [{ text: "Merch Store", url: "https://graverobber.bigcartel.com/" }], backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
+        ]
+      }
+    },
+    {
       type: "GraveRobberHero",
       props: {
         id: "graverobber-home-hero-1",
