@@ -40,24 +40,46 @@ function he(e,t){for(var r=0;r<t.length;r++){const l=t[r];if(typeof l!="string"&
 #editable-page-root .puck-body{line-height:1.65;margin:0 0 20px;}
 #editable-page-root .puck-image{display:block;max-width:100%;height:auto;object-fit:cover;}
 #editable-page-root .puck-buttons{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px;justify-content:center;}
+#editable-page-root .puck-site-header,
+#editable-page-root .puck-header-nav,
+#editable-page-root .puck-buttons,
+#editable-page-root .puck-dropdown{
+  overflow:visible!important;
+}
+
+#editable-page-root .puck-site-header{
+  z-index:9999;
+}
+
 #editable-page-root .puck-dropdown{
   position:relative;
   display:inline-flex;
+  z-index:10000;
+}
+
+#editable-page-root .puck-dropdown::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  top:100%;
+  height:14px;
 }
 
 #editable-page-root .puck-dropdown-menu{
   display:none;
   position:absolute;
-  top:calc(100% + 10px);
+  top:100%;
   left:50%;
   transform:translateX(-50%);
+  margin-top:10px;
   min-width:190px;
   padding:10px;
   background:rgba(0,0,0,.96);
   border:1px solid rgba(57,255,20,.55);
   border-radius:16px;
   box-shadow:0 0 24px rgba(57,255,20,.35);
-  z-index:9999;
+  z-index:10001;
 }
 
 #editable-page-root .puck-dropdown:hover .puck-dropdown-menu,
@@ -67,6 +89,7 @@ function he(e,t){for(var r=0;r<t.length;r++){const l=t[r];if(typeof l!="string"&
 }
 
 #editable-page-root .puck-dropdown-menu a{
+  display:block;
   color:#ffffff;
   text-decoration:none;
   font-weight:700;
