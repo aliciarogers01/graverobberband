@@ -75,7 +75,7 @@ function showCard(show, index) {
   const imageUrl = getShowImage(show);
 
   return `
-    <a class="show-card show-card-clickable" href="#${modalId}">
+    <article class="show-card show-card-clickable" data-show-modal="${modalId}" tabindex="0" role="button">
       ${imageUrl ? `<img class="show-card-image" src="${imageUrl}" alt="${show.venue || "Show"}">` : ""}
       <div class="show-card-content">
         <strong class="show-date">${dateText}</strong>
@@ -84,18 +84,26 @@ function showCard(show, index) {
         ${timeText ? `<p>${timeText}</p>` : ""}
         ${show.notes ? `<p>${show.notes}</p>` : ""}
       </div>
-    </a>
+    </article>
 
     <div id="${modalId}" class="show-modal">
       <a href="#" class="show-modal-backdrop" aria-label="Close show details"></a>
+
       <div class="show-modal-content">
         <a href="#" class="show-modal-close" aria-label="Close show details">×</a>
+
         <h2>${show.venue || "Show Details"}</h2>
+
         <p class="show-date">${dateText}</p>
+
         ${location ? `<p>${location}</p>` : ""}
+
         ${timeText ? `<p>${timeText}</p>` : ""}
+
         ${imageUrl ? `<img src="${imageUrl}" alt="${show.venue || "Show"}">` : ""}
+
         ${show.notes ? `<p>${show.notes}</p>` : ""}
+
         ${
           show.ticket_url
             ? `<a class="primary-btn" href="${show.ticket_url}" target="_blank" rel="noopener noreferrer" style="background:#bb00ff;border:1px solid #00ff04;box-shadow:0 0 24px #00ff04;color:#ffffff;">Tickets</a>`
@@ -104,6 +112,37 @@ function showCard(show, index) {
       </div>
     </div>
   `;
+}
+
+function bindShowModalClicks() {
+  document.querySelectorAll(".show-card-clickable").forEach(card => {
+    if (card.dataset.boundShowClick === "true") return;
+    card.dataset.boundShowClick = "true";
+
+    card.addEventListener("click", () => {
+      const modalId = card.dataset.showModal;
+      const modal = document.getElementById(modalId);
+      if (modal) modal.classList.add("is-open");
+    });
+
+    card.addEventListener("keydown", event => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      const modalId = card.dataset.showModal;
+      const modal = document.getElementById(modalId);
+      if (modal) modal.classList.add("is-open");
+    });
+  });
+
+  document.querySelectorAll(".show-modal-backdrop, .show-modal-close").forEach(closeButton => {
+    if (closeButton.dataset.boundShowClose === "true") return;
+    closeButton.dataset.boundShowClose = "true";
+
+    closeButton.addEventListener("click", event => {
+      event.preventDefault();
+      closeButton.closest(".show-modal")?.classList.remove("is-open");
+    });
+  });
 }
 
 async function renderShows() {
@@ -138,6 +177,7 @@ async function renderShows() {
 
     if (upcoming.length) {
       upcomingRoot.innerHTML = upcoming.map((show, index) => showCard(show, index)).join("");
+bindShowModalClicks();
       if (noShows) noShows.classList.add("hidden");
     } else {
       upcomingRoot.innerHTML = "";
@@ -147,6 +187,7 @@ async function renderShows() {
     if (pastRoot && pastSection) {
       if (past.length) {
         pastRoot.innerHTML = past.map((show, index) => showCard(show, `past-${index}`)).join("");
+bindShowModalClicks();
         pastSection.classList.remove("hidden");
       } else {
         pastRoot.innerHTML = "";
