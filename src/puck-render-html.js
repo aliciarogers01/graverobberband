@@ -781,10 +781,25 @@ export function puckPageCss() {
 
 #editable-page-root img:not(.show-card-image),
 #editable-page-root video,
-#editable-page-root iframe{
+#editable-page-root iframe,
+#editable-page-root .puck-image{
   display:block!important;
   max-width:100%!important;
   height:auto!important;
+}
+
+#editable-page-root video,
+#editable-page-root iframe{
+  width:100%!important;
+}
+
+#editable-page-root .puck-mobile-sized-image{
+  width:var(--mobile-image-width)!important;
+  max-width:100%!important;
+  height:auto!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  object-fit:contain!important;
 }
 
 #editable-page-root video,
@@ -1072,13 +1087,13 @@ margin: props.margin || "0"
 
 function renderHero(props) {
   const sectionStyle = styleObj({ background: props.backgroundColor || "transparent", color: props.textColor || "inherit", padding: `${props.paddingY || 70}px ${props.paddingX || 24}px` });
-  const imageStyle = styleObj({ width: props.imageWidth || "320px", borderRadius: props.imageRadius || "8px", boxShadow: props.imageShadow || "none" });
+  const imageStyle = styleObj({ width: props.imageWidth || "320px", "--mobile-image-width": props.mobileImageWidth || props.imageWidth || "320px", borderRadius: props.imageRadius || "8px", boxShadow: props.imageShadow || "none" });
   const titleHtml = hasText(props.title) ? `<h1 class="band-name puck-title" style="${styleObj(textStyle(props, "title"))}">${esc(props.title)}</h1>` : "";
   const subtitleHtml = hasText(props.subtitle) ? `<p class="tagline puck-subtitle" style="${styleObj(textStyle(props, "subtitle"))}">${esc(props.subtitle)}</p>` : "";
   const bodyHtml = hasText(props.body) ? `<p class="description puck-body" style="${styleObj(textStyle(props, "body"))}">${textWithBreaks(props.body)}</p>` : "";
   const buttonsHtml = (props.buttons || []).map(buttonHtml).join("");
   const textHtml = titleHtml || subtitleHtml || bodyHtml || buttonsHtml ? `<div class="puck-text">${titleHtml}${subtitleHtml}${bodyHtml}${buttonsHtml ? `<div class="puck-buttons">${buttonsHtml}</div>` : ""}</div>` : "";
-  const imageHtml = props.imageUrl ? `<img class="puck-image" src="${attr(props.imageUrl)}" alt="${attr(props.imageAlt || props.title || "Image")}" style="${imageStyle}">` : "";
+  const imageHtml = props.imageUrl ? `<img class="puck-image puck-mobile-sized-image" src="${attr(props.imageUrl)}" alt="${attr(props.imageAlt || props.title || "Image")}" style="${imageStyle}">` : "";
   return `${fontImportTag(props.customFontUrl)}<section class="puck-section" style="${sectionStyle}"><div class="puck-inner puck-flex layout-${attr(props.layout || "text-left")}" style="--gap:${Number(props.gap || 50)}px;--max-width:${attr(props.maxWidth || "1100px")}">${textHtml}${imageHtml}</div></section>`;
 }
 
@@ -1094,9 +1109,9 @@ function renderText(props) {
 
 function renderImage(props) {
   const sectionStyle = styleObj({ background: props.backgroundColor || "transparent", padding: `${props.paddingY || 40}px ${props.paddingX || 24}px`, textAlign: props.align || "center" });
-  const imageStyle = styleObj({ width: props.width || "900px", borderRadius: props.radius || "8px", boxShadow: props.shadow || "none" });
+  const imageStyle = styleObj({ width: props.width || "900px", "--mobile-image-width": props.mobileWidth || props.width || "900px", borderRadius: props.radius || "8px", boxShadow: props.shadow || "none" });
   const titleHtml = hasText(props.title) ? `<h2 class="puck-title" style="${styleObj(textStyle(props, "title"))}">${esc(props.title)}</h2>` : "";
-  const imageHtml = props.imageUrl ? `<img class="puck-image" src="${attr(props.imageUrl)}" alt="${attr(props.imageAlt || props.title || "Image")}" style="${imageStyle}">` : "";
+  const imageHtml = props.imageUrl ? `<img class="puck-image puck-mobile-sized-image" src="${attr(props.imageUrl)}" alt="${attr(props.imageAlt || props.title || "Image")}" style="${imageStyle}">` : "";
   return `${fontImportTag(props.customFontUrl)}<section class="puck-section" style="${sectionStyle}"><div class="puck-inner" style="max-width:${attr(props.maxWidth || "1100px")}">${titleHtml}${imageHtml}</div></section>`;
 }
 

@@ -1507,8 +1507,9 @@ style={{
           { label: "Centered", value: "center" },
           { label: "Image Top", value: "image-top" }
         ] },
-        imageWidth: { type: "text", label: "Image Width", placeholder: "320px or 50%" },
-        imageRadius: { type: "text", label: "Image Rounded Corners" },
+imageWidth: { type: "text", label: "Image Width", placeholder: "320px or 50%" },
+mobileImageWidth: { type: "text", label: "Mobile Image Width", placeholder: "Example: 70vw or 280px" },
+imageRadius: { type: "text", label: "Image Rounded Corners" },
 imageShadow: {
   type: "text",
   label: "Image Shadow",
@@ -1530,7 +1531,7 @@ defaultProps: clone(defaultContent[0].props),
               {props.body && <p className="description puck-body" style={{ fontSize: props.bodySize || "1rem", color: props.bodyColor || "inherit", fontFamily: props.bodyFont || "inherit", fontWeight: props.bodyWeight || "inherit", letterSpacing: props.bodyLetterSpacing || "normal" }}>{props.body}</p>}
               {(props.buttons || []).length > 0 && <div className="puck-buttons">{(props.buttons || []).map((button, index) => <ButtonPreview key={index} button={button} index={index} />)}</div>}
             </div>
-            {props.imageUrl && <img className="puck-image" src={props.imageUrl} alt={props.imageAlt || props.title || "Image"} style={{ width: props.imageWidth || "320px", borderRadius: props.imageRadius || "8px", boxShadow: props.imageShadow || "none" }} />}
+            {props.imageUrl && <img className="puck-image puck-mobile-sized-image" src={props.imageUrl} alt={props.imageAlt || props.title || "Image"} style={{ width: props.imageWidth || "320px", "--mobile-image-width": props.mobileImageWidth || props.imageWidth || "320px", borderRadius: props.imageRadius || "8px", boxShadow: props.imageShadow || "none" }} />}
           </div>
         </SectionShell>
       )
@@ -1561,8 +1562,9 @@ defaultProps: clone(defaultContent[0].props),
         ...textStyleFields("title"),
         imageUrl: imageUploadField("Image Upload"),
         imageAlt: { type: "text", label: "Image Alt Text" },
-        width: { type: "text", label: "Image Width", placeholder: "900px or 100%" },
-        radius: { type: "text", label: "Rounded Corners" },
+width: { type: "text", label: "Image Width", placeholder: "900px or 100%" },
+mobileWidth: { type: "text", label: "Mobile Image Width", placeholder: "Example: 70vw or 280px" },
+radius: { type: "text", label: "Rounded Corners" },
         shadow: {
           type: "text",
           label: "Image Shadow",
@@ -1602,14 +1604,15 @@ defaultProps: clone(defaultContent[1].props),
 
             {props.imageUrl && (
               <img
-                className="puck-image"
+                className="puck-image puck-mobile-sized-image"
                 src={props.imageUrl}
                 alt={props.imageAlt || props.title || "Image"}
-                style={{
-                  width: props.width || "900px",
-                  borderRadius: props.radius || "8px",
-                  boxShadow: props.shadow || "none"
-                }}
+style={{
+  width: props.width || "900px",
+  "--mobile-image-width": props.mobileWidth || props.width || "900px",
+  borderRadius: props.radius || "8px",
+  boxShadow: props.shadow || "none"
+}}
               />
             )}
           </div>
