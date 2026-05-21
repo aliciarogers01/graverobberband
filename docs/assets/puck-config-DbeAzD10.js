@@ -652,12 +652,23 @@ function he(e,t){for(var r=0;r<t.length;r++){const l=t[r];if(typeof l!="string"&
 
 #editable-page-root img:not(.show-card-image),
 #editable-page-root video,
-#editable-page-root iframe,
-#editable-page-root .puck-image{
+#editable-page-root iframe{
   display:block!important;
-  width:100%!important;
   max-width:100%!important;
   height:auto!important;
+}
+
+#editable-page-root video,
+#editable-page-root iframe{
+  width:100%!important;
+}
+
+#editable-page-root .puck-flex > .puck-image{
+  display:block!important;
+  width:auto!important;
+  max-width:72vw!important;
+  height:auto!important;
+  object-fit:contain!important;
 }
 
 #editable-page-root img.show-card-image{
