@@ -837,6 +837,78 @@ function createPageContent(pageName = "home") {
     ];
   }
 
+  if (pageName === "contact") {
+    return [
+      {
+        type: "HeaderNav",
+        props: {
+          id: "graverobber-contact-header-1",
+          backgroundColor: "rgba(0,0,0,.86)",
+          lineColor: "#00ff04",
+          lineShadow: "0 0 24px #00ff04",
+          showBack: "show",
+          backText: "Back",
+          backUrl: "index.html",
+          logoUrl: "assets/grave-robber-skull.png",
+          logoAlt: "Grave Robber",
+          logoSize: "52px",
+          logoPlacement: "right",
+          width: "100%",
+          maxWidth: "none",
+          margin: "0",
+          padding: "18px 28px",
+          navPlacement: "center",
+          headerPosition: "full",
+          buttons: [
+            { text: "Home", url: "index.html", backgroundColor: "transparent", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "Shows", url: "shows.html", backgroundColor: "transparent", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "Music", url: "index.html#music", backgroundColor: "transparent", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "Merch", url: "merch.html", backgroundColor: "transparent", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "Contact", url: "contact.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
+          ]
+        }
+      },
+      {
+        type: "TextBlock",
+        props: {
+          id: "graverobber-contact-title-1",
+          eyebrow: "Booking / Contact",
+          eyebrowColor: "#00ff04",
+          eyebrowFont: "Oswald, sans-serif",
+          eyebrowSize: "1rem",
+          eyebrowWeight: "700",
+          title: "Contact Grave Robber",
+          titleSize: "4rem",
+          titleColor: "#bb00ff",
+          titleFont: "Creepster, cursive",
+          titleWeight: "700",
+          body: "Use the form below for booking, merch, press, and general contact.",
+          bodySize: "1.1rem",
+          bodyColor: "#ffffff",
+          bodyFont: "Oswald, sans-serif",
+          bodyWeight: "400",
+          align: "center",
+          maxWidth: "850px",
+          backgroundColor: "#000000",
+          textColor: "#ffffff",
+          paddingY: 70,
+          paddingX: 24,
+          customFontUrl: "",
+          buttons: []
+        }
+      },
+      {
+        type: "Embed",
+        props: {
+          html: '<div class="graverobber-contact-form-wrap"><iframe class="graverobber-contact-form" src="https://docs.google.com/forms/d/e/1FAIpQLSfvFy-I4z36zqLz4y4boVhM4eTL7KEb5Ip1It7OZyFfxlRgMw/viewform?embedded=true" width="640" height="721" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe></div>',
+          backgroundColor: "#000000",
+          paddingY: 30,
+          paddingX: 24
+        }
+      }
+    ];
+  }
+
   if (pageName === "merch") {
     return [
       {

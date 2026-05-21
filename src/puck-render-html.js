@@ -294,6 +294,29 @@ export function puckPageCss() {
 
 #editable-page-root .puck-spacer{width:100%;}
 
+#editable-page-root .graverobber-contact-form-wrap{
+  width:100%;
+  max-width:720px;
+  margin:0 auto;
+  padding:18px;
+  background:#000000;
+  border:1px solid #00ff04;
+  border-radius:22px;
+  box-shadow:0 0 24px #00ff04;
+  box-sizing:border-box;
+}
+
+#editable-page-root .graverobber-contact-form{
+  display:block;
+  width:100%!important;
+  max-width:100%!important;
+  min-height:721px;
+  border:1px solid #00ff04!important;
+  border-radius:16px;
+  box-shadow:0 0 24px #00ff04;
+  background:#000000;
+}
+
 #editable-page-root hr,
 #editable-page-root .section-divider,
 #editable-page-root .divider{
