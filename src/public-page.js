@@ -69,6 +69,8 @@ if (projectData?.content?.length) {
   applyPageBackground(projectData.root?.props);
   root.innerHTML = renderPuckHtml(projectData);
 
+  applyContactFormOverride(root, pageName);
+
   window.dispatchEvent(new CustomEvent("visualPageRendered", {
     detail: { pageName }
   }));
@@ -76,14 +78,18 @@ if (projectData?.content?.length) {
   return;
 }
 
-    if (page.html && page.html.trim()) {
-      console.log("Rendering published html", page.html.slice(0, 200));
-      root.innerHTML = page.html;
-window.dispatchEvent(new CustomEvent("visualPageRendered", {
-  detail: { pageName }
-}));
-      return;
-    }
+if (page.html && page.html.trim()) {
+  console.log("Rendering published html", page.html.slice(0, 200));
+  root.innerHTML = page.html;
+
+  applyContactFormOverride(root, pageName);
+
+  window.dispatchEvent(new CustomEvent("visualPageRendered", {
+    detail: { pageName }
+  }));
+
+  return;
+}
 
     console.warn("No published project_data or html found. Rendering fallback default.", page);
   } catch (error) {
@@ -94,9 +100,43 @@ const fallbackData = createDefaultPuckData(pageName);
 applyPageBackground(fallbackData.root?.props);
 root.innerHTML = renderPuckHtml(fallbackData);
 
+applyContactFormOverride(root, pageName);
+
 window.dispatchEvent(new CustomEvent("visualPageRendered", {
   detail: { pageName }
 }));
+}
+
+function applyContactFormOverride(root, pageName) {
+  if (pageName !== "contact" || !root) return;
+
+  root.querySelectorAll(".graverobber-contact-form-section").forEach(section => section.remove());
+
+  root.querySelectorAll(".puck-buttons").forEach(buttonRow => {
+    if (buttonRow.textContent.trim().toLowerCase() === "contact") {
+      buttonRow.remove();
+    }
+  });
+
+  const formSection = document.createElement("section");
+  formSection.className = "puck-section graverobber-contact-form-section";
+  formSection.style.background = "#000000";
+  formSection.style.padding = "30px 24px";
+
+  formSection.innerHTML = `
+    <div class="puck-inner">
+      <div class="graverobber-contact-form-wrap">
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfvFy-I4z36zqLz4y4boVhM4eTL7KEb5Ip1It7OZyFfxlRgMw/viewform?embedded=true" width="640" height="721" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+      </div>
+    </div>
+  `;
+
+  const footer = root.querySelector("footer.social-section, .social-section");
+  if (footer) {
+    footer.before(formSection);
+  } else {
+    root.appendChild(formSection);
+  }
 }
 
 loadPublicPage();
