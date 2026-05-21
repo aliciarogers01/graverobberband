@@ -347,11 +347,13 @@ export function puckPageCss() {
   cursor:pointer;
 }
 
-#editable-page-root .graverobber-contact-note{
+#editable-page-root .graverobber-contact-success{
   color:#00ff04;
   text-align:center;
   margin:0;
-  font-size:14px;
+  font-size:15px;
+  font-weight:800;
+  text-transform:uppercase;
 }
 
 #editable-page-root .graverobber-contact-form-wrap{

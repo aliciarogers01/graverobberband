@@ -218,11 +218,13 @@ function he(e,t){for(var r=0;r<t.length;r++){const l=t[r];if(typeof l!="string"&
   cursor:pointer;
 }
 
-#editable-page-root .graverobber-contact-note{
+#editable-page-root .graverobber-contact-success{
   color:#00ff04;
   text-align:center;
   margin:0;
-  font-size:14px;
+  font-size:15px;
+  font-weight:800;
+  text-transform:uppercase;
 }
 
 #editable-page-root .graverobber-contact-form-wrap{

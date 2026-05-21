@@ -101,7 +101,7 @@ function applyContactFormOverride(root, pageName) {
 
   formSection.innerHTML = `
     <div class="puck-inner">
-      <form class="graverobber-custom-contact-form" action="${GOOGLE_FORM_ACTION}" method="POST" target="graverobber-contact-hidden-frame">
+      <form class="graverobber-custom-contact-form" action="${GOOGLE_FORM_ACTION}" method="POST" target="graverobber-contact-hidden-frame" onsubmit="this.reset(); this.querySelector('.graverobber-contact-success').textContent='Great, your message was sent and we will get back to you shortly.';">
         <label>
           What are you called?
           <input type="text" name="${NAME_ENTRY}" required>
@@ -118,7 +118,7 @@ function applyContactFormOverride(root, pageName) {
         </label>
 
         <button type="submit">Send Message</button>
-        <p class="graverobber-contact-note">After sending, your message will go into the connected Google Form responses.</p>
+        <p class="graverobber-contact-success" aria-live="polite"></p>
       </form>
 
       <iframe name="graverobber-contact-hidden-frame" style="display:none;"></iframe>
