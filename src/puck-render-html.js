@@ -183,7 +183,12 @@ export function puckPageCss() {
 #editable-page-root .puck-dropdown{
   position:relative;
   display:inline-flex;
-  z-index:10000;
+  z-index:10;
+}
+
+#editable-page-root .puck-dropdown:hover,
+#editable-page-root .puck-dropdown:focus-within{
+  z-index:1000000;
 }
 
 #editable-page-root .puck-dropdown::after{
@@ -198,17 +203,16 @@ export function puckPageCss() {
 #editable-page-root .puck-dropdown-menu{
   display:none;
   position:absolute;
-  top:100%;
+  top:calc(100% + 10px);
   left:50%;
   transform:translateX(-50%);
-  margin-top:10px;
   min-width:190px;
   padding:10px;
   background:rgba(0,0,0,.96);
   border:1px solid rgba(57,255,20,.55);
   border-radius:16px;
   box-shadow:0 0 24px rgba(57,255,20,.35);
-  z-index:10001;
+  z-index:1000001;
 }
 
 #editable-page-root .puck-dropdown:hover .puck-dropdown-menu,
@@ -232,45 +236,6 @@ export function puckPageCss() {
   background:rgba(57,255,20,.16);
 }
 
-#editable-page-root .puck-dropdown{
-  position:relative;
-  display:inline-flex;
-}
-
-#editable-page-root .puck-dropdown-menu{
-  display:none;
-  position:absolute;
-  top:calc(100% + 10px);
-  left:50%;
-  transform:translateX(-50%);
-  min-width:190px;
-  padding:10px;
-  background:rgba(0,0,0,.94);
-  border:1px solid rgba(57,255,20,.45);
-  border-radius:16px;
-  box-shadow:0 0 24px rgba(57,255,20,.28);
-  z-index:9999;
-}
-
-#editable-page-root .puck-dropdown:hover .puck-dropdown-menu,
-#editable-page-root .puck-dropdown:focus-within .puck-dropdown-menu{
-  display:grid;
-  gap:6px;
-}
-
-#editable-page-root .puck-dropdown-menu a{
-  color:#ffffff;
-  text-decoration:none;
-  font-weight:700;
-  font-size:14px;
-  padding:10px 12px;
-  border-radius:10px;
-  text-transform:uppercase;
-}
-
-#editable-page-root .puck-dropdown-menu a:hover{
-  background:rgba(57,255,20,.16);
-}
 #editable-page-root .puck-buttons .primary-btn:hover,#editable-page-root .puck-buttons .secondary-btn:hover{box-shadow:inherit;}
 #editable-page-root .layout-text-left .puck-buttons,#editable-page-root .layout-text-right .puck-buttons{justify-content:flex-start;}
 #editable-page-root .puck-social-links{
