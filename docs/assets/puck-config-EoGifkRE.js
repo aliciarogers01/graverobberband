@@ -665,24 +665,12 @@ function he(e,t){for(var r=0;r<t.length;r++){const l=t[r];if(typeof l!="string"&
 }
 
 #editable-page-root .puck-mobile-sized-image{
-  width:var(--mobile-image-width)!important;
-  max-width:100%!important;
+  display:block!important;
+  width:var(--mobile-image-width, 70vw)!important;
+  max-width:var(--mobile-image-width, 70vw)!important;
   height:auto!important;
   margin-left:auto!important;
   margin-right:auto!important;
-  object-fit:contain!important;
-}
-
-#editable-page-root video,
-#editable-page-root iframe{
-  width:100%!important;
-}
-
-#editable-page-root .puck-flex > .puck-image{
-  display:block!important;
-  width:auto!important;
-  max-width:72vw!important;
-  height:auto!important;
   object-fit:contain!important;
 }
 
