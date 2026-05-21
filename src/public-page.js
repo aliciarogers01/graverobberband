@@ -7,31 +7,28 @@ async function loadPublicPage() {
   const root = document.getElementById("editable-page-root");
   if (!root) return;
 
-const style = document.createElement("style");
-style.textContent = puckPageCss();
-document.head.appendChild(style);
-
-function applyPageBackground(rootProps = {}) {
-  const pageSettings = { ...defaultPageBackgroundProps, ...(rootProps || {}) };
-  const background = pageBackgroundCss(pageSettings);
-
-  document.documentElement.style.background = background;
-  document.body.style.background = background;
-  document.body.style.color = pageSettings.pageTextColor || "#f5f0e6";
-
-  const root = document.getElementById("editable-page-root");
-  if (root) {
-    root.style.minHeight = "100vh";
-    root.style.background = background;
-    root.style.color = pageSettings.pageTextColor || "#f5f0e6";
-  }
-}
+  const style = document.createElement("style");
+  style.textContent = puckPageCss();
+  document.head.appendChild(style);
 
   const pageName = document.body?.dataset?.page || "home";
 
   const API_BASE =
     window.BAND_API_BASE ||
     "https://band-admin-backend-production.up.railway.app/api";
+
+  function applyPageBackground(rootProps = {}) {
+    const pageSettings = { ...defaultPageBackgroundProps, ...(rootProps || {}) };
+    const background = pageBackgroundCss(pageSettings);
+
+    document.documentElement.style.background = background;
+    document.body.style.background = background;
+    document.body.style.color = pageSettings.pageTextColor || "#f5f0e6";
+
+    root.style.minHeight = "100vh";
+    root.style.background = background;
+    root.style.color = pageSettings.pageTextColor || "#f5f0e6";
+  }
 
   try {
     const response = await fetch(
@@ -43,15 +40,6 @@ function applyPageBackground(rootProps = {}) {
     }
 
     const data = await response.json();
-
-    console.log("PUBLIC PAGE DEBUG", {
-      siteSlug: SITE_SLUG,
-      pageName,
-      apiBase: API_BASE,
-      status: response.status,
-      data
-    });
-
     const page = data?.page || data || {};
 
     let projectData = page.project_data;
@@ -64,47 +52,32 @@ function applyPageBackground(rootProps = {}) {
       }
     }
 
-if (projectData?.content?.length) {
-  console.log("Rendering published project_data", projectData);
-  applyPageBackground(projectData.root?.props);
-  root.innerHTML = renderPuckHtml(projectData);
+    if (projectData?.content?.length) {
+      applyPageBackground(projectData.root?.props);
+      root.innerHTML = renderPuckHtml(projectData);
+      applyContactFormOverride(root, pageName);
+      window.dispatchEvent(new CustomEvent("visualPageRendered", { detail: { pageName } }));
+      return;
+    }
 
-  applyContactFormOverride(root, pageName);
-
-  window.dispatchEvent(new CustomEvent("visualPageRendered", {
-    detail: { pageName }
-  }));
-
-  return;
-}
-
-if (page.html && page.html.trim()) {
-  console.log("Rendering published html", page.html.slice(0, 200));
-  root.innerHTML = page.html;
-
-  applyContactFormOverride(root, pageName);
-
-  window.dispatchEvent(new CustomEvent("visualPageRendered", {
-    detail: { pageName }
-  }));
-
-  return;
-}
-
-    console.warn("No published project_data or html found. Rendering fallback default.", page);
+    if (page.html && page.html.trim()) {
+      root.innerHTML = page.html;
+      applyContactFormOverride(root, pageName);
+      window.dispatchEvent(new CustomEvent("visualPageRendered", { detail: { pageName } }));
+      return;
+    }
   } catch (error) {
     console.warn("Published page failed to load. Rendering default page.", error);
   }
 
-const fallbackData = createDefaultPuckData(pageName);
-applyPageBackground(fallbackData.root?.props);
-root.innerHTML = renderPuckHtml(fallbackData);
+  const fallbackData = createDefaultPuckData(pageName);
+  applyPageBackground(fallbackData.root?.props);
+  root.innerHTML = renderPuckHtml(fallbackData);
+  applyContactFormOverride(root, pageName);
 
-applyContactFormOverride(root, pageName);
-
-window.dispatchEvent(new CustomEvent("visualPageRendered", {
-  detail: { pageName }
-}));
+  window.dispatchEvent(new CustomEvent("visualPageRendered", {
+    detail: { pageName }
+  }));
 }
 
 function applyContactFormOverride(root, pageName) {
@@ -118,16 +91,37 @@ function applyContactFormOverride(root, pageName) {
     }
   });
 
+  const GOOGLE_FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSfvFy-I4z36zqLz4y4boVhM4eTL7KEb5Ip1It7OZyFfxlRgMw/formResponse";
+  const NAME_ENTRY = "entry.111991046";
+  const EMAIL_ENTRY = "entry.709491702";
+  const MESSAGE_ENTRY = "entry.905150677";
+
   const formSection = document.createElement("section");
   formSection.className = "puck-section graverobber-contact-form-section";
-  formSection.style.background = "#000000";
-  formSection.style.padding = "30px 24px";
 
   formSection.innerHTML = `
     <div class="puck-inner">
-      <div class="graverobber-contact-form-wrap">
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfvFy-I4z36zqLz4y4boVhM4eTL7KEb5Ip1It7OZyFfxlRgMw/viewform?embedded=true" width="640" height="721" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-      </div>
+      <form class="graverobber-custom-contact-form" action="${GOOGLE_FORM_ACTION}" method="POST" target="graverobber-contact-hidden-frame">
+        <label>
+          What are you called?
+          <input type="text" name="${NAME_ENTRY}" required>
+        </label>
+
+        <label>
+          What is your email?
+          <input type="email" name="${EMAIL_ENTRY}" required>
+        </label>
+
+        <label>
+          What do you want?
+          <textarea name="${MESSAGE_ENTRY}" rows="7" required></textarea>
+        </label>
+
+        <button type="submit">Send Message</button>
+        <p class="graverobber-contact-note">After sending, your message will go into the connected Google Form responses.</p>
+      </form>
+
+      <iframe name="graverobber-contact-hidden-frame" style="display:none;"></iframe>
     </div>
   `;
 

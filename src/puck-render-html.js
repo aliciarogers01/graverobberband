@@ -294,6 +294,66 @@ export function puckPageCss() {
 
 #editable-page-root .puck-spacer{width:100%;}
 
+#editable-page-root .graverobber-contact-form-section{
+  background:#000000!important;
+  padding:30px 24px!important;
+}
+
+#editable-page-root .graverobber-custom-contact-form{
+  width:100%;
+  max-width:720px;
+  margin:0 auto;
+  padding:26px;
+  background:#000000;
+  border:1px solid #00ff04;
+  border-radius:22px;
+  box-shadow:0 0 24px #00ff04;
+  box-sizing:border-box;
+  display:grid;
+  gap:18px;
+}
+
+#editable-page-root .graverobber-custom-contact-form label{
+  display:grid;
+  gap:8px;
+  color:#bb00ff;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+#editable-page-root .graverobber-custom-contact-form input,
+#editable-page-root .graverobber-custom-contact-form textarea{
+  width:100%;
+  background:#000000;
+  color:#bb00ff;
+  border:1px solid #00ff04;
+  box-shadow:0 0 24px #00ff04;
+  border-radius:14px;
+  padding:14px 16px;
+  box-sizing:border-box;
+  font:inherit;
+}
+
+#editable-page-root .graverobber-custom-contact-form button{
+  justify-self:center;
+  background:#000000;
+  color:#bb00ff;
+  border:1px solid #00ff04;
+  box-shadow:0 0 24px #00ff04;
+  border-radius:999px;
+  padding:14px 34px;
+  font-weight:900;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+
+#editable-page-root .graverobber-contact-note{
+  color:#00ff04;
+  text-align:center;
+  margin:0;
+  font-size:14px;
+}
+
 #editable-page-root .graverobber-contact-form-wrap{
   width:100%;
   max-width:720px;
