@@ -1252,7 +1252,17 @@ root: {
   };
 }
 
-export const defaultPuckData = createDefaultPuckData("home");
+function getCurrentPageName() {
+  if (typeof window === "undefined") return "home";
+
+  const fileName = window.location.pathname.split("/").pop() || "index.html";
+
+  if (fileName === "index.html" || fileName === "") return "home";
+
+  return fileName.replace(".html", "");
+}
+
+export const defaultPuckData = createDefaultPuckData(getCurrentPageName());
 
 export const puckConfig = {
   root: {

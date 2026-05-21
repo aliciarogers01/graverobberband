@@ -306,7 +306,8 @@ export function puckPageCss() {
   box-sizing:border-box;
 }
 
-#editable-page-root .graverobber-contact-form{
+#editable-page-root .graverobber-contact-form,
+#editable-page-root .graverobber-contact-form-wrap iframe{
   display:block;
   width:100%!important;
   max-width:100%!important;
