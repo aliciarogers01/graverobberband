@@ -169,8 +169,22 @@ function he(e,t){for(var r=0;r<t.length;r++){const l=t[r];if(typeof l!="string"&
   margin-top:0!important;
   position:relative;
   z-index:20;
+  background:
+    radial-gradient(circle at center top, rgba(0,255,4,.72), rgba(0,255,4,.28) 26%, rgba(0,0,0,0) 56%),
+    #000000!important;
+  padding:30px 24px 80px!important;
+  border-bottom:0!important;
+}
+
+#editable-page-root .graverobber-contact-form-section + .puck-spacer,
+#editable-page-root .graverobber-contact-form-section + .puck-section:empty{
+  display:none!important;
+}
+
+#editable-page-root .graverobber-contact-form-section ~ .puck-section,
+#editable-page-root .graverobber-contact-form-section ~ footer{
   background:#000000!important;
-  padding:34px 24px!important;
+  border-top:0!important;
 }
 
 #editable-page-root .graverobber-contact-inner{
