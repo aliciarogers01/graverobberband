@@ -303,6 +303,29 @@ export function puckPageCss() {
     #000000!important;
   padding:30px 24px 80px!important;
   border-bottom:0!important;
+  overflow:hidden!important;
+}
+
+#editable-page-root .graverobber-contact-form-section::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:48px;
+  width:min(820px, calc(100% - 32px));
+  height:520px;
+  transform:translateX(-50%);
+  background:rgba(0,0,0,.82);
+  border-radius:34px;
+  box-shadow:
+    0 0 55px 38px rgba(0,0,0,.95),
+    0 0 120px 72px rgba(0,0,0,.72);
+  z-index:0;
+  pointer-events:none;
+}
+
+#editable-page-root .graverobber-contact-inner{
+  position:relative;
+  z-index:1;
 }
 
 body:has(#editable-page-root .graverobber-contact-form-section),
