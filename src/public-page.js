@@ -80,9 +80,15 @@ const pageName = pageNameFromBody && pageNameFromBody !== "home"
     console.warn("Published page failed to load. Rendering default page.", error);
   }
 
-  const fallbackData = createDefaultPuckData(pageName);
-  applyPageBackground(fallbackData.root?.props);
-  root.innerHTML = renderPuckHtml(fallbackData);
+  document.documentElement.style.background = "#000000";
+  document.body.style.background = "#000000";
+  document.body.style.color = "#ffffff";
+
+  root.style.minHeight = "100vh";
+  root.style.background = "#000000";
+  root.style.color = "#ffffff";
+  root.innerHTML = "";
+
   applyContactFormOverride(root, pageName);
 
   window.dispatchEvent(new CustomEvent("visualPageRendered", {
