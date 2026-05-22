@@ -469,6 +469,42 @@ function SectionShell({ children, backgroundColor = "transparent", textColor = "
   return <section className="puck-section" style={{ background: backgroundColor, color: textColor, padding: `${paddingY}px ${paddingX}px` }}>{children}</section>;
 }
 
+function ContactFormPreview(props) {
+  return (
+    <section
+      className="puck-section graverobber-contact-form-section"
+      style={{
+        background: props.backgroundColor || "#000000",
+        padding: `${props.paddingY || 30}px ${props.paddingX || 24}px ${props.paddingBottom || 80}px`
+      }}
+    >
+      <div className="puck-inner graverobber-contact-inner">
+        <form className="graverobber-custom-contact-form" onSubmit={event => event.preventDefault()}>
+          <label>
+            {props.nameLabel || "What are you called?"}
+            <input type="text" name={props.nameEntry || "entry.111991046"} />
+          </label>
+
+          <label>
+            {props.emailLabel || "What is your email?"}
+            <input type="email" name={props.emailEntry || "entry.709491702"} />
+          </label>
+
+          <label>
+            {props.messageLabel || "What do you want?"}
+            <textarea name={props.messageEntry || "entry.905150677"} rows={Number(props.messageRows || 7)} />
+          </label>
+
+          <button type="submit">{props.buttonText || "Send Message"}</button>
+          <p className="graverobber-contact-success" aria-live="polite">{props.successMessage || ""}</p>
+        </form>
+
+        <iframe name="graverobber-contact-hidden-frame" style={{ display: "none" }} />
+      </div>
+    </section>
+  );
+}
+
 const defaultContent = [
   {
     type: "Hero",
@@ -697,6 +733,78 @@ export function pageBackgroundCss(props = {}) {
 }
 
 function createPageContent(pageName = "home") {
+  if (pageName === "contact") {
+    return [
+      {
+        type: "HeaderNav",
+        props: {
+          id: "graverobber-contact-header-1",
+          backgroundColor: "#000000",
+          lineColor: "#bb00ff",
+          lineShadow: "0 0 24px #bb00ff",
+          showBack: "show",
+          backText: "Back",
+          backUrl: "index.html",
+          logoUrl: "assets/grave-robber-skull.png",
+          logoAlt: "Grave Robber",
+          logoSize: "52px",
+          logoPlacement: "right",
+          width: "100%",
+          maxWidth: "none",
+          margin: "0",
+          padding: "18px 28px",
+          navPlacement: "center",
+          headerPosition: "full",
+          buttons: [
+            { text: "Home", url: "index.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "Shows", url: "shows.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "Admin", url: "admin.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
+          ]
+        }
+      },
+      {
+        type: "ContactForm",
+        props: {
+          id: "graverobber-contact-form-1",
+          formAction: "https://docs.google.com/forms/d/e/1FAIpQLSfvFy-I4z36zqLz4y4boVhM4eTL7KEb5Ip1It7OZyFfxlRgMw/formResponse",
+          nameEntry: "entry.111991046",
+          emailEntry: "entry.709491702",
+          messageEntry: "entry.905150677",
+          nameLabel: "What are you called?",
+          emailLabel: "What is your email?",
+          messageLabel: "What do you want?",
+          messageRows: 7,
+          buttonText: "Send Message",
+          successMessage: "Great, your message was sent and we will get back to you shortly.",
+          backgroundColor: "#000000",
+          paddingY: 30,
+          paddingX: 24,
+          paddingBottom: 80
+        }
+      },
+      {
+        type: "GraveRobberSocial",
+        props: {
+          id: "graverobber-contact-social-1",
+          title: "Follow Grave Robber",
+          titleColor: "#00ff04",
+          titleFont: "Oswald, sans-serif",
+          titleSize: "1rem",
+          backgroundColor: "#000000",
+          textColor: "#00ff04",
+          paddingY: 50,
+          paddingX: 24,
+          links: [
+            { platform: "facebook", label: "Facebook", url: "https://www.facebook.com/graverobberpunk", iconColor: "#bb00ff", backgroundColor: "#000000", borderColor: "#00ff04" },
+            { platform: "instagram", label: "Instagram", url: "https://www.instagram.com/graverobberpunk", iconColor: "#bb00ff", backgroundColor: "#000000", borderColor: "#00ff04" },
+            { platform: "spotify", label: "Spotify", url: "https://open.spotify.com/artist/4D34aUp0OsDs8mAEWPIP7c", iconColor: "#bb00ff", backgroundColor: "#000000", borderColor: "#00ff04" },
+            { platform: "youtube", label: "YouTube", url: "https://www.youtube.com/@GraveRobberPunk", iconColor: "#bb00ff", backgroundColor: "#000000", borderColor: "#00ff04" },
+            { platform: "email", label: "Email", url: "mailto:graverobber.punk@gmail.com", iconColor: "#bb00ff", backgroundColor: "#000000", borderColor: "#00ff04" }
+          ]
+        }
+      }
+    ];
+  }
   if (pageName === "shows") {
     return [
       {
@@ -1856,6 +1964,42 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
       fields: { height: { type: "number", label: "Height" }, backgroundColor: colorField("Background Color") },
       defaultProps: { height: 40, backgroundColor: "transparent" },
       render: props => <div className="puck-spacer" style={{ height: props.height || 40, background: props.backgroundColor || "transparent" }} />
+    },
+    ContactForm: {
+      label: "02 Add Block: Grave Robber Contact Form",
+      fields: {
+        formAction: { type: "text", label: "Google Form Submit URL" },
+        nameEntry: { type: "text", label: "Name Field Entry ID" },
+        emailEntry: { type: "text", label: "Email Field Entry ID" },
+        messageEntry: { type: "text", label: "Message Field Entry ID" },
+        nameLabel: { type: "text", label: "Name Label" },
+        emailLabel: { type: "text", label: "Email Label" },
+        messageLabel: { type: "text", label: "Message Label" },
+        messageRows: { type: "number", label: "Message Box Rows" },
+        buttonText: { type: "text", label: "Button Text" },
+        successMessage: { type: "text", label: "Success Message" },
+        backgroundColor: colorField("Section Background"),
+        paddingY: { type: "number", label: "Top Padding" },
+        paddingX: { type: "number", label: "Side Padding" },
+        paddingBottom: { type: "number", label: "Bottom Padding" }
+      },
+      defaultProps: {
+        formAction: "https://docs.google.com/forms/d/e/1FAIpQLSfvFy-I4z36zqLz4y4boVhM4eTL7KEb5Ip1It7OZyFfxlRgMw/formResponse",
+        nameEntry: "entry.111991046",
+        emailEntry: "entry.709491702",
+        messageEntry: "entry.905150677",
+        nameLabel: "What are you called?",
+        emailLabel: "What is your email?",
+        messageLabel: "What do you want?",
+        messageRows: 7,
+        buttonText: "Send Message",
+        successMessage: "Great, your message was sent and we will get back to you shortly.",
+        backgroundColor: "#000000",
+        paddingY: 30,
+        paddingX: 24,
+        paddingBottom: 80
+      },
+      render: props => <ContactFormPreview {...props} />
     },
     Embed: {
       label: "02 Add Block: Custom HTML Embed",

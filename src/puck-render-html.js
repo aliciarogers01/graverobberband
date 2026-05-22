@@ -1332,6 +1332,45 @@ function renderColumns(props) {
   return `${fontImportTag(props.customFontUrl)}<section class="puck-section" style="${sectionStyle}"><div class="puck-inner"><div class="puck-columns" style="--cols:${Number(props.columns || 2)};--gap:${Number(props.gap || 24)}px">${cardsHtml}</div></div></section>`;
 }
 
+function renderContactForm(props) {
+  const sectionStyle = styleObj({
+    background: props.backgroundColor || "#000000",
+    padding: `${props.paddingY || 30}px ${props.paddingX || 24}px ${props.paddingBottom || 80}px`
+  });
+
+  const formAction = props.formAction || "https://docs.google.com/forms/d/e/1FAIpQLSfvFy-I4z36zqLz4y4boVhM4eTL7KEb5Ip1It7OZyFfxlRgMw/formResponse";
+  const nameEntry = props.nameEntry || "entry.111991046";
+  const emailEntry = props.emailEntry || "entry.709491702";
+  const messageEntry = props.messageEntry || "entry.905150677";
+  const successMessage = props.successMessage || "Great, your message was sent and we will get back to you shortly.";
+
+  return `<section class="puck-section graverobber-contact-form-section" style="${sectionStyle}">
+    <div class="puck-inner graverobber-contact-inner">
+      <form class="graverobber-custom-contact-form" action="${attr(formAction)}" method="POST" target="graverobber-contact-hidden-frame" onsubmit="setTimeout(() => { this.reset(); this.querySelector('.graverobber-contact-success').textContent='${attr(successMessage)}'; }, 350);">
+        <label>
+          ${esc(props.nameLabel || "What are you called?")}
+          <input type="text" name="${attr(nameEntry)}" required>
+        </label>
+
+        <label>
+          ${esc(props.emailLabel || "What is your email?")}
+          <input type="email" name="${attr(emailEntry)}" required>
+        </label>
+
+        <label>
+          ${esc(props.messageLabel || "What do you want?")}
+          <textarea name="${attr(messageEntry)}" rows="${Number(props.messageRows || 7)}" required></textarea>
+        </label>
+
+        <button type="submit">${esc(props.buttonText || "Send Message")}</button>
+        <p class="graverobber-contact-success" aria-live="polite"></p>
+      </form>
+
+      <iframe name="graverobber-contact-hidden-frame" style="display:none;"></iframe>
+    </div>
+  </section>`;
+}
+
 function renderEmbed(props) {
   const sectionStyle = styleObj({ padding: `${props.paddingY || 30}px ${props.paddingX || 24}px`, background: props.backgroundColor || "transparent" });
   return `<section class="puck-section" style="${sectionStyle}"><div class="puck-inner">${props.html || ""}</div></section>`;
@@ -1352,6 +1391,7 @@ const renderers = {
   SocialIcons: renderSocial,
   Spacer: renderSpacer,
   Columns: renderColumns,
+  ContactForm: renderContactForm,
   Embed: renderEmbed
 };
 
