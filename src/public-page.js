@@ -91,6 +91,16 @@ function applyContactFormOverride(root, pageName) {
     }
   });
 
+  root.querySelectorAll(".puck-section, section, .puck-inner, .puck-text").forEach(element => {
+    const text = element.textContent.trim();
+    if (text === "Contact Grave Robber" || text.includes("Contact Grave Robber")) {
+      const section = element.closest(".puck-section, section");
+      if (section && !section.classList.contains("graverobber-contact-form-section")) {
+        section.remove();
+      }
+    }
+  });
+
   const GOOGLE_FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSfvFy-I4z36zqLz4y4boVhM4eTL7KEb5Ip1It7OZyFfxlRgMw/formResponse";
   const NAME_ENTRY = "entry.111991046";
   const EMAIL_ENTRY = "entry.709491702";
@@ -100,8 +110,8 @@ function applyContactFormOverride(root, pageName) {
   formSection.className = "puck-section graverobber-contact-form-section";
 
   formSection.innerHTML = `
-    <div class="puck-inner">
-      <form class="graverobber-custom-contact-form" action="${GOOGLE_FORM_ACTION}" method="POST" target="graverobber-contact-hidden-frame" onsubmit="this.reset(); this.querySelector('.graverobber-contact-success').textContent='Great, your message was sent and we will get back to you shortly.';">
+    <div class="puck-inner graverobber-contact-inner">
+      <form class="graverobber-custom-contact-form" action="${GOOGLE_FORM_ACTION}" method="POST" target="graverobber-contact-hidden-frame">
         <label>
           What are you called?
           <input type="text" name="${NAME_ENTRY}" required>
@@ -125,11 +135,21 @@ function applyContactFormOverride(root, pageName) {
     </div>
   `;
 
-  const footer = root.querySelector("footer.social-section, .social-section");
-  if (footer) {
-    footer.before(formSection);
+  const form = formSection.querySelector(".graverobber-custom-contact-form");
+  const success = formSection.querySelector(".graverobber-contact-success");
+
+  form.addEventListener("submit", () => {
+    window.setTimeout(() => {
+      form.reset();
+      success.textContent = "Great, your message was sent and we will get back to you shortly.";
+    }, 350);
+  });
+
+  const header = root.querySelector(".puck-site-header");
+  if (header) {
+    header.after(formSection);
   } else {
-    root.appendChild(formSection);
+    root.prepend(formSection);
   }
 }
 

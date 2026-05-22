@@ -166,11 +166,22 @@ function he(e,t){for(var r=0;r<t.length;r++){const l=t[r];if(typeof l!="string"&
 #editable-page-root .puck-spacer{width:100%;}
 
 #editable-page-root .graverobber-contact-form-section{
+  margin-top:0!important;
+  position:relative;
+  z-index:20;
   background:#000000!important;
-  padding:30px 24px!important;
+  padding:34px 24px!important;
 }
 
+#editable-page-root .graverobber-contact-inner{
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+}
+
+
 #editable-page-root .graverobber-custom-contact-form{
+  margin-top:0!important;
   width:100%;
   max-width:720px;
   margin:0 auto;
