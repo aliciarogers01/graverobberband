@@ -181,22 +181,31 @@ function he(e,t){for(var r=0;r<t.length;r++){const l=t[r];if(typeof l!="string"&
   content:"";
   position:absolute;
   left:50%;
-  top:48px;
-  width:min(820px, calc(100% - 32px));
-  height:520px;
+  top:34px;
   transform:translateX(-50%);
-  background:rgba(0,0,0,.82);
-  border-radius:34px;
-  box-shadow:
-    0 0 55px 38px rgba(0,0,0,.95),
-    0 0 120px 72px rgba(0,0,0,.72);
+  width:min(1100px, calc(100% + 180px));
+  height:760px;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(0,0,0,.96) 0%,
+      rgba(0,0,0,.92) 26%,
+      rgba(0,0,0,.82) 42%,
+      rgba(0,0,0,.58) 58%,
+      rgba(0,0,0,.28) 74%,
+      rgba(0,0,0,0) 100%
+    );
+
+  filter:blur(18px);
+
   z-index:0;
   pointer-events:none;
 }
 
 #editable-page-root .graverobber-contact-inner{
   position:relative;
-  z-index:1;
+  z-index:2;
 }
 
 body:has(#editable-page-root .graverobber-contact-form-section),
