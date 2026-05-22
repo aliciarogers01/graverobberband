@@ -66,6 +66,7 @@ const pageName = pageNameFromBody && pageNameFromBody !== "home"
       applyPageBackground(projectData.root?.props);
       root.innerHTML = renderPuckHtml(projectData);
       applyContactFormOverride(root, pageName);
+document.documentElement.classList.add("visual-page-ready");
       window.dispatchEvent(new CustomEvent("visualPageRendered", { detail: { pageName } }));
       return;
     }
@@ -73,6 +74,7 @@ const pageName = pageNameFromBody && pageNameFromBody !== "home"
     if (page.html && page.html.trim()) {
       root.innerHTML = page.html;
       applyContactFormOverride(root, pageName);
+document.documentElement.classList.add("visual-page-ready");
       window.dispatchEvent(new CustomEvent("visualPageRendered", { detail: { pageName } }));
       return;
     }
@@ -91,6 +93,7 @@ const pageName = pageNameFromBody && pageNameFromBody !== "home"
 
   applyContactFormOverride(root, pageName);
 
+document.documentElement.classList.add("visual-page-ready");
   window.dispatchEvent(new CustomEvent("visualPageRendered", {
     detail: { pageName }
   }));
