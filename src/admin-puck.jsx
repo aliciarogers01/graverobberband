@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Puck } from "@puckeditor/core";
 import "@puckeditor/core/puck.css";
-import "../styles.css";
 import "./admin-puck.css";
 import { puckConfig, createDefaultPuckData, defaultPuckData, puckEditorCss } from "./puck-config.jsx";
 import { renderPuckHtml, puckPageCss } from "./puck-render-html.js";
