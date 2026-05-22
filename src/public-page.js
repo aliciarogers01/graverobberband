@@ -83,6 +83,10 @@ async function loadPublicPage() {
 function applyContactFormOverride(root, pageName) {
   if (pageName !== "contact" || !root) return;
 
+  document.documentElement.style.background = "#000000";
+  document.body.style.background = "#000000";
+  root.style.background = "#000000";
+
   root.querySelectorAll(".graverobber-contact-form-section").forEach(section => section.remove());
 
   root.querySelectorAll(".puck-buttons").forEach(buttonRow => {

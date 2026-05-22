@@ -305,6 +305,12 @@ export function puckPageCss() {
   border-bottom:0!important;
 }
 
+body:has(#editable-page-root .graverobber-contact-form-section),
+html:has(#editable-page-root .graverobber-contact-form-section),
+#editable-page-root:has(.graverobber-contact-form-section){
+  background:#000000!important;
+}
+
 #editable-page-root .graverobber-contact-form-section + .puck-spacer,
 #editable-page-root .graverobber-contact-form-section + .puck-section:empty{
   display:none!important;
