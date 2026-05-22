@@ -11,7 +11,17 @@ async function loadPublicPage() {
   style.textContent = puckPageCss();
   document.head.appendChild(style);
 
-  const pageName = document.body?.dataset?.page || "home";
+  const pageNameFromBody = document.body?.dataset?.page;
+
+const pageNameFromUrl = (() => {
+  const fileName = window.location.pathname.split("/").pop() || "index.html";
+  if (fileName === "index.html" || fileName === "") return "home";
+  return fileName.replace(".html", "");
+})();
+
+const pageName = pageNameFromBody && pageNameFromBody !== "home"
+  ? pageNameFromBody
+  : pageNameFromUrl;
 
   const API_BASE =
     window.BAND_API_BASE ||
