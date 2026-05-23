@@ -234,10 +234,11 @@ html:has(#editable-page-root .graverobber-contact-form-section),
 
 #editable-page-root .graverobber-custom-contact-form{
   margin-top:0!important;
-  width:100%;
-  max-width:720px;
-  margin:0 auto;
-  padding:26px;
+  width:min(720px, calc(100vw - 32px))!important;
+  max-width:720px!important;
+  min-width:0!important;
+  margin:0 auto!important;
+  padding:clamp(16px, 4vw, 26px)!important;
   background:#000000;
   border:1px solid #00ff04;
   border-radius:22px;
