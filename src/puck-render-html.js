@@ -1345,6 +1345,51 @@ function renderColumns(props) {
   return `${fontImportTag(props.customFontUrl)}<section class="puck-section" style="${sectionStyle}"><div class="puck-inner"><div class="puck-columns" style="--cols:${Number(props.columns || 2)};--gap:${Number(props.gap || 24)}px">${cardsHtml}</div></div></section>`;
 }
 
+function renderSignupForm(props) {
+  const sectionStyle = styleObj({
+    background: props.backgroundColor || "#000000",
+    padding: `${props.paddingY || 30}px ${props.paddingX || 24}px ${props.paddingBottom || 80}px`
+  });
+
+  const formAction = props.formAction || "https://docs.google.com/forms/d/e/1FAIpQLSc75dAf3CXeOinDkL-URjVql6_o3E2PcXKPhB3j-mFnl0JBMw/formResponse";
+  const nameEntry = props.nameEntry || "entry.821607845";
+  const emailEntry = props.emailEntry || "entry.216699627";
+  const phoneEntry = props.phoneEntry || "entry.1566132030";
+  const zipEntry = props.zipEntry || "entry.848273318";
+  const successMessage = props.successMessage || "Great, you are signed up and we will keep you updated.";
+
+  return `<section class="puck-section graverobber-contact-form-section graverobber-signup-form-section" style="${sectionStyle}">
+    <div class="puck-inner graverobber-contact-inner">
+      <form class="graverobber-custom-contact-form" action="${attr(formAction)}" method="POST" target="graverobber-signup-hidden-frame" onsubmit="setTimeout(() => { this.reset(); this.querySelector('.graverobber-contact-success').textContent='${attr(successMessage)}'; }, 350);">
+        <label>
+          ${esc(props.nameLabel || "What are you called?")}
+          <input type="text" name="${attr(nameEntry)}" required>
+        </label>
+
+        <label>
+          ${esc(props.emailLabel || "What is your email?")}
+          <input type="email" name="${attr(emailEntry)}" required>
+        </label>
+
+        <label>
+          ${esc(props.phoneLabel || "What is your phone number?")}
+          <input type="tel" name="${attr(phoneEntry)}">
+        </label>
+
+        <label>
+          ${esc(props.zipLabel || "What is your zip code?")}
+          <input type="text" name="${attr(zipEntry)}">
+        </label>
+
+        <button type="submit">${esc(props.buttonText || "Join the Crypt List")}</button>
+        <p class="graverobber-contact-success" aria-live="polite"></p>
+      </form>
+
+      <iframe name="graverobber-signup-hidden-frame" style="display:none;"></iframe>
+    </div>
+  </section>`;
+}
+
 function renderContactForm(props) {
   const sectionStyle = styleObj({
     background: props.backgroundColor || "#000000",
@@ -1404,6 +1449,7 @@ const renderers = {
   SocialIcons: renderSocial,
   Spacer: renderSpacer,
   Columns: renderColumns,
+  SignupForm: renderSignupForm,
   ContactForm: renderContactForm,
   Embed: renderEmbed
 };

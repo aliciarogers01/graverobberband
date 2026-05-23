@@ -469,6 +469,47 @@ function SectionShell({ children, backgroundColor = "transparent", textColor = "
   return <section className="puck-section" style={{ background: backgroundColor, color: textColor, padding: `${paddingY}px ${paddingX}px` }}>{children}</section>;
 }
 
+function SignupFormPreview(props) {
+  return (
+    <section
+      className="puck-section graverobber-contact-form-section graverobber-signup-form-section"
+      style={{
+        background: props.backgroundColor || "#000000",
+        padding: `${props.paddingY || 30}px ${props.paddingX || 24}px ${props.paddingBottom || 80}px`
+      }}
+    >
+      <div className="puck-inner graverobber-contact-inner">
+        <form className="graverobber-custom-contact-form" onSubmit={event => event.preventDefault()}>
+          <label>
+            {props.nameLabel || "What are you called?"}
+            <input type="text" name={props.nameEntry || "entry.821607845"} />
+          </label>
+
+          <label>
+            {props.emailLabel || "What is your email?"}
+            <input type="email" name={props.emailEntry || "entry.216699627"} />
+          </label>
+
+          <label>
+            {props.phoneLabel || "What is your phone number?"}
+            <input type="tel" name={props.phoneEntry || "entry.1566132030"} />
+          </label>
+
+          <label>
+            {props.zipLabel || "What is your zip code?"}
+            <input type="text" name={props.zipEntry || "entry.848273318"} />
+          </label>
+
+          <button type="submit">{props.buttonText || "Join the Crypt List"}</button>
+          <p className="graverobber-contact-success" aria-live="polite">{props.successMessage || ""}</p>
+        </form>
+
+        <iframe name="graverobber-signup-hidden-frame" style={{ display: "none" }} />
+      </div>
+    </section>
+  );
+}
+
 function ContactFormPreview(props) {
   return (
     <section
@@ -2071,6 +2112,44 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
       fields: { height: { type: "number", label: "Height" }, backgroundColor: colorField("Background Color") },
       defaultProps: { height: 40, backgroundColor: "transparent" },
       render: props => <div className="puck-spacer" style={{ height: props.height || 40, background: props.backgroundColor || "transparent" }} />
+    },
+    SignupForm: {
+      label: "02 Add Block: Grave Robber Signup Form",
+      fields: {
+        formAction: { type: "text", label: "Google Form Submit URL" },
+        nameEntry: { type: "text", label: "Name Field Entry ID" },
+        emailEntry: { type: "text", label: "Email Field Entry ID" },
+        phoneEntry: { type: "text", label: "Phone Field Entry ID" },
+        zipEntry: { type: "text", label: "Zip Field Entry ID" },
+        nameLabel: { type: "text", label: "Name Label" },
+        emailLabel: { type: "text", label: "Email Label" },
+        phoneLabel: { type: "text", label: "Phone Label" },
+        zipLabel: { type: "text", label: "Zip Label" },
+        buttonText: { type: "text", label: "Button Text" },
+        successMessage: { type: "text", label: "Success Message" },
+        backgroundColor: colorField("Section Background"),
+        paddingY: { type: "number", label: "Top Padding" },
+        paddingX: { type: "number", label: "Side Padding" },
+        paddingBottom: { type: "number", label: "Bottom Padding" }
+      },
+      defaultProps: {
+        formAction: "https://docs.google.com/forms/d/e/1FAIpQLSc75dAf3CXeOinDkL-URjVql6_o3E2PcXKPhB3j-mFnl0JBMw/formResponse",
+        nameEntry: "entry.821607845",
+        emailEntry: "entry.216699627",
+        phoneEntry: "entry.1566132030",
+        zipEntry: "entry.848273318",
+        nameLabel: "What are you called?",
+        emailLabel: "What is your email?",
+        phoneLabel: "What is your phone number?",
+        zipLabel: "What is your zip code?",
+        buttonText: "Join the Crypt List",
+        successMessage: "Great, you are signed up and we will keep you updated.",
+        backgroundColor: "#000000",
+        paddingY: 30,
+        paddingX: 24,
+        paddingBottom: 80
+      },
+      render: props => <SignupFormPreview {...props} />
     },
     ContactForm: {
       label: "02 Add Block: Grave Robber Contact Form",
