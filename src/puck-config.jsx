@@ -1623,9 +1623,21 @@ logoImageShadow: "none",
         >
           <div className="puck-header-left">
             {props.logoUrl && props.logoPlacement !== "right" && (
-              <a className="puck-header-logo-link logo-left" href="index.html" style={{ "--logo-size": props.logoSize || "45px" }}>
-                <img className="puck-header-logo" src={props.logoUrl} alt={props.logoAlt || "Logo"} />
-              </a>
+<a
+  className="puck-header-logo-link logo-left"
+  href="index.html"
+  style={{
+    "--logo-size": props.logoSize || "45px",
+    "--logo-image-shadow": props.logoImageShadow || "none",
+    background: props.logoBackgroundColor || "transparent",
+    border: `${props.logoBorderWidth || "0px"} solid ${props.logoBorderColor || "transparent"}`,
+    borderRadius: props.logoRadius || "999px",
+    padding: props.logoPadding || "0px",
+    boxShadow: props.logoBoxShadow || "none"
+  }}
+>
+  <img className="puck-header-logo" src={props.logoUrl} alt={props.logoAlt || "Logo"} />
+</a>
             )}
             {props.showBack !== "hide" && <a className="puck-header-back" href={props.backUrl || "index.html"}>{props.backText || "Back"}</a>}
           </div>
@@ -1634,9 +1646,21 @@ logoImageShadow: "none",
           </nav>
           <div className="puck-header-right">
             {props.logoUrl && props.logoPlacement === "right" && (
-              <a className="puck-header-logo-link logo-right" href="index.html" style={{ "--logo-size": props.logoSize || "45px" }}>
-                <img className="puck-header-logo" src={props.logoUrl} alt={props.logoAlt || "Logo"} />
-              </a>
+<a
+  className="puck-header-logo-link logo-right"
+  href="index.html"
+  style={{
+    "--logo-size": props.logoSize || "45px",
+    "--logo-image-shadow": props.logoImageShadow || "none",
+    background: props.logoBackgroundColor || "transparent",
+    border: `${props.logoBorderWidth || "0px"} solid ${props.logoBorderColor || "transparent"}`,
+    borderRadius: props.logoRadius || "999px",
+    padding: props.logoPadding || "0px",
+    boxShadow: props.logoBoxShadow || "none"
+  }}
+>
+  <img className="puck-header-logo" src={props.logoUrl} alt={props.logoAlt || "Logo"} />
+</a>
             )}
           </div>
         </header>
