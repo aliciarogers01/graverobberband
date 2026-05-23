@@ -129,7 +129,13 @@ function cleanSavedData(saved, pageName) {
     return freshDefaultData(pageName);
   }
 
-  return normalizePageData(saved, pageName);
+  const normalized = normalizePageData(saved, pageName);
+
+  if (pageName === "contact" && !normalized.content.some(block => block?.type === "ContactForm")) {
+    return freshDefaultData(pageName);
+  }
+
+  return normalized;
 }
 
 function AdminApp() {
