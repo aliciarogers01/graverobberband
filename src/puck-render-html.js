@@ -713,6 +713,7 @@ html:has(#editable-page-root .graverobber-contact-form-section),
   height:100%!important;
   object-fit:contain!important;
   object-position:center!important;
+  filter:drop-shadow(var(--logo-image-shadow, none))!important;
 }
 
 #editable-page-root .puck-header-logo-link{
@@ -1195,12 +1196,12 @@ borderBottom: props.lineColor ? `1px solid ${props.lineColor}` : "none",
     padding: props.padding || "22px 40px"
   })}">
     <div class="puck-header-left">
-      ${props.logoUrl && props.logoPlacement !== "right" ? `<a class="puck-header-logo-link logo-left" href="index.html" style="--logo-size:${attr(props.logoSize || "45px")}"><img class="puck-header-logo" src="${attr(props.logoUrl)}" alt="${attr(props.logoAlt || "Logo")}"></a>` : ""}
+      ${props.logoUrl && props.logoPlacement !== "right" ? `<a class="puck-header-logo-link logo-left" href="index.html" style="${styleObj({ "--logo-size": props.logoSize || "45px", background: props.logoBackgroundColor || "transparent", border: `${props.logoBorderWidth || "0px"} solid ${props.logoBorderColor || "transparent"}`, borderRadius: props.logoRadius || "999px", padding: props.logoPadding || "0px", boxShadow: props.logoBoxShadow || "none", "--logo-image-shadow": props.logoImageShadow || "none" })}"><img class="puck-header-logo" src="${attr(props.logoUrl)}" alt="${attr(props.logoAlt || "Logo")}"></a>` : ""}
       ${props.showBack !== "hide" ? `<a class="puck-header-back" href="${attr(props.backUrl || "index.html")}">${esc(props.backText || "Back")}</a>` : ""}
     </div>
     <nav class="puck-header-nav nav-${attr(props.navPlacement || "right")}">${buttonsHtml}</nav>
     <div class="puck-header-right">
-      ${props.logoUrl && props.logoPlacement === "right" ? `<a class="puck-header-logo-link logo-right" href="index.html" style="--logo-size:${attr(props.logoSize || "45px")}"><img class="puck-header-logo" src="${attr(props.logoUrl)}" alt="${attr(props.logoAlt || "Logo")}"></a>` : ""}
+      ${props.logoUrl && props.logoPlacement === "right" ? `<a class="puck-header-logo-link logo-right" href="index.html" style="${styleObj({ "--logo-size": props.logoSize || "45px", background: props.logoBackgroundColor || "transparent", border: `${props.logoBorderWidth || "0px"} solid ${props.logoBorderColor || "transparent"}`, borderRadius: props.logoRadius || "999px", padding: props.logoPadding || "0px", boxShadow: props.logoBoxShadow || "none", "--logo-image-shadow": props.logoImageShadow || "none" })}"><img class="puck-header-logo" src="${attr(props.logoUrl)}" alt="${attr(props.logoAlt || "Logo")}"></a>` : ""}
     </div>
   </header>`;
 }

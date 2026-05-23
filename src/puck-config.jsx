@@ -1535,17 +1535,24 @@ defaultItemProps: {
         },
         backText: { type: "text", label: "Back Text" },
         backUrl: { type: "text", label: "Back Link" },
-        logoUrl: imageUploadField("Header Logo"),
-        logoAlt: { type: "text", label: "Logo Alt Text" },
-        logoSize: { type: "text", label: "Logo Size", placeholder: "45px" },
-        logoPlacement: {
-          type: "select",
-          label: "Logo Placement",
-          options: [
-            { label: "Left", value: "left" },
-            { label: "Right", value: "right" }
-          ]
-        },
+logoUrl: imageUploadField("Header Logo"),
+logoAlt: { type: "text", label: "Logo Alt Text" },
+logoSize: { type: "text", label: "Logo Size", placeholder: "45px" },
+logoPlacement: {
+  type: "select",
+  label: "Logo Placement",
+  options: [
+    { label: "Left", value: "left" },
+    { label: "Right", value: "right" }
+  ]
+},
+logoBackgroundColor: colorField("Logo Background Color"),
+logoBorderWidth: { type: "text", label: "Logo Border Width", placeholder: "0px or 1px" },
+logoBorderColor: colorField("Logo Border Color"),
+logoRadius: { type: "text", label: "Logo Rounded Corners", placeholder: "999px or 0px" },
+logoPadding: { type: "text", label: "Logo Padding", placeholder: "0px" },
+logoBoxShadow: { type: "text", label: "Logo Shadow / Glow", placeholder: "0 0 24px #00ff04" },
+logoImageShadow: { type: "text", label: "Logo Image Shadow / Glow", placeholder: "0 0 18px #00ff04" },
         width: { type: "text", label: "Header Width", placeholder: "100%, 1200px, 80vw" },
         maxWidth: { type: "text", label: "Header Max Width", placeholder: "none or 1200px" },
         margin: { type: "text", label: "Header Margin", placeholder: "0 auto" },
@@ -1578,8 +1585,15 @@ defaultItemProps: {
         backUrl: "index.html",
         logoUrl: "assets/grave-robber-skull.png",
         logoAlt: "Grave Robber Logo",
-        logoSize: "45px",
-        logoPlacement: "left",
+logoSize: "45px",
+logoPlacement: "left",
+logoBackgroundColor: "transparent",
+logoBorderWidth: "0px",
+logoBorderColor: "transparent",
+logoRadius: "999px",
+logoPadding: "0px",
+logoBoxShadow: "none",
+logoImageShadow: "none",
         width: "100%",
         maxWidth: "none",
         margin: "0",
