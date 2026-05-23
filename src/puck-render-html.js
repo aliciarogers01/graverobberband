@@ -420,6 +420,22 @@ html:has(#editable-page-root .graverobber-contact-form-section),
   text-transform:uppercase;
 }
 
+#editable-page-root .graverobber-hidden-submit-frame{
+  display:none!important;
+  width:0!important;
+  height:0!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:0!important;
+  max-height:0!important;
+  border:0!important;
+  outline:0!important;
+  visibility:hidden!important;
+  position:absolute!important;
+  left:-99999px!important;
+  pointer-events:none!important;
+}
+
 #editable-page-root .graverobber-contact-form-wrap{
   width:100%;
   max-width:720px;
@@ -1003,56 +1019,61 @@ html:has(#editable-page-root .graverobber-contact-form-section),
 
 #editable-page-root .graverobber-contact-form-section,
 #editable-page-root .graverobber-signup-form-section{
-  width:100%!important;
-  max-width:100%!important;
-  padding:18px 14px 60px!important;
+  width:100vw!important;
+  max-width:100vw!important;
+  padding:18px 12px 60px!important;
   overflow:hidden!important;
 }
 
 #editable-page-root .graverobber-contact-inner{
   width:100%!important;
   max-width:100%!important;
+  padding:0!important;
   display:flex!important;
   justify-content:center!important;
-  align-items:center!important;
 }
 
 #editable-page-root .graverobber-custom-contact-form{
-  width:calc(100vw - 28px)!important;
-  max-width:calc(100vw - 28px)!important;
+  width:100%!important;
+  max-width:360px!important;
   min-width:0!important;
-  padding:18px!important;
+  margin:0 auto!important;
+  padding:16px!important;
   gap:14px!important;
   border-radius:18px!important;
-  box-sizing:border-box!important;
 }
 
 #editable-page-root .graverobber-custom-contact-form label{
   width:100%!important;
   font-size:14px!important;
-  line-height:1.3!important;
+  line-height:1.25!important;
 }
 
 #editable-page-root .graverobber-custom-contact-form input,
 #editable-page-root .graverobber-custom-contact-form textarea{
+  display:block!important;
   width:100%!important;
   max-width:100%!important;
   min-width:0!important;
-  padding:14px!important;
+  padding:13px!important;
   font-size:16px!important;
   border-radius:12px!important;
-  box-sizing:border-box!important;
+  outline:0!important;
+  appearance:none!important;
+  -webkit-appearance:none!important;
 }
 
 #editable-page-root .graverobber-custom-contact-form textarea{
-  min-height:160px!important;
+  min-height:150px!important;
+  resize:vertical!important;
 }
 
 #editable-page-root .graverobber-custom-contact-form button{
   width:100%!important;
-  max-width:100%!important;
+  max-width:260px!important;
   padding:16px!important;
   font-size:15px!important;
+  justify-self:center!important;
 }
 
 #editable-page-root .graverobber-contact-success{
@@ -1446,7 +1467,7 @@ function renderSignupForm(props) {
         <p class="graverobber-contact-success" aria-live="polite"></p>
       </form>
 
-      <iframe name="graverobber-signup-hidden-frame" style="display:none;"></iframe>
+      <iframe class="graverobber-hidden-submit-frame" name="graverobber-signup-hidden-frame" title="Hidden signup submit frame"></iframe>
     </div>
   </section>`;
 }
@@ -1485,7 +1506,7 @@ function renderContactForm(props) {
         <p class="graverobber-contact-success" aria-live="polite"></p>
       </form>
 
-      <iframe name="graverobber-contact-hidden-frame" style="display:none;"></iframe>
+      <iframe class="graverobber-hidden-submit-frame" name="graverobber-contact-hidden-frame" title="Hidden contact submit frame"></iframe>
     </div>
   </section>`;
 }

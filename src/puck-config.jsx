@@ -504,7 +504,7 @@ function SignupFormPreview(props) {
           <p className="graverobber-contact-success" aria-live="polite">{props.successMessage || ""}</p>
         </form>
 
-        <iframe name="graverobber-signup-hidden-frame" style={{ display: "none" }} />
+        <iframe className="graverobber-hidden-submit-frame" name="graverobber-signup-hidden-frame" title="Hidden signup submit frame" />
       </div>
     </section>
   );
@@ -540,7 +540,7 @@ function ContactFormPreview(props) {
           <p className="graverobber-contact-success" aria-live="polite">{props.successMessage || ""}</p>
         </form>
 
-        <iframe name="graverobber-contact-hidden-frame" style={{ display: "none" }} />
+        <iframe className="graverobber-hidden-submit-frame" name="graverobber-contact-hidden-frame" title="Hidden contact submit frame" />
       </div>
     </section>
   );
