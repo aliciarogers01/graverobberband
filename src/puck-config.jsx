@@ -1481,7 +1481,43 @@ imageRadius: unitNumberField("Image Rounded Corners", { units: ["px", "%", "rem"
       render: props => puckConfig.components.Hero.render(props)
     },
     GraveRobberLogo: { label: "01 Site Block: Grave Robber Stacked Logo", fields: { imageUrl: imageUploadField("Logo Image"), imageAlt: { type: "text", label: "Image Alt Text" }, width: unitNumberField("Image Width", { units: ["px", "%", "vw"], defaultUnit: "px", step: 10, min: 0, placeholder: "Example: 520px" }), radius: unitNumberField("Rounded Corners", { units: ["px", "%", "rem"], defaultUnit: "px", step: 1, min: 0, placeholder: "Example: 12px" }), shadow: { type: "text", label: "Image Shadow / Glow CSS" }, align: { type: "select", label: "Image Placement", options: placementOptions }, backgroundColor: colorField("Section Background"), paddingY: { type: "number", label: "Top/Bottom Padding" }, paddingX: { type: "number", label: "Left/Right Padding" } }, defaultProps: { imageUrl: "assets/grave-robber-logo-stacked.png", imageAlt: "Grave Robber logo", width: "520px", radius: "12px", shadow: "0 20px 60px rgba(0,0,0,.55)", align: "center", backgroundColor: "transparent", paddingY: 30, paddingX: 24 }, render: props => puckConfig.components.ImageBlock.render(props) },
-    GraveRobberSocial: { label: "01 Site Block: Grave Robber Social / Merch Links", fields: { title: { type: "text", label: "Title" }, titleColor: colorField("Title Color"), titleFont: fontField("Title Font"), titleSize: { type: "text", label: "Title Font Size" }, backgroundColor: colorField("Section Background"), paddingY: { type: "number", label: "Top/Bottom Padding" }, paddingX: { type: "number", label: "Left/Right Padding" }, links: { type: "array", label: "Links", arrayFields: { platform: { type: "select", label: "Platform", options: socialPlatformOptions }, label: { type: "text", label: "Label" }, url: { type: "text", label: "URL" }, iconColor: colorField("Icon Color"), backgroundColor: colorField("Icon Background"), borderColor: colorField("Icon Border") }, defaultItemProps: { platform: "custom", label: "Link", url: "#", iconColor: "#ffffff", backgroundColor: "rgba(198,40,40,.18)", borderColor: "rgba(198,40,40,.65)" } } }, defaultProps: { title: "Follow Grave Robber", titleColor: "#ffffff", titleFont: "Oswald, sans-serif", titleSize: "1rem", backgroundColor: "transparent", paddingY: 50, paddingX: 24, links: [{ platform: "facebook", label: "Facebook", url: "https://www.facebook.com/graverobberpunk", iconColor: "#ffffff", backgroundColor: "rgba(198,40,40,.18)", borderColor: "rgba(198,40,40,.65)" }, { platform: "instagram", label: "Instagram", url: "https://www.instagram.com/graverobberpunk", iconColor: "#ffffff", backgroundColor: "rgba(198,40,40,.18)", borderColor: "rgba(198,40,40,.65)" }, { platform: "spotify", label: "Spotify", url: "https://open.spotify.com/artist/4D34aUp0OsDs8mAEWPIP7c", iconColor: "#ffffff", backgroundColor: "rgba(198,40,40,.18)", borderColor: "rgba(198,40,40,.65)" }] }, render: props => puckConfig.components.SocialIcons.render(props) },
+    GraveRobberSocial: { label: "01 Site Block: Grave Robber Social / Merch Links", fields: { title: { type: "text", label: "Title" }, titleColor: colorField("Title Color"), titleFont: fontField("Title Font"), titleSize: { type: "text", label: "Title Font Size" }, backgroundColor: colorField("Section Background"), paddingY: { type: "number", label: "Top/Bottom Padding" }, paddingX: { type: "number", label: "Left/Right Padding" }, links: { type: "array", label: "Links", arrayFields: {
+  platform: { type: "select", label: "Platform", options: socialPlatformOptions },
+  label: { type: "text", label: "Label" },
+  url: { type: "text", label: "URL" },
+  iconColor: colorField("Icon Color"),
+  backgroundColor: colorField("Icon Background"),
+  borderWidth: {
+    type: "select",
+    label: "Icon Border",
+    options: [
+      { label: "No Border", value: "0px" },
+      { label: "Thin Border", value: "1px" },
+      { label: "Medium Border", value: "2px" },
+      { label: "Thick Border", value: "4px" }
+    ]
+  },
+  borderColor: colorField("Icon Border"),
+  boxShadow: { type: "text", label: "Icon Glow / Shadow", placeholder: "0 0 24px #00ff04" },
+  radius: { type: "text", label: "Icon Rounded Corners", placeholder: "999px" },
+  size: { type: "text", label: "Icon Button Size", placeholder: "44px" },
+  svgSize: { type: "text", label: "Symbol Size", placeholder: "22px" },
+  padding: { type: "text", label: "Icon Padding", placeholder: "0px" }
+},
+defaultItemProps: {
+  platform: "custom",
+  label: "Link",
+  url: "#",
+  iconColor: "#bb00ff",
+  backgroundColor: "#000000",
+  borderWidth: "1px",
+  borderColor: "#00ff04",
+  boxShadow: "0 0 24px #00ff04",
+  radius: "999px",
+  size: "44px",
+  svgSize: "22px",
+  padding: "0px"
+} } }, defaultProps: { title: "Follow Grave Robber", titleColor: "#ffffff", titleFont: "Oswald, sans-serif", titleSize: "1rem", backgroundColor: "transparent", paddingY: 50, paddingX: 24, links: [{ platform: "facebook", label: "Facebook", url: "https://www.facebook.com/graverobberpunk", iconColor: "#ffffff", backgroundColor: "rgba(198,40,40,.18)", borderColor: "rgba(198,40,40,.65)" }, { platform: "instagram", label: "Instagram", url: "https://www.instagram.com/graverobberpunk", iconColor: "#ffffff", backgroundColor: "rgba(198,40,40,.18)", borderColor: "rgba(198,40,40,.65)" }, { platform: "spotify", label: "Spotify", url: "https://open.spotify.com/artist/4D34aUp0OsDs8mAEWPIP7c", iconColor: "#ffffff", backgroundColor: "rgba(198,40,40,.18)", borderColor: "rgba(198,40,40,.65)" }] }, render: props => puckConfig.components.SocialIcons.render(props) },
 
     HeaderNav: {
       label: "02 Add Block: Header / Page Navigation",
@@ -1828,26 +1864,59 @@ defaultProps: clone(defaultContent[2].props),
         links: {
           type: "array",
           label: "Social Links - add as many as you want",
-          arrayFields: {
-            platform: { type: "select", label: "Platform", options: socialPlatformOptions },
-            label: { type: "text", label: "Custom Label / Title" },
-            url: { type: "text", label: "URL" },
-            iconColor: colorField("Icon Color"),
-            backgroundColor: colorField("Icon Background"),
-            borderColor: colorField("Icon Border Color")
-          },
+arrayFields: {
+  platform: { type: "select", label: "Platform", options: socialPlatformOptions },
+  label: { type: "text", label: "Custom Label / Title" },
+  url: { type: "text", label: "URL" },
+  iconColor: colorField("Icon Color"),
+  backgroundColor: colorField("Icon Background"),
+  borderWidth: {
+    type: "select",
+    label: "Icon Border",
+    options: [
+      { label: "No Border", value: "0px" },
+      { label: "Thin Border", value: "1px" },
+      { label: "Medium Border", value: "2px" },
+      { label: "Thick Border", value: "4px" }
+    ]
+  },
+  borderColor: colorField("Icon Border Color"),
+  boxShadow: { type: "text", label: "Icon Glow / Shadow", placeholder: "0 0 24px #00ff04" },
+  radius: { type: "text", label: "Icon Rounded Corners", placeholder: "999px" },
+  size: { type: "text", label: "Icon Button Size", placeholder: "44px" },
+  svgSize: { type: "text", label: "Symbol Size", placeholder: "22px" },
+  padding: { type: "text", label: "Icon Padding", placeholder: "0px" }
+},
 defaultItemProps: {
   platform: "facebook",
   label: "Facebook",
   url: "https://facebook.com",
-  iconColor: "#ffffff",
-  backgroundColor: "rgba(198,40,40,.14)",
-  borderColor: "rgba(198,40,40,.55)"
+  iconColor: "#bb00ff",
+  backgroundColor: "#000000",
+  borderWidth: "1px",
+  borderColor: "#00ff04",
+  boxShadow: "0 0 24px #00ff04",
+  radius: "999px",
+  size: "44px",
+  svgSize: "22px",
+  padding: "0px"
 }
         }
       },
 defaultProps: clone(defaultContent[3].props),
-      render: props => <SectionShell {...props}><div className="puck-inner" style={{ textAlign: "center" }}>{props.title && <p className="teaser" style={{ color: props.titleColor || "inherit", fontFamily: props.titleFont || "inherit", fontSize: props.titleSize || "inherit", fontWeight: props.titleWeight || "inherit" }}>{props.title}</p>}<nav className="puck-social-links social-links">{(props.links || []).filter(link => link.url).map((link, index) => <a key={index} className="social-link" href={link.url || "#"} title={link.label || link.platform} style={{ color: link.iconColor || "inherit", background: link.backgroundColor || "rgba(255,255,255,.03)", borderColor: link.borderColor || "rgba(255,255,255,.18)" }}><SocialIcon platform={link.platform} label={link.label} /></a>)}</nav></div></SectionShell>
+      render: props => <SectionShell {...props}><div className="puck-inner" style={{ textAlign: "center" }}>{props.title && <p className="teaser" style={{ color: props.titleColor || "inherit", fontFamily: props.titleFont || "inherit", fontSize: props.titleSize || "inherit", fontWeight: props.titleWeight || "inherit" }}>{props.title}</p>}<nav className="puck-social-links social-links">{(props.links || []).filter(link => link.url).map((link, index) => <a key={index} className="social-link" href={link.url || "#"} title={link.label || link.platform} style={{
+  color: link.iconColor || "inherit",
+  background: link.backgroundColor || "rgba(255,255,255,.03)",
+  border: `${link.borderWidth || "1px"} solid ${link.borderColor || "rgba(255,255,255,.18)"}`,
+  boxShadow: link.boxShadow || "none",
+  borderRadius: link.radius || "999px",
+  width: link.size || "44px",
+  height: link.size || "44px",
+  minWidth: link.size || "44px",
+  minHeight: link.size || "44px",
+  padding: link.padding || "0px",
+  "--social-svg-size": link.svgSize || "22px"
+}}><SocialIcon platform={link.platform} label={link.label} /></a>)}</nav></div></SectionShell>
     },
     Columns: {
       label: "02 Add Block: Columns / Cards",

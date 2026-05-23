@@ -266,12 +266,12 @@ export function puckPageCss() {
 
 #editable-page-root .puck-social-links .social-link svg{
   display:block!important;
-  width:22px!important;
-  height:22px!important;
-  min-width:22px!important;
-  min-height:22px!important;
-  max-width:22px!important;
-  max-height:22px!important;
+  width:var(--social-svg-size,22px)!important;
+  height:var(--social-svg-size,22px)!important;
+  min-width:var(--social-svg-size,22px)!important;
+  min-height:var(--social-svg-size,22px)!important;
+  max-width:var(--social-svg-size,22px)!important;
+  max-height:var(--social-svg-size,22px)!important;
   fill:currentColor!important;
 }
 
@@ -1265,7 +1265,19 @@ function renderSocial(props) {
   const titleHtml = hasText(props.title) ? `<p class="teaser" style="${styleObj({ color: props.titleColor || "inherit", fontFamily: props.titleFont || "inherit", fontSize: props.titleSize || "inherit", fontWeight: props.titleWeight || "inherit" })}">${esc(props.title)}</p>` : "";
   const linkHtml = links
     .filter(link => hasText(link.url))
-    .map(link => `<a class="social-link" href="${attr(link.url)}" target="_blank" rel="noopener noreferrer" title="${attr(link.label || link.platform)}" style="${styleObj({ background: link.backgroundColor || "rgba(255,255,255,.03)", color: link.iconColor || "inherit", borderColor: link.borderColor || "rgba(255,255,255,.18)" })}">${socialIcon(link.platform, link.label)}</a>`)
+    .map(link => `<a class="social-link" href="${attr(link.url)}" target="_blank" rel="noopener noreferrer" title="${attr(link.label || link.platform)}" style="${styleObj({
+  background: link.backgroundColor || "rgba(255,255,255,.03)",
+  color: link.iconColor || "inherit",
+  border: `${link.borderWidth || "1px"} solid ${link.borderColor || "rgba(255,255,255,.18)"}`,
+  boxShadow: link.boxShadow || "none",
+  borderRadius: link.radius || "999px",
+  width: link.size || "44px",
+  height: link.size || "44px",
+  minWidth: link.size || "44px",
+  minHeight: link.size || "44px",
+  padding: link.padding || "0px",
+  "--social-svg-size": link.svgSize || "22px"
+})}">${socialIcon(link.platform, link.label)}</a>`)
     .join("");
   if (!titleHtml && !linkHtml) return "";
   return `<footer class="puck-section social-section is-full-width" style="${sectionStyle}"><div class="puck-inner">${titleHtml}${linkHtml ? `<nav class="puck-social-links social-links">${linkHtml}</nav>` : ""}</div></footer>`;
