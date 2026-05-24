@@ -1142,7 +1142,7 @@ html:has(#editable-page-root .graverobber-contact-form-section),
   </header>`}function _e(e){const t=e.items||[],a=[...t,...t].map(i=>`<span class="song-name" style="${b({color:e.textColor||"var(--cream)",textShadow:e.textShadow||"none",borderColor:e.buttonBorderColor||"rgba(212, 162, 76, 0.25)"})}">${u(i.text)}</span>`).join("");return`<section class="songs-section puck-song-scroll ${e.stretchMode==="full"?"is-full-width":""}" aria-label="Songs We Play" style="${b({background:e.backgroundColor||"linear-gradient(90deg, var(--blue-deep) 0%, var(--charcoal-light) 50%, var(--blue-deep) 100%)",borderBottom:e.lineColor?`1px solid ${e.lineColor}`:"none",width:e.width||"100%",maxWidth:e.maxWidth||"none",margin:e.margin||"0"})}"><div class="songs-scroll-container"><div class="songs-scroll puck-song-track">${a}</div></div></section>`}function Xe(e){const t=Array.from({length:8}).map(()=>"<span></span>").join(""),a=(e.buttons||[]).map(P).join(""),i=`gr-exit-popup-${Math.random().toString(36).slice(2)}`;return`${z(e.customFontUrl)}
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Special+Elite&family=Oswald:wght@400;700;900&display=swap');
-  </style>
+
     #editable-page-root .gr-exit-popup-wrap{
       position:fixed;
       inset:0;
