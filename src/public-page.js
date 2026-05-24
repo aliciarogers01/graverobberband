@@ -37,6 +37,13 @@ function projectDataIsUsable(projectData, pageName) {
     return projectData.content.some(block => block?.type === "ContactForm");
   }
 
+  if (pageName === "shows") {
+    return projectData.content.some(block =>
+      block?.type === "Embed" &&
+      String(block?.props?.html || "").includes("upcoming-shows")
+    );
+  }
+
   return true;
 }
 

@@ -15,9 +15,9 @@
       visibility: visible;
     }
   </style>
-  <script type="module" crossorigin src="/assets/shows-CZF51dfo.js"></script>
+  <script type="module" crossorigin src="/assets/shows-mS6ATx6n.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/puck-config-CUazk0jc.js">
-  <link rel="modulepreload" crossorigin href="/assets/public-page-Bs3wVLjN.js">
+  <link rel="modulepreload" crossorigin href="/assets/public-page-DiQGCKtf.js">
 </head>
 <body data-page="shows">
   <main id="editable-page-root"></main>
@@ -52,132 +52,6 @@
       if (popup) popup.classList.remove("is-visible");
     }
   });
-</script>
-<script>
-  (function () {
-    const API_BASE = window.BAND_API_BASE || "https://band-admin-backend-production.up.railway.app/api";
-    const SITE_SLUG = "graverobberpunk";
-
-    function escapeHtml(value) {
-      return String(value || "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    function formatShowDate(value) {
-      if (!value) return "";
-      const date = new Date(value);
-      if (Number.isNaN(date.getTime())) return value;
-
-      return date.toLocaleDateString(undefined, {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-        year: "numeric"
-      });
-    }
-
-    function getLocalDateOnly(value) {
-      if (!value) return "";
-      return String(value).slice(0, 10);
-    }
-
-    function todayDateOnly() {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, "0");
-      const day = String(now.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
-    }
-
-    function showCard(show) {
-      const venue = escapeHtml(show.venue || "Venue TBA");
-      const city = escapeHtml(show.city || "");
-      const state = escapeHtml(show.state || "");
-      const notes = escapeHtml(show.notes || "");
-      const ticketUrl = escapeHtml(show.ticket_url || "");
-      const imageUrl = escapeHtml(show.image_url || "");
-      const location = [city, state].filter(Boolean).join(", ");
-
-      return `
-        <article class="show-card">
-          ${imageUrl ? `<img class="show-card-image" src="${imageUrl}" alt="${venue}">` : ""}
-          <div class="show-card-content">
-            <p class="show-date">${formatShowDate(show.show_date)}</p>
-            <h3>${venue}</h3>
-            ${location ? `<p>${location}</p>` : ""}
-            ${notes ? `<p>${notes}</p>` : ""}
-            ${ticketUrl ? `<a class="primary-btn" href="${ticketUrl}" target="_blank" rel="noopener noreferrer">Tickets</a>` : ""}
-          </div>
-        </article>
-      `;
-    }
-
-    async function loadShows() {
-      const upcoming = document.getElementById("upcoming-shows");
-      const noShows = document.getElementById("no-shows-message");
-      const pastSection = document.querySelector(".past-shows-section");
-      const past = document.getElementById("past-shows");
-
-      if (!upcoming) return false;
-
-      try {
-        const response = await fetch(`${API_BASE}/shows/${SITE_SLUG}?_=${Date.now()}`);
-        const data = await response.json();
-
-        if (!response.ok) {
-          upcoming.innerHTML = `<p class="empty-state">${escapeHtml(data.error || "Could not load shows.")}</p>`;
-          return true;
-        }
-
-        const shows = Array.isArray(data.shows) ? data.shows : [];
-        const today = todayDateOnly();
-
-        const upcomingShows = shows.filter(show => getLocalDateOnly(show.show_date) >= today);
-        const pastShows = shows.filter(show => getLocalDateOnly(show.show_date) < today);
-
-        upcoming.innerHTML = upcomingShows.map(showCard).join("");
-
-        if (noShows) {
-          noShows.classList.toggle("hidden", upcomingShows.length > 0);
-          noShows.style.display = upcomingShows.length > 0 ? "none" : "";
-        }
-
-        if (past && pastSection) {
-          past.innerHTML = pastShows.map(showCard).join("");
-          pastSection.classList.toggle("hidden", pastShows.length === 0);
-          pastSection.style.display = pastShows.length > 0 ? "" : "none";
-        }
-
-        return true;
-      } catch (error) {
-        upcoming.innerHTML = `<p class="empty-state">Could not load shows right now.</p>`;
-        return true;
-      }
-    }
-
-    function waitForShowContainers() {
-      let attempts = 0;
-
-      const timer = setInterval(async function () {
-        attempts += 1;
-
-        const loaded = await loadShows();
-        if (loaded || attempts >= 40) {
-          clearInterval(timer);
-        }
-      }, 250);
-    }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", waitForShowContainers);
-    } else {
-      waitForShowContainers();
-    }
-  })();
 </script>
 </body>
 </html>
