@@ -52,5 +52,85 @@
     }
   });
 </script>
+<script>
+  (function () {
+    const API_BASE = window.BAND_API_BASE || "https://band-admin-backend-production.up.railway.app/api";
+    const SITE_SLUG = "graverobberpunk";
+
+    function formatShowDate(value) {
+      if (!value) return "";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return value;
+
+      return date.toLocaleDateString(undefined, {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      });
+    }
+
+    function showCard(show) {
+      const image = show.image_url
+        ? `<img class="show-card-image" src="${show.image_url}" alt="${show.venue || "Show"}">`
+        : "";
+
+      const location = [show.city, show.state].filter(Boolean).join(", ");
+
+      return `
+        <article class="show-card">
+          ${image}
+          <div class="show-card-content">
+            <p class="show-date">${formatShowDate(show.show_date)}</p>
+            <h3>${show.venue || "Venue TBA"}</h3>
+            ${location ? `<p>${location}</p>` : ""}
+            ${show.notes ? `<p>${show.notes}</p>` : ""}
+            ${show.ticket_url ? `<a class="primary-btn" href="${show.ticket_url}" target="_blank" rel="noopener noreferrer">Tickets</a>` : ""}
+          </div>
+        </article>
+      `;
+    }
+
+    async function loadShows() {
+      const upcoming = document.getElementById("upcoming-shows");
+      const noShows = document.getElementById("no-shows-message");
+      const pastSection = document.querySelector(".past-shows-section");
+      const past = document.getElementById("past-shows");
+
+      if (!upcoming) return;
+
+      try {
+        const response = await fetch(`${API_BASE}/shows/${SITE_SLUG}?_=${Date.now()}`);
+        const data = await response.json();
+
+        const shows = data.shows || [];
+        const now = new Date();
+        now.setHours(0, 0, 0, 0);
+
+        const upcomingShows = shows.filter(show => new Date(show.show_date) >= now);
+        const pastShows = shows.filter(show => new Date(show.show_date) < now);
+
+        upcoming.innerHTML = upcomingShows.map(showCard).join("");
+
+        if (noShows) {
+          noShows.classList.toggle("hidden", upcomingShows.length > 0);
+        }
+
+        if (past && pastSection) {
+          past.innerHTML = pastShows.map(showCard).join("");
+          pastSection.classList.toggle("hidden", pastShows.length === 0);
+        }
+      } catch (error) {
+        upcoming.innerHTML = `<p class="empty-state">Could not load shows right now.</p>`;
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", loadShows);
+    } else {
+      loadShows();
+    }
+  })();
+</script>
 </body>
 </html>
