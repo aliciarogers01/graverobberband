@@ -1654,6 +1654,183 @@ export const puckConfig = {
         return (
           <section className="puck-section gr-welcome-section gr-exit-popup-wrap">
             {applyFontImport(props.customFontUrl)}
+            <style>{`
+              .gr-exit-popup-wrap{
+                position:fixed;
+                inset:0;
+                z-index:999999;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                padding:24px;
+                pointer-events:none;
+              }
+
+              .gr-exit-popup-backdrop{
+                position:absolute;
+                inset:0;
+                background:rgba(0,0,0,.82);
+                backdrop-filter:blur(8px);
+                pointer-events:auto;
+              }
+
+              .gr-exit-popup-card{
+                width:min(100%, var(--gr-width));
+                pointer-events:auto;
+              }
+
+              .gr-exit-popup-close{
+                position:absolute;
+                top:14px;
+                right:16px;
+                z-index:5;
+                width:44px;
+                height:44px;
+                border-radius:999px;
+                border:2px solid #00ff04;
+                background:#000000;
+                color:#00ff04;
+                font-size:28px;
+                line-height:1;
+                cursor:pointer;
+                box-shadow:0 0 24px rgba(0,255,4,.7);
+              }
+
+              .gr-welcome-card{
+                position:relative;
+                overflow:hidden;
+                margin:0 auto;
+                padding:42px 28px;
+                border:2px solid var(--gr-border);
+                border-radius:var(--gr-radius);
+                max-width:var(--gr-width);
+                text-align:var(--gr-align);
+                background:var(--gr-bg);
+                box-shadow:0 0 28px var(--gr-glow), inset 0 0 34px rgba(187,0,255,.2);
+              }
+
+              .gr-welcome-card:before{
+                content:"";
+                position:absolute;
+                inset:-2px;
+                background:
+                  radial-gradient(circle at 20% 20%,rgba(0,255,4,.28),transparent 28%),
+                  radial-gradient(circle at 80% 70%,rgba(187,0,255,.32),transparent 32%);
+                pointer-events:none;
+              }
+
+              .gr-welcome-content{
+                position:relative;
+                z-index:2;
+              }
+
+              .gr-welcome-eyebrow{
+                margin:0 0 12px;
+                color:#bb00ff;
+                font-family:Oswald,sans-serif;
+                font-weight:900;
+                letter-spacing:.24em;
+                text-transform:uppercase;
+                text-shadow:0 0 16px rgba(187,0,255,.9);
+              }
+
+              .gr-welcome-title{
+                margin:0;
+                color:var(--gr-title);
+                font-family:var(--gr-title-font);
+                font-size:var(--gr-title-size);
+                line-height:.95;
+                text-shadow:var(--gr-title-shadow);
+                text-transform:uppercase;
+              }
+
+              .gr-welcome-body{
+                margin:22px auto 0;
+                color:var(--gr-body);
+                font-family:var(--gr-body-font);
+                font-size:var(--gr-body-size);
+                line-height:1.55;
+                max-width:760px;
+              }
+
+              .gr-welcome-particles{
+                position:absolute;
+                inset:0;
+                pointer-events:none;
+                z-index:1;
+              }
+
+              .gr-welcome-particles span{
+                position:absolute;
+                width:7px;
+                height:7px;
+                border-radius:999px;
+                background:#00ff04;
+                box-shadow:0 0 18px #00ff04;
+                animation:grParticle 1.8s ease-out both;
+              }
+
+              .gr-welcome-particles span:nth-child(1){left:8%;top:20%;animation-delay:.02s}
+              .gr-welcome-particles span:nth-child(2){left:18%;top:80%;animation-delay:.08s}
+              .gr-welcome-particles span:nth-child(3){left:32%;top:12%;animation-delay:.14s}
+              .gr-welcome-particles span:nth-child(4){left:48%;top:92%;animation-delay:.2s}
+              .gr-welcome-particles span:nth-child(5){left:68%;top:18%;animation-delay:.26s}
+              .gr-welcome-particles span:nth-child(6){left:88%;top:74%;animation-delay:.32s}
+              .gr-welcome-particles span:nth-child(7){left:78%;top:45%;animation-delay:.38s}
+              .gr-welcome-particles span:nth-child(8){left:42%;top:52%;animation-delay:.44s}
+
+              .gr-theme-toxic{background:linear-gradient(135deg,rgba(0,0,0,.96),rgba(0,45,2,.92))!important;border-color:#00ff04!important;box-shadow:0 0 44px rgba(0,255,4,.75),inset 0 0 44px rgba(0,255,4,.16)!important;}
+              .gr-theme-toxic .gr-welcome-title{color:#00ff04!important;filter:drop-shadow(0 0 18px #00ff04);}
+              .gr-theme-toxic:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(0,255,4,.08) 0 2px,transparent 2px 18px);pointer-events:none;}
+
+              .gr-theme-crypt{background:linear-gradient(145deg,rgba(17,0,26,.96),rgba(0,0,0,.94))!important;border-color:#bb00ff!important;box-shadow:0 0 42px rgba(187,0,255,.75),inset 0 0 42px rgba(0,255,4,.18)!important;}
+              .gr-theme-crypt .gr-welcome-title{color:#bb00ff!important;letter-spacing:.06em;}
+
+              .gr-theme-fog{background:radial-gradient(circle at center,rgba(30,30,30,.96),rgba(0,0,0,.98))!important;border-color:rgba(255,255,255,.28)!important;box-shadow:0 0 50px rgba(255,255,255,.26),inset 0 0 40px rgba(255,255,255,.1)!important;}
+              .gr-theme-fog .gr-welcome-title{color:#f2f2f2!important;}
+              .gr-theme-fog:after{content:"";position:absolute;inset:-40%;background:radial-gradient(circle,rgba(255,255,255,.16),transparent 38%);filter:blur(24px);animation:grFogDrift 7s ease-in-out infinite alternate;pointer-events:none;}
+
+              .gr-theme-slide-left{background:linear-gradient(90deg,rgba(0,0,0,.98),rgba(70,0,0,.92))!important;border-color:#ff0033!important;box-shadow:0 0 44px rgba(255,0,51,.55),inset 0 0 35px rgba(187,0,255,.24)!important;}
+              .gr-theme-slide-left .gr-welcome-title{color:#ffffff!important;text-shadow:4px 0 0 #bb00ff,-4px 0 0 #00ff04,0 0 28px #ff0033!important;}
+
+              .gr-theme-slide-top{background:linear-gradient(180deg,rgba(35,0,52,.98),rgba(0,0,0,.96))!important;border-color:#bb00ff!important;box-shadow:0 0 44px rgba(187,0,255,.62),inset 0 0 36px rgba(0,255,4,.2)!important;}
+              .gr-theme-slide-top:after{content:"";position:absolute;left:0;right:0;top:0;height:45%;background:linear-gradient(180deg,rgba(187,0,255,.28),transparent);pointer-events:none;}
+
+              .gr-theme-particles{background:radial-gradient(circle at center,rgba(0,35,2,.98),rgba(0,0,0,.98))!important;border-color:#00ff04!important;box-shadow:0 0 48px rgba(0,255,4,.65),inset 0 0 42px rgba(187,0,255,.22)!important;}
+              .gr-theme-particles .gr-welcome-content{animation:grAssembleContent 1.4s ease-out both;}
+              .gr-theme-particles .gr-welcome-title{animation:grTextAssemble 1.6s ease-out both;}
+              .gr-theme-particles .gr-welcome-body{animation:grTextAssemble 1.9s ease-out both;}
+
+              .gr-theme-glitch{background:linear-gradient(135deg,rgba(0,0,0,.98),rgba(18,0,26,.96))!important;border-color:#00ff04!important;box-shadow:0 0 44px rgba(187,0,255,.6),inset 0 0 36px rgba(0,255,4,.18)!important;}
+              .gr-theme-glitch .gr-welcome-title{animation:grDemonGlitch 1.4s steps(2,end) infinite;color:#00ff04!important;text-shadow:3px 0 #bb00ff,-3px 0 #00ff04,0 0 30px #00ff04!important;}
+
+              .gr-theme-tomb{background:linear-gradient(135deg,rgba(0,0,0,.98),rgba(0,22,1,.94),rgba(40,0,60,.88))!important;border-color:#00ff04!important;box-shadow:0 0 24px #00ff04,0 0 56px rgba(187,0,255,.75),inset 0 0 38px rgba(0,255,4,.2)!important;}
+
+              .gr-anim-pop{animation:grPop .9s cubic-bezier(.2,1.25,.35,1) both;}
+              .gr-anim-bounce{animation:grBounce 1.1s both;}
+              .gr-anim-fade{animation:grFade 1.4s both;}
+              .gr-anim-left{animation:grLeft 1s both;}
+              .gr-anim-right{animation:grRight 1s both;}
+              .gr-anim-top{animation:grTop 1s both;}
+              .gr-anim-bottom{animation:grBottom 1s both;}
+              .gr-anim-particles{animation:grParticlesIn 1.4s both;}
+              .gr-anim-glitch{animation:grGlitch 1.2s steps(2,end) both;}
+
+              @keyframes grPop{0%{opacity:0;transform:scale(.45) rotate(-4deg)}70%{opacity:1;transform:scale(1.08) rotate(1deg)}100%{transform:scale(1) rotate(0)}}
+              @keyframes grBounce{0%{opacity:0;transform:scale(.2) translateY(80px)}55%{opacity:1;transform:scale(1.12) translateY(-18px)}75%{transform:scale(.96) translateY(8px)}100%{transform:scale(1) translateY(0)}}
+              @keyframes grFade{from{opacity:0;filter:blur(18px)}to{opacity:1;filter:blur(0)}}
+              @keyframes grLeft{from{opacity:0;transform:translateX(-120px)}to{opacity:1;transform:translateX(0)}}
+              @keyframes grRight{from{opacity:0;transform:translateX(120px)}to{opacity:1;transform:translateX(0)}}
+              @keyframes grTop{from{opacity:0;transform:translateY(-120px)}to{opacity:1;transform:translateY(0)}}
+              @keyframes grBottom{from{opacity:0;transform:translateY(120px)}to{opacity:1;transform:translateY(0)}}
+              @keyframes grParticlesIn{0%{opacity:0;transform:scale(.75);filter:blur(14px)}100%{opacity:1;transform:scale(1);filter:blur(0)}}
+              @keyframes grGlitch{0%{opacity:0;transform:skewX(8deg)}20%{opacity:1;transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}100%{transform:none}}
+              @keyframes grParticle{0%{opacity:0;transform:scale(0) translate(0,0)}50%{opacity:1}100%{opacity:0;transform:scale(1.8) translate(26px,-34px)}}
+              @keyframes grFogDrift{from{transform:translate(-8%,-4%) scale(1)}to{transform:translate(8%,4%) scale(1.18)}}
+              @keyframes grAssembleContent{0%{opacity:0;filter:blur(18px);transform:scale(1.2)}100%{opacity:1;filter:blur(0);transform:scale(1)}}
+              @keyframes grTextAssemble{0%{opacity:0;letter-spacing:.55em;filter:blur(12px);transform:translateY(28px) scale(1.25)}100%{opacity:1;letter-spacing:normal;filter:blur(0);transform:none}}
+              @keyframes grDemonGlitch{0%,100%{transform:none}20%{transform:translate(-3px,2px) skewX(8deg)}40%{transform:translate(3px,-2px) skewX(-8deg)}60%{transform:translate(-2px,0)}80%{transform:translate(2px,1px)}}
+            `}</style>
             <div className="gr-exit-popup-backdrop" onClick={() => setIsOpen(false)} />
             <div
               className={`gr-welcome-card gr-exit-popup-card gr-theme-${props.theme || "toxic"} gr-anim-${props.animationStyle || "pop"}`}
