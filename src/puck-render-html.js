@@ -1313,6 +1313,8 @@ function renderWelcomeHorrorMessage(props) {
 
   return `${fontImportTag(props.customFontUrl)}
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Special+Elite&family=Oswald:wght@400;700;900&display=swap');
+  </style>
     #editable-page-root .gr-exit-popup-wrap{
       position:fixed;
       inset:0;
