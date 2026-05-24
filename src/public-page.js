@@ -91,15 +91,8 @@ async function loadPublicPage() {
         const showsHtml = `
           <section class="puck-section" style="padding:20px 24px;">
             <div id="upcoming-shows"></div>
-            <div id="no-shows-message" class="empty-state">
-              <h2>Shows Coming Soon</h2>
-              <p>Join the crypt list to hear when the next haunt is announced.</p>
-              <a href="signup.html" class="primary-btn">Get Notified</a>
-            </div>
-            <section class="past-shows-section hidden">
-              <h2>Past Shows</h2>
-              <div id="past-shows"></div>
-            </section>
+            <div id="no-shows-message" class="empty-state hidden" style="display:none;"></div>
+            <div id="past-shows" style="display:none;"></div>
           </section>
         `;
 
