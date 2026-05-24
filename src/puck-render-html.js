@@ -1656,7 +1656,8 @@ function renderWelcomeHorrorMessage(props) {
       if (!popup) return;
 
       let shown = false;
-      let lastY = window.innerHeight;
+      let lastY = null;
+      let hasBeenLowerOnPage = false;
 
       const triggerDistance = ${Number(props.exitTriggerDistance || 120)};
 
@@ -1674,11 +1675,14 @@ function renderWelcomeHorrorMessage(props) {
       document.addEventListener("mousemove", function(event){
         const armedDistance = Math.max(triggerDistance + 180, 260);
 
-        const movingUp = event.clientY < lastY;
-        const wasLowerOnPage = lastY >= armedDistance;
+        if (event.clientY >= armedDistance) {
+          hasBeenLowerOnPage = true;
+        }
+
+        const movingUp = lastY !== null && event.clientY < lastY;
         const nearTop = event.clientY <= triggerDistance;
 
-        if (wasLowerOnPage && movingUp && nearTop) {
+        if (hasBeenLowerOnPage && movingUp && nearTop) {
           showPopup();
         }
 

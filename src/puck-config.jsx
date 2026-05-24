@@ -1612,20 +1612,29 @@ export const puckConfig = {
         const [isOpen, setIsOpen] = useState(props.showInEditor !== "no");
 
         useEffect(() => {
-          if (props.showInEditor !== "no") return;
+          if (props.showInEditor !== "no") {
+            setIsOpen(true);
+            return;
+          }
 
-          let lastY = window.innerHeight;
+          setIsOpen(false);
+
+          let lastY = null;
+          let hasBeenLowerOnPage = false;
           let triggered = false;
 
           function handleMouseMove(event) {
             const triggerDistance = Number(props.exitTriggerDistance || 70);
             const armedDistance = Math.max(triggerDistance + 180, 260);
 
-            const movingUp = event.clientY < lastY;
-            const wasLowerOnPage = lastY >= armedDistance;
+            if (event.clientY >= armedDistance) {
+              hasBeenLowerOnPage = true;
+            }
+
+            const movingUp = lastY !== null && event.clientY < lastY;
             const nearTop = event.clientY <= triggerDistance;
 
-            if (!triggered && wasLowerOnPage && movingUp && nearTop) {
+            if (!triggered && hasBeenLowerOnPage && movingUp && nearTop) {
               triggered = true;
               setIsOpen(true);
             }
