@@ -1,0 +1,14 @@
+import{e as f,d as h,c as w,f as y,h as b}from"./puck-config-CUazk0jc.js";const v="graverobber";function P(){var t,c;const e=(c=(t=document.body)==null?void 0:t.dataset)==null?void 0:c.page,n=(()=>{const r=window.location.pathname.split("/").pop()||"index.html";return r==="index.html"||r===""?"home":r.replace(".html","")})();return e&&e!=="home"?e:n}function k(e){if(typeof e!="string")return e;try{return JSON.parse(e)}catch(n){return console.warn("project_data was a string but could not be parsed",n,e),null}}function E(e,n){return!(e!=null&&e.content)||!Array.isArray(e.content)||!e.content.length?!1:n==="contact"?e.content.some(t=>(t==null?void 0:t.type)==="ContactForm"):!0}async function S(){var l,u,p;const e=document.getElementById("editable-page-root");if(!e)return;const n=document.createElement("style");n.textContent=f(),document.head.appendChild(n);const t=P(),c=window.BAND_API_BASE||"https://band-admin-backend-production.up.railway.app/api";function r(s={}){const o={...b,...s||{}},a=y(o);document.documentElement.style.background=a,document.body.style.background=a,document.body.style.color=o.pageTextColor||"#f5f0e6",e.style.minHeight="100vh",e.style.background=a,e.style.color=o.pageTextColor||"#f5f0e6"}try{const s=await fetch(`${c}/visual-pages/${v}/${t}?_=${Date.now()}`);if(!s.ok)throw new Error(`Public page fetch failed: ${s.status}`);const o=await s.json(),a=(o==null?void 0:o.page)||o||{},i=k(a.project_data);if(E(i,t)){if(r((l=i.root)==null?void 0:l.props),e.innerHTML=h(i),t==="shows"&&!document.getElementById("upcoming-shows")){const m=`
+          <section class="puck-section" style="padding:20px 24px;">
+            <div id="upcoming-shows"></div>
+            <div id="no-shows-message" class="empty-state">
+              <h2>Shows Coming Soon</h2>
+              <p>Join the crypt list to hear when the next haunt is announced.</p>
+              <a href="signup.html" class="primary-btn">Get Notified</a>
+            </div>
+            <section class="past-shows-section hidden">
+              <h2>Past Shows</h2>
+              <div id="past-shows"></div>
+            </section>
+          </section>
+        `,g=((u=e.querySelector(".puck-social-links"))==null?void 0:u.closest(".puck-section"))||e.querySelector(".social-section")||e.querySelector("footer");g?g.insertAdjacentHTML("beforebegin",m):e.insertAdjacentHTML("beforeend",m)}document.documentElement.classList.add("visual-page-ready"),window.dispatchEvent(new CustomEvent("visualPageRendered",{detail:{pageName:t}}));return}a.html&&a.html.trim()&&console.warn("Ignoring saved page.html because it can contain old raw fallback HTML.")}catch(s){console.warn("Published page failed to load. Rendering default page.",s)}const d=w(t);r((p=d.root)==null?void 0:p.props),e.innerHTML=h(d),document.documentElement.classList.add("visual-page-ready"),window.dispatchEvent(new CustomEvent("visualPageRendered",{detail:{pageName:t}}))}S();

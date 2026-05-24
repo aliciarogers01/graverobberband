@@ -88,7 +88,7 @@ async function loadPublicPage() {
       applyPageBackground(projectData.root?.props);
       root.innerHTML = renderPuckHtml(projectData);
       if (pageName === "shows" && !document.getElementById("upcoming-shows")) {
-        root.insertAdjacentHTML("beforeend", `
+        const showsHtml = `
           <section class="puck-section" style="padding:20px 24px;">
             <div id="upcoming-shows"></div>
             <div id="no-shows-message" class="empty-state">
@@ -101,7 +101,18 @@ async function loadPublicPage() {
               <div id="past-shows"></div>
             </section>
           </section>
-        `);
+        `;
+
+        const footerBlock =
+          root.querySelector(".puck-social-links")?.closest(".puck-section") ||
+          root.querySelector(".social-section") ||
+          root.querySelector("footer");
+
+        if (footerBlock) {
+          footerBlock.insertAdjacentHTML("beforebegin", showsHtml);
+        } else {
+          root.insertAdjacentHTML("beforeend", showsHtml);
+        }
       }
 
       document.documentElement.classList.add("visual-page-ready");
