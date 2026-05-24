@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { puckPageCss } from "./puck-render-html.js";
 
 const SITE_SLUG = "graverobberpunk";
@@ -1525,6 +1525,18 @@ export const puckConfig = {
             { label: "Glitch Flicker", value: "glitch" }
           ]
         },
+        showInEditor: {
+          type: "select",
+          label: "Show While Editing",
+          options: [
+            { label: "Yes - show so I can design it", value: "yes" },
+            { label: "No - only trigger on exit intent", value: "no" }
+          ]
+        },
+        exitTriggerDistance: {
+          type: "number",
+          label: "Exit Trigger Distance From Top"
+        },
         eyebrow: { type: "text", label: "Small Top Text" },
         title: { type: "text", label: "Main Welcome Text" },
         body: { type: "textarea", label: "Message Text" },
@@ -1555,6 +1567,8 @@ export const puckConfig = {
         buttons: buttonArrayField
       },
       defaultProps: {
+        showInEditor: "yes",
+        exitTriggerDistance: 70,
         theme: "toxic",
         animationStyle: "pop",
         eyebrow: "WELCOME TO THE GRAVE",
@@ -1594,60 +1608,95 @@ export const puckConfig = {
           }
         ]
       },
-      render: props => (
-        <section
-          className="puck-section gr-welcome-section"
-          style={{
-            background: props.backgroundColor || "transparent",
-            padding: `${props.paddingY || 70}px ${props.paddingX || 24}px`
-          }}
-        >
-          {applyFontImport(props.customFontUrl)}
-          <style>{`
-            .gr-welcome-card{position:relative;overflow:hidden;margin:0 auto;padding:42px 28px;border:2px solid var(--gr-border);border-radius:var(--gr-radius);max-width:var(--gr-width);text-align:var(--gr-align);background:var(--gr-bg);box-shadow:0 0 28px color-mix(in srgb,var(--gr-glow),transparent 35%),inset 0 0 34px rgba(187,0,255,.2);}
-            .gr-welcome-card:before{content:"";position:absolute;inset:-2px;background:radial-gradient(circle at 20% 20%,rgba(0,255,4,.28),transparent 28%),radial-gradient(circle at 80% 70%,rgba(187,0,255,.32),transparent 32%);pointer-events:none;}
-            .gr-welcome-content{position:relative;z-index:2;}
-            .gr-welcome-eyebrow{margin:0 0 12px;color:#bb00ff;font-family:Oswald,sans-serif;font-weight:900;letter-spacing:.24em;text-transform:uppercase;text-shadow:0 0 16px rgba(187,0,255,.9);}
-            .gr-welcome-title{margin:0;color:var(--gr-title);font-family:var(--gr-title-font);font-size:var(--gr-title-size);line-height:.95;text-shadow:var(--gr-title-shadow);text-transform:uppercase;}
-            .gr-welcome-body{margin:22px auto 0;color:var(--gr-body);font-family:var(--gr-body-font);font-size:var(--gr-body-size);line-height:1.55;max-width:760px;}
-            .gr-welcome-particles{position:absolute;inset:0;pointer-events:none;z-index:1;}
-            .gr-welcome-particles span{position:absolute;width:7px;height:7px;border-radius:999px;background:#00ff04;box-shadow:0 0 18px #00ff04;animation:grParticle 1.8s ease-out both;}
-            .gr-welcome-particles span:nth-child(1){left:8%;top:20%;animation-delay:.02s}.gr-welcome-particles span:nth-child(2){left:18%;top:80%;animation-delay:.08s}.gr-welcome-particles span:nth-child(3){left:32%;top:12%;animation-delay:.14s}.gr-welcome-particles span:nth-child(4){left:48%;top:92%;animation-delay:.2s}.gr-welcome-particles span:nth-child(5){left:68%;top:18%;animation-delay:.26s}.gr-welcome-particles span:nth-child(6){left:88%;top:74%;animation-delay:.32s}.gr-welcome-particles span:nth-child(7){left:78%;top:45%;animation-delay:.38s}.gr-welcome-particles span:nth-child(8){left:42%;top:52%;animation-delay:.44s}
-            .gr-anim-pop{animation:grPop .9s cubic-bezier(.2,1.25,.35,1) both}.gr-anim-bounce{animation:grBounce 1.1s both}.gr-anim-fade{animation:grFade 1.4s both}.gr-anim-left{animation:grLeft 1s both}.gr-anim-right{animation:grRight 1s both}.gr-anim-top{animation:grTop 1s both}.gr-anim-bottom{animation:grBottom 1s both}.gr-anim-particles{animation:grParticlesIn 1.4s both}.gr-anim-glitch{animation:grGlitch 1.2s steps(2,end) both}
-            @keyframes grPop{0%{opacity:0;transform:scale(.45) rotate(-4deg)}70%{opacity:1;transform:scale(1.08) rotate(1deg)}100%{transform:scale(1) rotate(0)}}@keyframes grBounce{0%{opacity:0;transform:scale(.2) translateY(80px)}55%{opacity:1;transform:scale(1.12) translateY(-18px)}75%{transform:scale(.96) translateY(8px)}100%{transform:scale(1) translateY(0)}}@keyframes grFade{from{opacity:0;filter:blur(18px)}to{opacity:1;filter:blur(0)}}@keyframes grLeft{from{opacity:0;transform:translateX(-120px)}to{opacity:1;transform:translateX(0)}}@keyframes grRight{from{opacity:0;transform:translateX(120px)}to{opacity:1;transform:translateX(0)}}@keyframes grTop{from{opacity:0;transform:translateY(-120px)}to{opacity:1;transform:translateY(0)}}@keyframes grBottom{from{opacity:0;transform:translateY(120px)}to{opacity:1;transform:translateY(0)}}@keyframes grParticlesIn{0%{opacity:0;transform:scale(.75);filter:blur(14px)}100%{opacity:1;transform:scale(1);filter:blur(0)}}@keyframes grGlitch{0%{opacity:0;transform:skewX(8deg)}20%{opacity:1;transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}100%{transform:none}}@keyframes grParticle{0%{opacity:0;transform:scale(0) translate(0,0)}50%{opacity:1}100%{opacity:0;transform:scale(1.8) translate(26px,-34px)}}
-          `}</style>
-          <div
-            className={`gr-welcome-card gr-theme-${props.theme || "toxic"} gr-anim-${props.animationStyle || "pop"}`}
-            style={{
-              "--gr-bg": props.cardBackground || "rgba(0,0,0,.92)",
-              "--gr-border": props.borderColor || "#bb00ff",
-              "--gr-glow": props.glowColor || "#00ff04",
-              "--gr-radius": props.radius || "28px",
-              "--gr-width": props.maxWidth || "920px",
-              "--gr-align": props.align || "center",
-              "--gr-title": props.titleColor || "#00ff04",
-              "--gr-title-font": props.titleFont || "Creepster, cursive",
-              "--gr-title-size": props.titleSize || "clamp(44px, 8vw, 92px)",
-              "--gr-title-shadow": props.titleShadow || "0 0 18px #00ff04",
-              "--gr-body": props.bodyColor || "#ffffff",
-              "--gr-body-font": props.bodyFont || "Special Elite, cursive",
-              "--gr-body-size": props.bodySize || "20px"
-            }}
-          >
-            {(props.theme === "particles" || props.animationStyle === "particles") && (
-              <div className="gr-welcome-particles" aria-hidden="true">
-                {Array.from({ length: 8 }).map((_, index) => <span key={index} />)}
-              </div>
-            )}
-            <div className="gr-welcome-content">
-              {props.eyebrow && <p className="gr-welcome-eyebrow">{props.eyebrow}</p>}
-              {props.title && <h2 className="gr-welcome-title">{props.title}</h2>}
-              {props.body && <p className="gr-welcome-body">{props.body}</p>}
-              {(props.buttons || []).length > 0 && <div className="puck-buttons">{(props.buttons || []).map((button, index) => <ButtonPreview key={index} button={button} index={index} />)}</div>}
+      render: props => {
+        const [isOpen, setIsOpen] = useState(props.showInEditor !== "no");
+
+        useEffect(() => {
+          if (props.showInEditor !== "no") return;
+
+          let lastY = window.innerHeight;
+          let triggered = false;
+
+          function handleMouseMove(event) {
+            const triggerDistance = Number(props.exitTriggerDistance || 70);
+            const movingUp = event.clientY < lastY;
+            const nearTop = event.clientY <= triggerDistance;
+            const nearCorner = event.clientX <= 120 || event.clientX >= window.innerWidth - 120;
+
+            if (!triggered && movingUp && nearTop && nearCorner) {
+              triggered = true;
+              setIsOpen(true);
+            }
+
+            lastY = event.clientY;
+          }
+
+          document.addEventListener("mousemove", handleMouseMove);
+          return () => document.removeEventListener("mousemove", handleMouseMove);
+        }, [props.showInEditor, props.exitTriggerDistance]);
+
+        if (!isOpen) {
+          return (
+            <div
+              className="puck-section"
+              style={{
+                padding: "4px 12px",
+                background: "rgba(0,0,0,.85)",
+                color: "#00ff04",
+                border: "1px dashed #bb00ff",
+                fontSize: "12px",
+                textAlign: "center"
+              }}
+            >
+              Exit-intent horror popup is hidden until mouse moves toward browser close area.
             </div>
-          </div>
-        </section>
-      )
+          );
+        }
+
+        return (
+          <section className="puck-section gr-welcome-section gr-exit-popup-wrap">
+            {applyFontImport(props.customFontUrl)}
+            <div className="gr-exit-popup-backdrop" onClick={() => setIsOpen(false)} />
+            <div
+              className={`gr-welcome-card gr-exit-popup-card gr-theme-${props.theme || "toxic"} gr-anim-${props.animationStyle || "pop"}`}
+              style={{
+                "--gr-bg": props.cardBackground || "rgba(0,0,0,.92)",
+                "--gr-border": props.borderColor || "#bb00ff",
+                "--gr-glow": props.glowColor || "#00ff04",
+                "--gr-radius": props.radius || "28px",
+                "--gr-width": props.maxWidth || "920px",
+                "--gr-align": props.align || "center",
+                "--gr-title": props.titleColor || "#00ff04",
+                "--gr-title-font": props.titleFont || "Creepster, cursive",
+                "--gr-title-size": props.titleSize || "clamp(44px, 8vw, 92px)",
+                "--gr-title-shadow": props.titleShadow || "0 0 18px #00ff04",
+                "--gr-body": props.bodyColor || "#ffffff",
+                "--gr-body-font": props.bodyFont || "Special Elite, cursive",
+                "--gr-body-size": props.bodySize || "20px"
+              }}
+            >
+              <button className="gr-exit-popup-close" onClick={() => setIsOpen(false)}>×</button>
+
+              {(props.theme === "particles" || props.animationStyle === "particles") && (
+                <div className="gr-welcome-particles" aria-hidden="true">
+                  {Array.from({ length: 8 }).map((_, index) => <span key={index} />)}
+                </div>
+              )}
+
+              <div className="gr-welcome-content">
+                {props.eyebrow && <p className="gr-welcome-eyebrow">{props.eyebrow}</p>}
+                {props.title && <h2 className="gr-welcome-title">{props.title}</h2>}
+                {props.body && <p className="gr-welcome-body">{props.body}</p>}
+                {(props.buttons || []).length > 0 && (
+                  <div className="puck-buttons">
+                    {(props.buttons || []).map((button, index) => <ButtonPreview key={index} button={button} index={index} />)}
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+        );
+      }
     },
 
     GraveRobberHero: {
@@ -1918,30 +1967,31 @@ stretchMode: "full",
         ]
       },
       render: props => {
-        const songs = props.items || [];
+        const songItems = props.items || [];
+        const songs = [...songItems, ...songItems];
 
         return (
           <section
             className={`songs-section puck-song-scroll ${props.stretchMode === "full" ? "is-full-width" : ""}`}
             aria-label="Songs We Play"
-style={{
-  background: props.backgroundColor || "linear-gradient(90deg, var(--blue-deep) 0%, var(--charcoal-light) 50%, var(--blue-deep) 100%)",
-  borderBottom: `1px solid ${props.lineColor || "rgba(212, 162, 76, 0.2)"}`,
-  width: props.width || "100%",
-  maxWidth: props.maxWidth || "none",
-  margin: props.margin || "0"
-}}
+            style={{
+              background: props.backgroundColor || "rgba(77,198,225,.12)",
+              borderBottom: `1px solid ${props.lineColor || "rgba(77,198,225,.45)"}`,
+              width: props.width || "100%",
+              maxWidth: props.maxWidth || "none",
+              margin: props.margin || "0"
+            }}
           >
             <div className="songs-scroll-container">
               <div className="songs-scroll puck-song-track">
-                {[...songs, ...songs].map((item, index) => (
+                {songs.map((item, index) => (
                   <span
                     key={index}
                     className="song-name"
                     style={{
-                      color: props.textColor || "var(--cream)",
+                      color: props.textColor || "#4dc6e1",
                       textShadow: props.textShadow || "none",
-                      borderColor: props.buttonBorderColor || "rgba(212, 162, 76, 0.25)"
+                      borderColor: props.buttonBorderColor || "rgba(77,198,225,.45)"
                     }}
                   >
                     {item.text}

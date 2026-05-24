@@ -1309,48 +1309,362 @@ function renderWelcomeHorrorMessage(props) {
   const particles = Array.from({ length: 8 }).map(() => "<span></span>").join("");
   const buttonsHtml = (props.buttons || []).map(buttonHtml).join("");
 
+  const popupId = `gr-exit-popup-${Math.random().toString(36).slice(2)}`;
+
   return `${fontImportTag(props.customFontUrl)}
   <style>
-    #editable-page-root .gr-welcome-card{position:relative;overflow:hidden;margin:0 auto;padding:42px 28px;border:2px solid var(--gr-border);border-radius:var(--gr-radius);max-width:var(--gr-width);text-align:var(--gr-align);background:var(--gr-bg);box-shadow:0 0 28px color-mix(in srgb,var(--gr-glow),transparent 35%),inset 0 0 34px rgba(187,0,255,.2);}
-    #editable-page-root .gr-welcome-card:before{content:"";position:absolute;inset:-2px;background:radial-gradient(circle at 20% 20%,rgba(0,255,4,.28),transparent 28%),radial-gradient(circle at 80% 70%,rgba(187,0,255,.32),transparent 32%);pointer-events:none;}
-    #editable-page-root .gr-welcome-content{position:relative;z-index:2;}
-    #editable-page-root .gr-welcome-eyebrow{margin:0 0 12px;color:#bb00ff;font-family:Oswald,sans-serif;font-weight:900;letter-spacing:.24em;text-transform:uppercase;text-shadow:0 0 16px rgba(187,0,255,.9);}
-    #editable-page-root .gr-welcome-title{margin:0;color:var(--gr-title);font-family:var(--gr-title-font);font-size:var(--gr-title-size);line-height:.95;text-shadow:var(--gr-title-shadow);text-transform:uppercase;}
-    #editable-page-root .gr-welcome-body{margin:22px auto 0;color:var(--gr-body);font-family:var(--gr-body-font);font-size:var(--gr-body-size);line-height:1.55;max-width:760px;}
-    #editable-page-root .gr-welcome-particles{position:absolute;inset:0;pointer-events:none;z-index:1;}
-    #editable-page-root .gr-welcome-particles span{position:absolute;width:7px;height:7px;border-radius:999px;background:#00ff04;box-shadow:0 0 18px #00ff04;animation:grParticle 1.8s ease-out both;}
-    #editable-page-root .gr-welcome-particles span:nth-child(1){left:8%;top:20%;animation-delay:.02s}#editable-page-root .gr-welcome-particles span:nth-child(2){left:18%;top:80%;animation-delay:.08s}#editable-page-root .gr-welcome-particles span:nth-child(3){left:32%;top:12%;animation-delay:.14s}#editable-page-root .gr-welcome-particles span:nth-child(4){left:48%;top:92%;animation-delay:.2s}#editable-page-root .gr-welcome-particles span:nth-child(5){left:68%;top:18%;animation-delay:.26s}#editable-page-root .gr-welcome-particles span:nth-child(6){left:88%;top:74%;animation-delay:.32s}#editable-page-root .gr-welcome-particles span:nth-child(7){left:78%;top:45%;animation-delay:.38s}#editable-page-root .gr-welcome-particles span:nth-child(8){left:42%;top:52%;animation-delay:.44s}
-    #editable-page-root .gr-anim-pop{animation:grPop .9s cubic-bezier(.2,1.25,.35,1) both}#editable-page-root .gr-anim-bounce{animation:grBounce 1.1s both}#editable-page-root .gr-anim-fade{animation:grFade 1.4s both}#editable-page-root .gr-anim-left{animation:grLeft 1s both}#editable-page-root .gr-anim-right{animation:grRight 1s both}#editable-page-root .gr-anim-top{animation:grTop 1s both}#editable-page-root .gr-anim-bottom{animation:grBottom 1s both}#editable-page-root .gr-anim-particles{animation:grParticlesIn 1.4s both}#editable-page-root .gr-anim-glitch{animation:grGlitch 1.2s steps(2,end) both}
-    @keyframes grPop{0%{opacity:0;transform:scale(.45) rotate(-4deg)}70%{opacity:1;transform:scale(1.08) rotate(1deg)}100%{transform:scale(1) rotate(0)}}@keyframes grBounce{0%{opacity:0;transform:scale(.2) translateY(80px)}55%{opacity:1;transform:scale(1.12) translateY(-18px)}75%{transform:scale(.96) translateY(8px)}100%{transform:scale(1) translateY(0)}}@keyframes grFade{from{opacity:0;filter:blur(18px)}to{opacity:1;filter:blur(0)}}@keyframes grLeft{from{opacity:0;transform:translateX(-120px)}to{opacity:1;transform:translateX(0)}}@keyframes grRight{from{opacity:0;transform:translateX(120px)}to{opacity:1;transform:translateX(0)}}@keyframes grTop{from{opacity:0;transform:translateY(-120px)}to{opacity:1;transform:translateY(0)}}@keyframes grBottom{from{opacity:0;transform:translateY(120px)}to{opacity:1;transform:translateY(0)}}@keyframes grParticlesIn{0%{opacity:0;transform:scale(.75);filter:blur(14px)}100%{opacity:1;transform:scale(1);filter:blur(0)}}@keyframes grGlitch{0%{opacity:0;transform:skewX(8deg)}20%{opacity:1;transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}100%{transform:none}}@keyframes grParticle{0%{opacity:0;transform:scale(0) translate(0,0)}50%{opacity:1}100%{opacity:0;transform:scale(1.8) translate(26px,-34px)}}
+    #editable-page-root .gr-exit-popup-wrap{
+      position:fixed;
+      inset:0;
+      z-index:999999;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      pointer-events:none;
+    }
+
+    #editable-page-root .gr-exit-popup-wrap.is-visible{
+      display:flex;
+    }
+
+    #editable-page-root .gr-exit-popup-backdrop{
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,.82);
+      backdrop-filter:blur(8px);
+      pointer-events:auto;
+    }
+
+    #editable-page-root .gr-exit-popup-card{
+      width:min(100%, var(--gr-width));
+      pointer-events:auto;
+    }
+
+    #editable-page-root .gr-exit-popup-close{
+      position:absolute;
+      top:14px;
+      right:16px;
+      z-index:5;
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border:2px solid #00ff04;
+      background:#000000;
+      color:#00ff04;
+      font-size:28px;
+      line-height:1;
+      cursor:pointer;
+      box-shadow:0 0 24px rgba(0,255,4,.7);
+    }
+
+    #editable-page-root .gr-welcome-card{
+      position:relative;
+      overflow:hidden;
+      margin:0 auto;
+      padding:42px 28px;
+      border:2px solid var(--gr-border);
+      border-radius:var(--gr-radius);
+      max-width:var(--gr-width);
+      text-align:var(--gr-align);
+      background:var(--gr-bg);
+      box-shadow:
+        0 0 28px color-mix(in srgb,var(--gr-glow),transparent 35%),
+        inset 0 0 34px rgba(187,0,255,.2);
+    }
+
+    #editable-page-root .gr-welcome-card:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(circle at 20% 20%,rgba(0,255,4,.28),transparent 28%),
+        radial-gradient(circle at 80% 70%,rgba(187,0,255,.32),transparent 32%);
+      pointer-events:none;
+    }
+
+    #editable-page-root .gr-welcome-content{
+      position:relative;
+      z-index:2;
+    }
+
+    #editable-page-root .gr-welcome-eyebrow{
+      margin:0 0 12px;
+      color:#bb00ff;
+      font-family:Oswald,sans-serif;
+      font-weight:900;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+      text-shadow:0 0 16px rgba(187,0,255,.9);
+    }
+
+    #editable-page-root .gr-welcome-title{
+      margin:0;
+      color:var(--gr-title);
+      font-family:var(--gr-title-font);
+      font-size:var(--gr-title-size);
+      line-height:.95;
+      text-shadow:var(--gr-title-shadow);
+      text-transform:uppercase;
+    }
+
+    #editable-page-root .gr-welcome-body{
+      margin:22px auto 0;
+      color:var(--gr-body);
+      font-family:var(--gr-body-font);
+      font-size:var(--gr-body-size);
+      line-height:1.55;
+      max-width:760px;
+    }
+
+    #editable-page-root .gr-welcome-particles{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      z-index:1;
+    }
+
+    #editable-page-root .gr-welcome-particles span{
+      position:absolute;
+      width:7px;
+      height:7px;
+      border-radius:999px;
+      background:#00ff04;
+      box-shadow:0 0 18px #00ff04;
+      animation:grParticle 1.8s ease-out both;
+    }
+
+    #editable-page-root .gr-welcome-particles span:nth-child(1){left:8%;top:20%;animation-delay:.02s}
+    #editable-page-root .gr-welcome-particles span:nth-child(2){left:18%;top:80%;animation-delay:.08s}
+    #editable-page-root .gr-welcome-particles span:nth-child(3){left:32%;top:12%;animation-delay:.14s}
+    #editable-page-root .gr-welcome-particles span:nth-child(4){left:48%;top:92%;animation-delay:.2s}
+    #editable-page-root .gr-welcome-particles span:nth-child(5){left:68%;top:18%;animation-delay:.26s}
+    #editable-page-root .gr-welcome-particles span:nth-child(6){left:88%;top:74%;animation-delay:.32s}
+    #editable-page-root .gr-welcome-particles span:nth-child(7){left:78%;top:45%;animation-delay:.38s}
+    #editable-page-root .gr-welcome-particles span:nth-child(8){left:42%;top:52%;animation-delay:.44s}
+
+    #editable-page-root .gr-anim-pop{
+      animation:grPop .9s cubic-bezier(.2,1.25,.35,1) both;
+    }
+
+    #editable-page-root .gr-anim-bounce{
+      animation:grBounce 1.1s both;
+    }
+
+    #editable-page-root .gr-anim-fade{
+      animation:grFade 1.4s both;
+    }
+
+    #editable-page-root .gr-anim-left{
+      animation:grLeft 1s both;
+    }
+
+    #editable-page-root .gr-anim-right{
+      animation:grRight 1s both;
+    }
+
+    #editable-page-root .gr-anim-top{
+      animation:grTop 1s both;
+    }
+
+    #editable-page-root .gr-anim-bottom{
+      animation:grBottom 1s both;
+    }
+
+    #editable-page-root .gr-anim-particles{
+      animation:grParticlesIn 1.4s both;
+    }
+
+    #editable-page-root .gr-anim-glitch{
+      animation:grGlitch 1.2s steps(2,end) both;
+    }
+
+    @keyframes grPop{
+      0%{opacity:0;transform:scale(.45) rotate(-4deg)}
+      70%{opacity:1;transform:scale(1.08) rotate(1deg)}
+      100%{transform:scale(1) rotate(0)}
+    }
+
+    @keyframes grBounce{
+      0%{opacity:0;transform:scale(.2) translateY(80px)}
+      55%{opacity:1;transform:scale(1.12) translateY(-18px)}
+      75%{transform:scale(.96) translateY(8px)}
+      100%{transform:scale(1) translateY(0)}
+    }
+
+    @keyframes grFade{
+      from{opacity:0;filter:blur(18px)}
+      to{opacity:1;filter:blur(0)}
+    }
+
+    @keyframes grLeft{
+      from{opacity:0;transform:translateX(-120px)}
+      to{opacity:1;transform:translateX(0)}
+    }
+
+    @keyframes grRight{
+      from{opacity:0;transform:translateX(120px)}
+      to{opacity:1;transform:translateX(0)}
+    }
+
+    @keyframes grTop{
+      from{opacity:0;transform:translateY(-120px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    @keyframes grBottom{
+      from{opacity:0;transform:translateY(120px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    @keyframes grParticlesIn{
+      0%{
+        opacity:0;
+        transform:scale(.75);
+        filter:blur(14px);
+      }
+
+      100%{
+        opacity:1;
+        transform:scale(1);
+        filter:blur(0);
+      }
+    }
+
+    @keyframes grGlitch{
+      0%{opacity:0;transform:skewX(8deg)}
+      20%{opacity:1;transform:translateX(-8px)}
+      40%{transform:translateX(8px)}
+      60%{transform:translateX(-4px)}
+      80%{transform:translateX(4px)}
+      100%{transform:none}
+    }
+
+    @keyframes grParticle{
+      0%{
+        opacity:0;
+        transform:scale(0) translate(0,0);
+      }
+
+      50%{
+        opacity:1;
+      }
+
+      100%{
+        opacity:0;
+        transform:scale(1.8) translate(26px,-34px);
+      }
+    }
   </style>
-  <section class="puck-section gr-welcome-section" style="${styleObj({
-    background: props.backgroundColor || "transparent",
-    padding: `${props.paddingY || 70}px ${props.paddingX || 24}px`
-  })}">
-    <div class="gr-welcome-card gr-theme-${attr(props.theme || "toxic")} gr-anim-${attr(props.animationStyle || "pop")}" style="${styleObj({
-      "--gr-bg": props.cardBackground || "rgba(0,0,0,.92)",
-      "--gr-border": props.borderColor || "#bb00ff",
-      "--gr-glow": props.glowColor || "#00ff04",
-      "--gr-radius": props.radius || "28px",
-      "--gr-width": props.maxWidth || "920px",
-      "--gr-align": props.align || "center",
-      "--gr-title": props.titleColor || "#00ff04",
-      "--gr-title-font": props.titleFont || "Creepster, cursive",
-      "--gr-title-size": props.titleSize || "clamp(44px, 8vw, 92px)",
-      "--gr-title-shadow": props.titleShadow || "0 0 18px #00ff04",
-      "--gr-body": props.bodyColor || "#ffffff",
-      "--gr-body-font": props.bodyFont || "Special Elite, cursive",
-      "--gr-body-size": props.bodySize || "20px"
-    })}">
-      ${(props.theme === "particles" || props.animationStyle === "particles") ? `<div class="gr-welcome-particles" aria-hidden="true">${particles}</div>` : ""}
+
+  <section
+    id="${popupId}"
+    class="puck-section gr-exit-popup-wrap"
+    style="${styleObj({
+      background: props.backgroundColor || "transparent",
+      padding: `${props.paddingY || 70}px ${props.paddingX || 24}px`
+    })}"
+  >
+    <div class="gr-exit-popup-backdrop"></div>
+
+    <div
+      class="gr-welcome-card gr-exit-popup-card gr-theme-${attr(props.theme || "toxic")} gr-anim-${attr(props.animationStyle || "pop")}"
+      style="${styleObj({
+        "--gr-bg": props.cardBackground || "rgba(0,0,0,.92)",
+        "--gr-border": props.borderColor || "#bb00ff",
+        "--gr-glow": props.glowColor || "#00ff04",
+        "--gr-radius": props.radius || "28px",
+        "--gr-width": props.maxWidth || "920px",
+        "--gr-align": props.align || "center",
+        "--gr-title": props.titleColor || "#00ff04",
+        "--gr-title-font": props.titleFont || "Creepster, cursive",
+        "--gr-title-size": props.titleSize || "clamp(44px, 8vw, 92px)",
+        "--gr-title-shadow": props.titleShadow || "0 0 18px #00ff04",
+        "--gr-body": props.bodyColor || "#ffffff",
+        "--gr-body-font": props.bodyFont || "Special Elite, cursive",
+        "--gr-body-size": props.bodySize || "20px"
+      })}"
+    >
+      <button class="gr-exit-popup-close" type="button">×</button>
+
+      ${(props.theme === "particles" || props.animationStyle === "particles")
+        ? `<div class="gr-welcome-particles" aria-hidden="true">${particles}</div>`
+        : ""
+      }
+
       <div class="gr-welcome-content">
-        ${hasText(props.eyebrow) ? `<p class="gr-welcome-eyebrow">${esc(props.eyebrow)}</p>` : ""}
-        ${hasText(props.title) ? `<h2 class="gr-welcome-title">${esc(props.title)}</h2>` : ""}
-        ${hasText(props.body) ? `<p class="gr-welcome-body">${textWithBreaks(props.body)}</p>` : ""}
-        ${buttonsHtml ? `<div class="puck-buttons">${buttonsHtml}</div>` : ""}
+        ${hasText(props.eyebrow)
+          ? `<p class="gr-welcome-eyebrow">${esc(props.eyebrow)}</p>`
+          : ""
+        }
+
+        ${hasText(props.title)
+          ? `<h2 class="gr-welcome-title">${esc(props.title)}</h2>`
+          : ""
+        }
+
+        ${hasText(props.body)
+          ? `<p class="gr-welcome-body">${textWithBreaks(props.body)}</p>`
+          : ""
+        }
+
+        ${buttonsHtml
+          ? `<div class="puck-buttons">${buttonsHtml}</div>`
+          : ""
+        }
       </div>
     </div>
-  </section>`;
+  </section>
+
+  <script>
+    (function(){
+      const popup = document.getElementById("${popupId}");
+      if (!popup) return;
+
+      let shown = false;
+      let lastY = window.innerHeight;
+
+      const triggerDistance = ${Number(70)};
+
+      function showPopup(){
+        if (shown) return;
+
+        shown = true;
+        popup.classList.add("is-visible");
+      }
+
+      function hidePopup(){
+        popup.classList.remove("is-visible");
+      }
+
+      document.addEventListener("mousemove", function(event){
+        const movingUp = event.clientY < lastY;
+        const nearTop = event.clientY <= triggerDistance;
+
+        const nearLeftCorner = event.clientX <= 140;
+        const nearRightCorner = event.clientX >= window.innerWidth - 140;
+
+        if (
+          movingUp &&
+          nearTop &&
+          (nearLeftCorner || nearRightCorner)
+        ) {
+          showPopup();
+        }
+
+        lastY = event.clientY;
+      });
+
+      popup.addEventListener("click", function(event){
+        if (
+          event.target.classList.contains("gr-exit-popup-backdrop") ||
+          event.target.classList.contains("gr-exit-popup-close")
+        ) {
+          hidePopup();
+        }
+      });
+    })();
+  </script>`;
 }
 
 function renderHero(props) {
