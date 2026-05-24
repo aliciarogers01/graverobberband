@@ -38,10 +38,7 @@ function projectDataIsUsable(projectData, pageName) {
   }
 
   if (pageName === "shows") {
-    return projectData.content.some(block =>
-      block?.type === "Embed" &&
-      String(block?.props?.html || "").includes("upcoming-shows")
-    );
+    return true;
   }
 
   return true;
@@ -90,6 +87,22 @@ async function loadPublicPage() {
     if (projectDataIsUsable(projectData, pageName)) {
       applyPageBackground(projectData.root?.props);
       root.innerHTML = renderPuckHtml(projectData);
+      if (pageName === "shows" && !document.getElementById("upcoming-shows")) {
+        root.insertAdjacentHTML("beforeend", `
+          <section class="puck-section" style="padding:20px 24px;">
+            <div id="upcoming-shows"></div>
+            <div id="no-shows-message" class="empty-state">
+              <h2>Shows Coming Soon</h2>
+              <p>Join the crypt list to hear when the next haunt is announced.</p>
+              <a href="signup.html" class="primary-btn">Get Notified</a>
+            </div>
+            <section class="past-shows-section hidden">
+              <h2>Past Shows</h2>
+              <div id="past-shows"></div>
+            </section>
+          </section>
+        `);
+      }
 
       document.documentElement.classList.add("visual-page-ready");
       window.dispatchEvent(new CustomEvent("visualPageRendered", { detail: { pageName } }));
