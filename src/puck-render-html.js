@@ -1624,7 +1624,7 @@ function renderWelcomeHorrorMessage(props) {
       let shown = false;
       let lastY = window.innerHeight;
 
-      const triggerDistance = ${Number(70)};
+      const triggerDistance = ${Number(props.exitTriggerDistance || 120)};
 
       function showPopup(){
         if (shown) return;
@@ -1641,14 +1641,7 @@ function renderWelcomeHorrorMessage(props) {
         const movingUp = event.clientY < lastY;
         const nearTop = event.clientY <= triggerDistance;
 
-        const nearLeftCorner = event.clientX <= 140;
-        const nearRightCorner = event.clientX >= window.innerWidth - 140;
-
-        if (
-          movingUp &&
-          nearTop &&
-          (nearLeftCorner || nearRightCorner)
-        ) {
+        if (movingUp && nearTop) {
           showPopup();
         }
 

@@ -1621,9 +1621,7 @@ export const puckConfig = {
             const triggerDistance = Number(props.exitTriggerDistance || 70);
             const movingUp = event.clientY < lastY;
             const nearTop = event.clientY <= triggerDistance;
-            const nearCorner = event.clientX <= 120 || event.clientX >= window.innerWidth - 120;
-
-            if (!triggered && movingUp && nearTop && nearCorner) {
+            if (!triggered && movingUp && nearTop) {
               triggered = true;
               setIsOpen(true);
             }
