@@ -1672,10 +1672,13 @@ function renderWelcomeHorrorMessage(props) {
       }
 
       document.addEventListener("mousemove", function(event){
+        const armedDistance = Math.max(triggerDistance + 180, 260);
+
         const movingUp = event.clientY < lastY;
+        const wasLowerOnPage = lastY >= armedDistance;
         const nearTop = event.clientY <= triggerDistance;
 
-        if (movingUp && nearTop) {
+        if (wasLowerOnPage && movingUp && nearTop) {
           showPopup();
         }
 

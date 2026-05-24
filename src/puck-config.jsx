@@ -1619,9 +1619,13 @@ export const puckConfig = {
 
           function handleMouseMove(event) {
             const triggerDistance = Number(props.exitTriggerDistance || 70);
+            const armedDistance = Math.max(triggerDistance + 180, 260);
+
             const movingUp = event.clientY < lastY;
+            const wasLowerOnPage = lastY >= armedDistance;
             const nearTop = event.clientY <= triggerDistance;
-            if (!triggered && movingUp && nearTop) {
+
+            if (!triggered && wasLowerOnPage && movingUp && nearTop) {
               triggered = true;
               setIsOpen(true);
             }
