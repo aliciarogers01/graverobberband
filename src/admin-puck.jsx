@@ -165,10 +165,6 @@ const emptyShowForm = {
 
 const [showForm, setShowForm] = useState(emptyShowForm);
 
-  const [messages, setMessages] = useState([]);
-  const [messageStatus, setMessageStatus] = useState("");
-  const [replyDrafts, setReplyDrafts] = useState({});
-  const [replyImages, setReplyImages] = useState({});
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryStatus, setGalleryStatus] = useState("");
 
@@ -601,64 +597,12 @@ setShowForm(emptyShowForm);
     loadShows();
   }
 
-  async function loadMessages() {
-    setMessageStatus("Loading fan messages...");
 
-    try {
-      const response = await fetch(`${API_BASE}/messages/${SITE_SLUG}?_=${Date.now()}`, {
-        headers: authHeaders(token)
-      });
-      const data = await response.json();
-
-      if (!response.ok) {
-        setMessageStatus(data.error || "Could not load fan messages.");
-        return;
-      }
-
-      setMessages(data.messages || []);
-      setMessageStatus("");
-    } catch (error) {
-      setMessageStatus("Could not load fan messages.");
-    }
-  }
-
-  function updateReplyDraft(messageId, value) {
-    setReplyDrafts(drafts => ({ ...drafts, [messageId]: value }));
-  }
-
-  async function sendReply(messageId) {
-    const admin_reply = replyDrafts[messageId] || "";
-    const admin_image_url = replyImages[messageId] || "";
-
-    if (!admin_reply.trim() && !admin_image_url) {
-      setMessageStatus("Type a reply or upload a reply photo before sending.");
-      return;
-    }
-
-    setMessageStatus("Saving reply...");
-
-    const response = await fetch(`${API_BASE}/messages/${SITE_SLUG}/${messageId}/reply`, {
-      method: "POST",
-      headers: authHeaders(token),
-      body: JSON.stringify({ admin_reply, admin_image_url })
-    });
-
-    if (!response.ok) {
-      setMessageStatus("Reply failed.");
-      return;
-    }
-
-    setReplyDrafts(drafts => ({ ...drafts, [messageId]: "" }));
-    setReplyImages(images => ({ ...images, [messageId]: "" }));
-    setMessageStatus("Reply saved.");
-    loadMessages();
-  }
 
   useEffect(() => {
     if (token) {
       loadPage(currentPage);
       loadShows();
-      loadMessages();
       loadGalleryImages();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -887,55 +831,6 @@ setShowForm(emptyShowForm);
                 </div>
               </article>
             )) : <p>No shows yet.</p>}
-          </div>
-        </div>
-
-        <div className="admin-panel">
-          <div className="admin-panel-header">
-            <h2>Fan Chat Messages</h2>
-            <button type="button" onClick={loadMessages}>Reload Messages</button>
-          </div>
-
-          {messageStatus && <p className="admin-inline-status">{messageStatus}</p>}
-
-          <div className="admin-list">
-            {messages.length ? messages.map(message => (
-              <article className="admin-list-item" key={message.id}>
-                <strong>{message.fan_name || "Anonymous"}</strong>
-                <small>{message.fan_email || "No email"} · {new Date(message.created_at).toLocaleString()}</small>
-                <p>{message.message}</p>
-                {message.fan_image_url && <img src={message.fan_image_url} alt="Fan upload" className="admin-list-image" />}
-
-                {message.admin_reply && (
-                  <div className="admin-reply-box">
-                    <strong>Admin Reply</strong>
-                    <p>{message.admin_reply}</p>
-                    {message.admin_image_url && <img src={message.admin_image_url} alt="Admin reply upload" className="admin-list-image" />}
-                  </div>
-                )}
-
-                <textarea
-                  placeholder="Type a reply..."
-                  value={replyDrafts[message.id] || ""}
-                  onChange={event => updateReplyDraft(message.id, event.target.value)}
-                />
-                <div className="admin-upload-row">
-                  <label>Reply Photo</label>
-                  {replyImages[message.id] && <img src={replyImages[message.id]} alt="Reply" className="admin-upload-preview" />}
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={event => uploadAdminImage(event.target.files?.[0], url => setReplyImages(images => ({ ...images, [message.id]: url })))}
-                  />
-                  {replyImages[message.id] && (
-                    <button type="button" className="secondary" onClick={() => setReplyImages(images => ({ ...images, [message.id]: "" }))}>
-                      Remove Reply Photo
-                    </button>
-                  )}
-                </div>
-                <button type="button" onClick={() => sendReply(message.id)}>Save Reply</button>
-              </article>
-            )) : <p>No fan messages yet.</p>}
           </div>
         </div>
 
