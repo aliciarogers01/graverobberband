@@ -5,7 +5,7 @@ function getShows() {
 }
 
 function submitSignup(data) {
-  return fetch(`${API_BASE}/submissions/graverobberpunk`, {
+  return fetch(`${API_BASE}/submissions/graverobber`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
@@ -13,7 +13,7 @@ function submitSignup(data) {
 }
 
 function sendMessage(data) {
-  return fetch(`${API_BASE}/messages/graverobberpunk`, {
+  return fetch(`${API_BASE}/messages/graverobber`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)

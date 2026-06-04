@@ -13,8 +13,10 @@ const PAGE_OPTIONS = [
   { value: "home", label: "Home Page" },
   { value: "shows", label: "Shows Page" },
   { value: "signup", label: "Signup Page" },
+  { value: "about", label: "About Page" },
   { value: "merch", label: "Merch Page" },
   { value: "gallery", label: "Gallery Page" },
+  { value: "graffiti-wall", label: "Graffiti Wall Page" },
   { value: "contact", label: "Contact Page" }
 ];
 
@@ -167,6 +169,8 @@ const [showForm, setShowForm] = useState(emptyShowForm);
 
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryStatus, setGalleryStatus] = useState("");
+  const [graffitiPosts, setGraffitiPosts] = useState([]);
+  const [graffitiStatus, setGraffitiStatus] = useState("");
 
   const [savedBlocks, setSavedBlocks] = useState(() => {
     try {
@@ -597,6 +601,59 @@ setShowForm(emptyShowForm);
     loadShows();
   }
 
+  async function loadGraffitiPosts() {
+    setGraffitiStatus("Loading graffiti submissions...");
+
+    try {
+      const response = await fetch(`${API_BASE}/messages/${SITE_SLUG}?_=${Date.now()}`, {
+        headers: authHeaders(token)
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        setGraffitiStatus(data.error || "Could not load graffiti submissions.");
+        return;
+      }
+
+      setGraffitiPosts(data.messages || []);
+      setGraffitiStatus("");
+    } catch (error) {
+      setGraffitiStatus("Could not load graffiti submissions.");
+    }
+  }
+
+  async function updateGraffitiApproval(messageId, approved) {
+    setGraffitiStatus(approved ? "Approving submission..." : "Hiding submission...");
+
+    const response = await fetch(`${API_BASE}/messages/${SITE_SLUG}/${messageId}/${approved ? "approve" : "reject"}`, {
+      method: "POST",
+      headers: authHeaders(token)
+    });
+
+    if (!response.ok) {
+      setGraffitiStatus("Approval update failed.");
+      return;
+    }
+
+    await loadGraffitiPosts();
+  }
+
+  async function deleteGraffitiPost(messageId) {
+    if (!confirm("Delete this graffiti submission?")) return;
+
+    const response = await fetch(`${API_BASE}/messages/${SITE_SLUG}/${messageId}`, {
+      method: "DELETE",
+      headers: authHeaders(token)
+    });
+
+    if (!response.ok) {
+      setGraffitiStatus("Delete failed.");
+      return;
+    }
+
+    await loadGraffitiPosts();
+  }
+
 
 
   useEffect(() => {
@@ -604,6 +661,7 @@ setShowForm(emptyShowForm);
       loadPage(currentPage);
       loadShows();
       loadGalleryImages();
+      loadGraffitiPosts();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
@@ -876,6 +934,43 @@ setShowForm(emptyShowForm);
                 </div>
               </article>
             )) : <p>No gallery images yet.</p>}
+          </div>
+        </div>
+
+        <div className="admin-panel">
+          <div className="admin-panel-header">
+            <h2>Graffiti Wall Approvals</h2>
+            <button type="button" onClick={loadGraffitiPosts}>Reload Submissions</button>
+          </div>
+
+          {graffitiStatus && <p className="admin-inline-status">{graffitiStatus}</p>}
+
+          <div className="admin-list">
+            {graffitiPosts.length ? graffitiPosts.map(post => (
+              <article className="admin-list-item" key={post.id}>
+                <strong>{post.fan_name || "Anonymous"}</strong>
+                <small>{post.is_approved ? "Approved" : "Pending approval"}</small>
+                {post.message && <p>{post.message}</p>}
+                {post.fan_image_url && <img src={post.fan_image_url} alt="Fan submission" className="admin-list-image" />}
+                {post.fan_art_url && <img src={post.fan_art_url} alt="Fan art submission" className="admin-list-image" />}
+
+                <div className="admin-item-actions">
+                  {!post.is_approved && (
+                    <button type="button" onClick={() => updateGraffitiApproval(post.id, true)}>
+                      Approve
+                    </button>
+                  )}
+                  {post.is_approved && (
+                    <button type="button" className="secondary" onClick={() => updateGraffitiApproval(post.id, false)}>
+                      Hide
+                    </button>
+                  )}
+                  <button type="button" className="danger" onClick={() => deleteGraffitiPost(post.id)}>
+                    Delete
+                  </button>
+                </div>
+              </article>
+            )) : <p>No graffiti submissions yet.</p>}
           </div>
         </div>
       </section>

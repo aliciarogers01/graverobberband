@@ -500,7 +500,7 @@ function SignupFormPreview(props) {
             <input type="text" name={props.zipEntry || "entry.848273318"} />
           </label>
 
-          <button type="submit">{props.buttonText || "Join the Crypt List"}</button>
+          <button type="submit">{props.buttonText || "Join the Army of the Dead"}</button>
           <p className="graverobber-contact-success" aria-live="polite">{props.successMessage || ""}</p>
         </form>
 
@@ -584,7 +584,7 @@ const defaultContent = [
       customFontUrl: "",
       buttons: [
         { text: "Shows", url: "shows.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "16px", borderWidth: "0px", borderColor: "transparent", boxShadow: "0 0 24px rgba(198,40,40,.35)", textTransform: "uppercase", radius: "999px", padding: "16px 34px" },
-        { text: "Join the Crypt List", url: "signup.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "16px", borderWidth: "1px", borderColor: "rgba(255,255,255,.35)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "16px 34px" },
+        { text: "Join the Army of the Dead", url: "signup.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "16px", borderWidth: "1px", borderColor: "rgba(255,255,255,.35)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "16px 34px" },
         { text: "Booking", url: "mailto:graverobber.punk@gmail.com", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "16px", borderWidth: "1px", borderColor: "rgba(198,40,40,.65)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "16px 34px" }
       ]
     }
@@ -621,7 +621,7 @@ const defaultContent = [
       customFontUrl: "",
       buttons: [
         { text: "Shows", url: "shows.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "16px", borderWidth: "0px", borderColor: "transparent", boxShadow: "0 0 24px rgba(198,40,40,.35)", textTransform: "uppercase", radius: "999px", padding: "16px 34px" },
-        { text: "Crypt List", url: "signup.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "16px", borderWidth: "1px", borderColor: "rgba(255,255,255,.35)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "16px 34px" }
+        { text: "Army of the Dead", url: "signup.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "16px", borderWidth: "1px", borderColor: "rgba(255,255,255,.35)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "16px 34px" }
       ]
     }
   },
@@ -871,7 +871,7 @@ function createPageContent(pageName = "home") {
           buttons: [
             { text: "Home", url: "index.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
             { text: "Shows", url: "shows.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "0px", borderColor: "transparent", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Crypt List", url: "signup.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
+            { text: "Army of the Dead", url: "signup.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
           ]
         }
       },
@@ -879,7 +879,7 @@ function createPageContent(pageName = "home") {
         type: "TextBlock",
         props: {
           id: "graverobber-shows-title-1",
-          eyebrow: "Live from the crypt",
+          eyebrow: "Live with the Army of the Dead",
           eyebrowColor: "#c62828",
           eyebrowFont: "Oswald, sans-serif",
           eyebrowSize: "1rem",
@@ -889,7 +889,7 @@ function createPageContent(pageName = "home") {
           titleColor: "#ffffff",
           titleFont: "Creepster, cursive",
           titleWeight: "700",
-          body: "Join the crypt list to hear when the next haunt is announced.",
+          body: "Join the Army of the Dead to hear when the next haunt is announced.",
           bodySize: "1.1rem",
           bodyColor: "#d6d6d6",
           bodyFont: "Special Elite, cursive",
@@ -907,7 +907,7 @@ function createPageContent(pageName = "home") {
       {
         type: "Embed",
         props: {
-          html: '<div id="upcoming-shows"></div><div id="no-shows-message" class="empty-state"><h2>Shows Coming Soon</h2><p>Join the crypt list to hear when the next haunt is announced.</p><a href="signup.html" class="primary-btn">Get Notified</a></div><section class="past-shows-section hidden"><h2>Past Shows</h2><div id="past-shows"></div></section>',
+          html: '<div id="upcoming-shows"></div><div id="no-shows-message" class="empty-state"><h2>Shows Coming Soon</h2><p>Join the Army of the Dead to hear when the next haunt is announced.</p><a href="signup.html" class="primary-btn">Get Notified</a></div><section class="past-shows-section hidden"><h2>Past Shows</h2><div id="past-shows"></div></section>',
           backgroundColor: "transparent",
           paddingY: 20,
           paddingX: 24
@@ -941,7 +941,7 @@ function createPageContent(pageName = "home") {
           buttons: [
             { text: "Home", url: "index.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
             { text: "Shows", url: "shows.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Crypt List", url: "signup.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "0px", borderColor: "transparent", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
+            { text: "Army of the Dead", url: "signup.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "0px", borderColor: "transparent", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
           ]
         }
       },
@@ -954,7 +954,7 @@ function createPageContent(pageName = "home") {
           eyebrowFont: "Oswald, sans-serif",
           eyebrowSize: "1rem",
           eyebrowWeight: "700",
-          title: "Crypt List",
+          title: "Army of the Dead",
           titleSize: "4rem",
           titleColor: "#ffffff",
           titleFont: "Creepster, cursive",
@@ -977,9 +977,114 @@ function createPageContent(pageName = "home") {
       {
         type: "Embed",
         props: {
-          html: '<form id="signup-form" class="custom-form"><label>Name<input type="text" name="name" required></label><label>Email<input type="email" name="email" required></label><label>Phone<input type="tel" name="phone"></label><label>Message<textarea name="message" rows="5"></textarea></label><button type="submit">Join the Crypt List</button><p id="signup-status"></p></form>',
+          html: '<form id="signup-form" class="custom-form"><label>Name<input type="text" name="name" required></label><label>Email<input type="email" name="email" required></label><label>Phone<input type="tel" name="phone"></label><label>Message<textarea name="message" rows="5"></textarea></label><button type="submit">Join the Army of the Dead</button><p id="signup-status"></p></form>',
           backgroundColor: "transparent",
           paddingY: 20,
+          paddingX: 24
+        }
+      }
+    ];
+  }
+
+  if (pageName === "about") {
+    return [
+      {
+        type: "HeaderNav",
+        props: {
+          id: "graverobber-about-header-1",
+          backgroundColor: "rgba(0,0,0,.86)",
+          lineColor: "rgba(198,40,40,.65)",
+          lineShadow: "0 0 24px rgba(198,40,40,.28)",
+          showBack: "show",
+          backText: "Back",
+          backUrl: "index.html",
+          logoUrl: "assets/grave-robber-skull.png",
+          logoAlt: "Grave Robber",
+          logoSize: "52px",
+          logoPlacement: "right",
+          width: "100%",
+          maxWidth: "none",
+          margin: "0",
+          padding: "18px 28px",
+          navPlacement: "center",
+          headerPosition: "full",
+          buttons: [
+            { text: "Home", url: "index.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "Shows", url: "shows.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "About", url: "about.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "0px", borderColor: "transparent", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "Graffiti Wall", url: "graffiti-wall.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
+          ]
+        }
+      },
+      {
+        type: "TextBlock",
+        props: {
+          id: "graverobber-about-empty-1",
+          eyebrow: "",
+          title: "",
+          body: "",
+          align: "center",
+          maxWidth: "850px",
+          backgroundColor: "transparent",
+          textColor: "#ffffff",
+          paddingY: 120,
+          paddingX: 24,
+          customFontUrl: "",
+          buttons: []
+        }
+      }
+    ];
+  }
+
+  if (pageName === "graffiti-wall") {
+    return [
+      {
+        type: "HeaderNav",
+        props: {
+          id: "graverobber-graffiti-header-1",
+          backgroundColor: "rgba(0,0,0,.86)",
+          lineColor: "rgba(198,40,40,.65)",
+          lineShadow: "0 0 24px rgba(198,40,40,.28)",
+          showBack: "show",
+          backText: "Back",
+          backUrl: "index.html",
+          logoUrl: "assets/grave-robber-skull.png",
+          logoAlt: "Grave Robber",
+          logoSize: "52px",
+          logoPlacement: "right",
+          width: "100%",
+          maxWidth: "none",
+          margin: "0",
+          padding: "18px 28px",
+          navPlacement: "center",
+          headerPosition: "full",
+          buttons: [
+            { text: "Home", url: "index.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "Shows", url: "shows.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "About", url: "about.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+            { text: "Graffiti Wall", url: "graffiti-wall.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "0px", borderColor: "transparent", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
+          ]
+        }
+      },
+      {
+        type: "GraffitiWall",
+        props: {
+          id: "graverobber-graffiti-wall-1",
+          eyebrow: "Fan wall",
+          title: "Graffiti Wall",
+          body: "Write a message, upload a photo, or paint something for the band. Submissions appear after admin approval.",
+          nameLabel: "Your name",
+          messageLabel: "Your message",
+          photoLabel: "Photo with the band",
+          paintLabel: "Paint",
+          submitText: "Send for Approval",
+          successMessage: "Submitted. It will appear after admin approval.",
+          backgroundColor: "transparent",
+          textColor: "#ffffff",
+          accentColor: "#00ff04",
+          panelBackground: "rgba(0,0,0,.72)",
+          borderColor: "#bb00ff",
+          paddingY: 70,
           paddingX: 24
         }
       }
@@ -1211,7 +1316,10 @@ function createPageContent(pageName = "home") {
         buttons: [
           { text: "Home", url: "index.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "0px", borderColor: "transparent", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
           { text: "Shows", url: "shows.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-          { text: "Crypt List", url: "signup.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+          { text: "Army of the Dead", url: "signup.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+          { text: "About", url: "about.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+          { text: "Graffiti Wall", url: "graffiti-wall.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+          { text: "Buy Coffee", url: "#", backgroundColor: "transparent", textColor: "#00ff04", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 18px rgba(57,255,20,.35)", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
           { text: "Merch", url: "merch.html", buttonType: "dropdown", dropdownLinks: [{ text: "Merch Store", url: "https://graverobber.bigcartel.com/" }], backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
         ]
       }
@@ -1293,6 +1401,20 @@ function createPageContent(pageName = "home") {
             padding: "16px 34px"
           },
           {
+            text: "About",
+            url: "about.html",
+            backgroundColor: "#8b3df4",
+            textColor: "#ffffff",
+            fontFamily: "Oswald, sans-serif",
+            fontSize: "16px",
+            borderWidth: "0px",
+            borderColor: "transparent",
+            boxShadow: "none",
+            textTransform: "uppercase",
+            radius: "999px",
+            padding: "16px 34px"
+          },
+          {
             text: "Gallery",
             url: "gallery.html",
             backgroundColor: "#8b3df4",
@@ -1316,6 +1438,34 @@ function createPageContent(pageName = "home") {
             borderWidth: "0px",
             borderColor: "transparent",
             boxShadow: "none",
+            textTransform: "uppercase",
+            radius: "999px",
+            padding: "16px 34px"
+          },
+          {
+            text: "Graffiti Wall",
+            url: "graffiti-wall.html",
+            backgroundColor: "#8b3df4",
+            textColor: "#ffffff",
+            fontFamily: "Oswald, sans-serif",
+            fontSize: "16px",
+            borderWidth: "0px",
+            borderColor: "transparent",
+            boxShadow: "none",
+            textTransform: "uppercase",
+            radius: "999px",
+            padding: "16px 34px"
+          },
+          {
+            text: "Buy the Band a Coffee",
+            url: "#",
+            backgroundColor: "#000000",
+            textColor: "#00ff04",
+            fontFamily: "Oswald, sans-serif",
+            fontSize: "16px",
+            borderWidth: "1px",
+            borderColor: "#00ff04",
+            boxShadow: "0 0 24px rgba(57,255,20,.45)",
             textTransform: "uppercase",
             radius: "999px",
             padding: "16px 34px"
@@ -1564,7 +1714,11 @@ export const puckConfig = {
         maxWidth: { type: "text", label: "Message Box Width", placeholder: "900px" },
         paddingY: { type: "number", label: "Top/Bottom Padding" },
         paddingX: { type: "number", label: "Left/Right Padding" },
-        buttons: buttonArrayField
+        buttons: buttonArrayField,
+        noThanksText: { type: "text", label: "No Thanks Button Text" },
+        noThanksBackgroundColor: colorField("No Thanks Background"),
+        noThanksTextColor: colorField("No Thanks Text Color"),
+        noThanksBorderColor: colorField("No Thanks Border Color")
       },
       defaultProps: {
         showInEditor: "yes",
@@ -1572,7 +1726,7 @@ export const puckConfig = {
         theme: "toxic",
         animationStyle: "pop",
         eyebrow: "WELCOME TO THE GRAVE",
-        title: "Enter The Crypt",
+        title: "Join the Army of the Dead",
         body: "You have crossed into Grave Robber territory. Join the Army of the Dead and march with us into the noise.",
         align: "center",
         titleColor: "#00ff04",
@@ -1591,6 +1745,10 @@ export const puckConfig = {
         paddingY: 70,
         paddingX: 24,
         customFontUrl: "",
+        noThanksText: "No Thanks",
+        noThanksBackgroundColor: "transparent",
+        noThanksTextColor: "#ffffff",
+        noThanksBorderColor: "rgba(255,255,255,.45)",
         buttons: [
           {
             text: "Join the Army of the Dead",
@@ -1766,6 +1924,17 @@ export const puckConfig = {
                 max-width:760px;
               }
 
+              .gr-exit-popup-no-thanks{
+                margin-left:10px;
+                border-radius:999px;
+                padding:16px 34px;
+                font-family:Oswald,sans-serif;
+                font-size:16px;
+                font-weight:700;
+                text-transform:uppercase;
+                cursor:pointer;
+              }
+
               .gr-welcome-particles{
                 position:absolute;
                 inset:0;
@@ -1878,6 +2047,20 @@ export const puckConfig = {
                 {(props.buttons || []).length > 0 && (
                   <div className="puck-buttons">
                     {(props.buttons || []).map((button, index) => <ButtonPreview key={index} button={button} index={index} />)}
+                    {props.noThanksText && (
+                      <button
+                        type="button"
+                        className="puck-btn gr-exit-popup-no-thanks"
+                        onClick={() => setIsOpen(false)}
+                        style={{
+                          background: props.noThanksBackgroundColor || "transparent",
+                          color: props.noThanksTextColor || "#ffffff",
+                          border: `1px solid ${props.noThanksBorderColor || "rgba(255,255,255,.45)"}`
+                        }}
+                      >
+                        {props.noThanksText}
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
@@ -1913,7 +2096,7 @@ imageRadius: unitNumberField("Image Rounded Corners", { units: ["px", "%", "rem"
         buttons: buttonArrayField
       },
 
-      defaultProps: { title: "Grave Robber", subtitle: "AMERICAN HORROR PUNK", body: "Horror punk from beyond the grave. Shows, music, merch, booking, and updates.", imageUrl: "assets/grave-robber-skull.png", imageAlt: "Grave Robber skull logo", layout: "center", imageWidth: "300px", mobileImageWidth: "70vw", imageRadius: "0px", imageShadow: "0 0 55px rgba(198,40,40,.45)", titleSize: "80px", titleColor: "#f2f2f2", titleFont: "Creepster, cursive", subtitleColor: "#c62828", bodyColor: "#d6d6d6", backgroundColor: "transparent", textColor: "#ffffff", paddingY: 70, paddingX: 24, buttons: [{ text: "Shows", url: "shows.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "16px", borderWidth: "0px", borderColor: "transparent", boxShadow: "0 0 24px rgba(198,40,40,.35)", textTransform: "uppercase", radius: "999px", padding: "16px 34px" }, { text: "Join the Crypt List", url: "signup.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "16px", borderWidth: "1px", borderColor: "rgba(255,255,255,.35)", radius: "999px", padding: "16px 34px" }] },
+      defaultProps: { title: "Grave Robber", subtitle: "AMERICAN HORROR PUNK", body: "Horror punk from beyond the grave. Shows, music, merch, booking, and updates.", imageUrl: "assets/grave-robber-skull.png", imageAlt: "Grave Robber skull logo", layout: "center", imageWidth: "300px", mobileImageWidth: "70vw", imageRadius: "0px", imageShadow: "0 0 55px rgba(198,40,40,.45)", titleSize: "80px", titleColor: "#f2f2f2", titleFont: "Creepster, cursive", subtitleColor: "#c62828", bodyColor: "#d6d6d6", backgroundColor: "transparent", textColor: "#ffffff", paddingY: 70, paddingX: 24, buttons: [{ text: "Shows", url: "shows.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "16px", borderWidth: "0px", borderColor: "transparent", boxShadow: "0 0 24px rgba(198,40,40,.35)", textTransform: "uppercase", radius: "999px", padding: "16px 34px" }, { text: "Join the Army of the Dead", url: "signup.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "16px", borderWidth: "1px", borderColor: "rgba(255,255,255,.35)", radius: "999px", padding: "16px 34px" }] },
       render: props => puckConfig.components.Hero.render(props)
     },
     GraveRobberLogo: { label: "01 Site Block: Grave Robber Stacked Logo", fields: { imageUrl: imageUploadField("Logo Image"), imageAlt: { type: "text", label: "Image Alt Text" }, width: unitNumberField("Image Width", { units: ["px", "%", "vw"], defaultUnit: "px", step: 10, min: 0, placeholder: "Example: 520px" }), radius: unitNumberField("Rounded Corners", { units: ["px", "%", "rem"], defaultUnit: "px", step: 1, min: 0, placeholder: "Example: 12px" }), shadow: { type: "text", label: "Image Shadow / Glow CSS" }, align: { type: "select", label: "Image Placement", options: placementOptions }, backgroundColor: colorField("Section Background"), paddingY: { type: "number", label: "Top/Bottom Padding" }, paddingX: { type: "number", label: "Left/Right Padding" } }, defaultProps: { imageUrl: "assets/grave-robber-logo-stacked.png", imageAlt: "Grave Robber logo", width: "520px", radius: "12px", shadow: "0 20px 60px rgba(0,0,0,.55)", align: "center", backgroundColor: "transparent", paddingY: 30, paddingX: 24 }, render: props => puckConfig.components.ImageBlock.render(props) },
@@ -2503,6 +2686,71 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
         </SectionShell>
       )
     },
+    GraffitiWall: {
+      label: "02 Add Block: Graffiti Wall",
+      fields: {
+        eyebrow: { type: "text", label: "Small Top Text" },
+        title: { type: "text", label: "Title" },
+        body: { type: "textarea", label: "Intro Text" },
+        nameLabel: { type: "text", label: "Name Label" },
+        messageLabel: { type: "text", label: "Message Label" },
+        photoLabel: { type: "text", label: "Photo Label" },
+        paintLabel: { type: "text", label: "Paint Label" },
+        submitText: { type: "text", label: "Submit Button Text" },
+        successMessage: { type: "text", label: "Success Message" },
+        backgroundColor: colorField("Section Background"),
+        textColor: colorField("Text Color"),
+        accentColor: colorField("Accent Color"),
+        panelBackground: colorField("Panel Background"),
+        borderColor: colorField("Border Color"),
+        paddingY: { type: "number", label: "Top/Bottom Padding" },
+        paddingX: { type: "number", label: "Left/Right Padding" }
+      },
+      defaultProps: {
+        eyebrow: "Fan wall",
+        title: "Graffiti Wall",
+        body: "Write a message, upload a photo, or paint something for the band. Submissions appear after admin approval.",
+        nameLabel: "Your name",
+        messageLabel: "Your message",
+        photoLabel: "Photo with the band",
+        paintLabel: "Paint",
+        submitText: "Send for Approval",
+        successMessage: "Submitted. It will appear after admin approval.",
+        backgroundColor: "transparent",
+        textColor: "#ffffff",
+        accentColor: "#00ff04",
+        panelBackground: "rgba(0,0,0,.72)",
+        borderColor: "#bb00ff",
+        paddingY: 70,
+        paddingX: 24
+      },
+      render: props => (
+        <section className="puck-section gr-graffiti-wall" style={{ background: props.backgroundColor || "transparent", color: props.textColor || "#ffffff", padding: `${props.paddingY || 70}px ${props.paddingX || 24}px` }}>
+          <div className="puck-inner gr-graffiti-inner" style={{ "--gr-graffiti-accent": props.accentColor || "#00ff04", "--gr-graffiti-panel": props.panelBackground || "rgba(0,0,0,.72)", "--gr-graffiti-border": props.borderColor || "#bb00ff" }}>
+            <div className="gr-graffiti-copy">
+              {props.eyebrow && <p className="teaser">{props.eyebrow}</p>}
+              {props.title && <h2 className="puck-title">{props.title}</h2>}
+              {props.body && <p>{props.body}</p>}
+            </div>
+            <div className="gr-graffiti-layout">
+              <form className="gr-graffiti-form">
+                <label>{props.nameLabel || "Your name"}<input type="text" disabled /></label>
+                <label>{props.messageLabel || "Your message"}<textarea rows="5" disabled /></label>
+                <label>{props.photoLabel || "Photo with the band"}<input type="file" disabled /></label>
+                <label>{props.paintLabel || "Paint"}<canvas width="520" height="260" /></label>
+                <button type="button">{props.submitText || "Send for Approval"}</button>
+              </form>
+              <div className="gr-graffiti-posts">
+                <article className="gr-graffiti-post">
+                  <strong>Approved fan posts will appear here.</strong>
+                  <p>{props.successMessage || "Submitted. It will appear after admin approval."}</p>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+      )
+    },
     Spacer: {
       label: "02 Add Block: Spacer",
       fields: { height: { type: "number", label: "Height" }, backgroundColor: colorField("Background Color") },
@@ -2538,7 +2786,7 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
         emailLabel: "What is your email?",
         phoneLabel: "What is your phone number?",
         zipLabel: "What is your zip code?",
-        buttonText: "Join the Crypt List",
+        buttonText: "Join the Army of the Dead",
         successMessage: "Great, you are signed up and we will keep you updated.",
         backgroundColor: "#000000",
         paddingY: 30,

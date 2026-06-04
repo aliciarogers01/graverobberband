@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graffiti Wall | Grave Robber</title>
+  <meta name="description" content="Fan graffiti wall for Grave Robber.">
+  <link rel="icon" href="assets/grave-robber-skull.png">
+  <style>
+    #editable-page-root {
+      visibility: hidden;
+    }
+
+    html.visual-page-ready #editable-page-root {
+      visibility: visible;
+    }
+  </style>
+</head>
+<body data-page="graffiti-wall">
+  <main id="editable-page-root"></main>
+
+  <script src="api-config.js"></script>
+  <script type="module" src="/src/public-page.js"></script>
+  <script type="module" src="/src/graffiti-wall.js"></script>
+</body>
+</html>

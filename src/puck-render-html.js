@@ -661,6 +661,120 @@ html:has(#editable-page-root .graverobber-contact-form-section),
   color:inherit;
 }
 
+#editable-page-root .gr-graffiti-inner{
+  --gr-graffiti-accent:#00ff04;
+  --gr-graffiti-panel:rgba(0,0,0,.72);
+  --gr-graffiti-border:#bb00ff;
+}
+
+#editable-page-root .gr-graffiti-copy{
+  max-width:850px;
+  margin:0 auto 28px;
+  text-align:center;
+}
+
+#editable-page-root .gr-graffiti-layout{
+  display:grid;
+  grid-template-columns:minmax(0,440px) minmax(0,1fr);
+  gap:22px;
+  align-items:start;
+}
+
+#editable-page-root .gr-graffiti-form,
+#editable-page-root .gr-graffiti-post{
+  background:var(--gr-graffiti-panel);
+  border:1px solid var(--gr-graffiti-border);
+  border-radius:18px;
+  box-shadow:0 0 28px color-mix(in srgb,var(--gr-graffiti-accent),transparent 72%);
+}
+
+#editable-page-root .gr-graffiti-form{
+  display:grid;
+  gap:14px;
+  padding:18px;
+}
+
+#editable-page-root .gr-graffiti-form label{
+  display:grid;
+  gap:8px;
+  color:var(--gr-graffiti-accent);
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+#editable-page-root .gr-graffiti-form input,
+#editable-page-root .gr-graffiti-form textarea{
+  width:100%;
+  box-sizing:border-box;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:12px;
+  background:#050505;
+  color:#ffffff;
+  padding:12px;
+}
+
+#editable-page-root .gr-graffiti-canvas{
+  width:100%;
+  height:260px;
+  border:1px solid var(--gr-graffiti-accent);
+  border-radius:14px;
+  background:#111;
+  touch-action:none;
+  cursor:crosshair;
+}
+
+#editable-page-root .gr-graffiti-tools{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+#editable-page-root .gr-graffiti-tools input[type="range"]{
+  width:130px;
+}
+
+#editable-page-root .gr-graffiti-form button{
+  border:1px solid var(--gr-graffiti-accent);
+  border-radius:999px;
+  background:#000000;
+  color:var(--gr-graffiti-accent);
+  padding:12px 18px;
+  font-weight:900;
+  text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 0 18px color-mix(in srgb,var(--gr-graffiti-accent),transparent 58%);
+}
+
+#editable-page-root .gr-graffiti-status{
+  min-height:22px;
+  color:var(--gr-graffiti-accent);
+  font-weight:800;
+}
+
+#editable-page-root .gr-graffiti-posts{
+  display:grid;
+  gap:16px;
+}
+
+#editable-page-root .gr-graffiti-post{
+  padding:16px;
+}
+
+#editable-page-root .gr-graffiti-post strong{
+  color:var(--gr-graffiti-accent);
+}
+
+#editable-page-root .gr-graffiti-post img{
+  display:block;
+  width:100%;
+  max-height:360px;
+  object-fit:contain;
+  margin:12px 0 0;
+  border-radius:14px;
+  background:#050505;
+}
+
 #editable-page-root .songs-scroll-container{
   width:100%;
   overflow:hidden;
@@ -944,6 +1058,10 @@ html:has(#editable-page-root .graverobber-contact-form-section),
     display:grid!important;
     grid-template-columns:1fr!important;
     gap:20px!important;
+  }
+
+  #editable-page-root .gr-graffiti-layout{
+    grid-template-columns:1fr!important;
   }
 
 #editable-page-root img:not(.show-card-image),
@@ -1308,6 +1426,20 @@ margin: props.margin || "0"
 function renderWelcomeHorrorMessage(props) {
   const particles = Array.from({ length: 8 }).map(() => "<span></span>").join("");
   const buttonsHtml = (props.buttons || []).map(buttonHtml).join("");
+  const noThanksHtml = hasText(props.noThanksText)
+    ? `<button class="puck-btn gr-exit-popup-no-thanks" type="button" style="${styleObj({
+        background: props.noThanksBackgroundColor || "transparent",
+        color: props.noThanksTextColor || "#ffffff",
+        border: `1px solid ${props.noThanksBorderColor || "rgba(255,255,255,.45)"}`,
+        borderRadius: "999px",
+        padding: "16px 34px",
+        fontFamily: "Oswald, sans-serif",
+        fontSize: "16px",
+        fontWeight: "700",
+        textTransform: "uppercase",
+        cursor: "pointer"
+      })}">${esc(props.noThanksText)}</button>`
+    : "";
 
   const popupId = `gr-exit-popup-${Math.random().toString(36).slice(2)}`;
 
@@ -1642,8 +1774,8 @@ function renderWelcomeHorrorMessage(props) {
           : ""
         }
 
-        ${buttonsHtml
-          ? `<div class="puck-buttons">${buttonsHtml}</div>`
+        ${buttonsHtml || noThanksHtml
+          ? `<div class="puck-buttons">${buttonsHtml}${noThanksHtml}</div>`
           : ""
         }
       </div>
@@ -1692,7 +1824,8 @@ function renderWelcomeHorrorMessage(props) {
       popup.addEventListener("click", function(event){
         if (
           event.target.classList.contains("gr-exit-popup-backdrop") ||
-          event.target.classList.contains("gr-exit-popup-close")
+          event.target.classList.contains("gr-exit-popup-close") ||
+          event.target.classList.contains("gr-exit-popup-no-thanks")
         ) {
           hidePopup();
         }
@@ -1805,6 +1938,50 @@ function renderGalleryGrid(props) {
   return `<section class="puck-section" style="${sectionStyle}"><div class="puck-inner">${titleHtml}<div class="puck-gallery-grid" style="--cols:${Number(props.columns || 3)};--gap:${Number(props.gap || 18)}px">${imagesHtml}</div></div></section>`;
 }
 
+function renderGraffitiWall(props) {
+  const sectionStyle = styleObj({
+    background: props.backgroundColor || "transparent",
+    color: props.textColor || "#ffffff",
+    padding: `${props.paddingY || 70}px ${props.paddingX || 24}px`
+  });
+
+  const rootStyle = styleObj({
+    "--gr-graffiti-accent": props.accentColor || "#00ff04",
+    "--gr-graffiti-panel": props.panelBackground || "rgba(0,0,0,.72)",
+    "--gr-graffiti-border": props.borderColor || "#bb00ff"
+  });
+
+  return `<section class="puck-section gr-graffiti-wall" style="${sectionStyle}">
+    <div class="puck-inner gr-graffiti-inner" style="${rootStyle}">
+      <div class="gr-graffiti-copy">
+        ${hasText(props.eyebrow) ? `<p class="teaser">${esc(props.eyebrow)}</p>` : ""}
+        ${hasText(props.title) ? `<h2 class="puck-title">${esc(props.title)}</h2>` : ""}
+        ${hasText(props.body) ? `<p>${textWithBreaks(props.body)}</p>` : ""}
+      </div>
+
+      <div class="gr-graffiti-layout">
+        <form class="gr-graffiti-form">
+          <label>${esc(props.nameLabel || "Your name")}<input type="text" name="fan_name" maxlength="120"></label>
+          <label>${esc(props.messageLabel || "Your message")}<textarea name="message" rows="5" maxlength="1200" required></textarea></label>
+          <label>${esc(props.photoLabel || "Photo with the band")}<input type="file" name="fan_photo" accept="image/*"></label>
+          <label>${esc(props.paintLabel || "Paint")}<canvas class="gr-graffiti-canvas" width="520" height="260"></canvas></label>
+          <div class="gr-graffiti-tools">
+            <input type="color" name="paint_color" value="#00ff04" aria-label="Paint color">
+            <input type="range" name="paint_size" min="2" max="28" value="8" aria-label="Paint size">
+            <button type="button" data-graffiti-clear>Clear Paint</button>
+          </div>
+          <button type="submit">${esc(props.submitText || "Send for Approval")}</button>
+          <p class="gr-graffiti-status" data-success-message="${attr(props.successMessage || "Submitted. It will appear after admin approval.")}" aria-live="polite"></p>
+        </form>
+
+        <div class="gr-graffiti-posts" data-graffiti-posts>
+          <p>Loading approved posts...</p>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
 function renderSpacer(props) {
   return `<div class="puck-spacer" style="height:${Number(props.height || 40)}px;background:${attr(props.backgroundColor || "transparent")}"></div>`;
 }
@@ -1859,7 +2036,7 @@ function renderSignupForm(props) {
           <input type="text" name="${attr(zipEntry)}">
         </label>
 
-        <button type="submit">${esc(props.buttonText || "Join the Crypt List")}</button>
+        <button type="submit">${esc(props.buttonText || "Join the Army of the Dead")}</button>
         <p class="graverobber-contact-success" aria-live="polite"></p>
       </form>
 
@@ -1928,6 +2105,7 @@ const renderers = {
   SocialIcons: renderSocial,
   Spacer: renderSpacer,
   Columns: renderColumns,
+  GraffitiWall: renderGraffitiWall,
   SignupForm: renderSignupForm,
   ContactForm: renderContactForm,
   Embed: renderEmbed
