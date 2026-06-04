@@ -675,13 +675,16 @@ html:has(#editable-page-root .graverobber-contact-form-section),
 
 #editable-page-root .gr-graffiti-layout{
   display:grid;
-  grid-template-columns:minmax(0,440px) minmax(0,1fr);
+  grid-template-columns:minmax(0,390px) minmax(0,520px);
   gap:22px;
   align-items:start;
+  justify-content:center;
 }
 
 #editable-page-root .gr-graffiti-form,
 #editable-page-root .gr-graffiti-post{
+  box-sizing:border-box;
+  min-width:0;
   background:var(--gr-graffiti-panel);
   border:1px solid var(--gr-graffiti-border);
   border-radius:18px;
@@ -692,6 +695,7 @@ html:has(#editable-page-root .graverobber-contact-form-section),
   display:grid;
   gap:14px;
   padding:18px;
+  overflow:hidden;
 }
 
 #editable-page-root .gr-graffiti-form label{
@@ -705,6 +709,8 @@ html:has(#editable-page-root .graverobber-contact-form-section),
 #editable-page-root .gr-graffiti-form input,
 #editable-page-root .gr-graffiti-form textarea{
   width:100%;
+  max-width:100%;
+  min-width:0;
   box-sizing:border-box;
   border:1px solid rgba(255,255,255,.2);
   border-radius:12px;
@@ -714,7 +720,10 @@ html:has(#editable-page-root .graverobber-contact-form-section),
 }
 
 #editable-page-root .gr-graffiti-canvas{
+  display:block;
   width:100%;
+  max-width:100%;
+  box-sizing:border-box;
   height:260px;
   border:1px solid var(--gr-graffiti-accent);
   border-radius:14px;
@@ -731,10 +740,13 @@ html:has(#editable-page-root .graverobber-contact-form-section),
 }
 
 #editable-page-root .gr-graffiti-tools input[type="range"]{
-  width:130px;
+  width:min(130px,100%);
 }
 
 #editable-page-root .gr-graffiti-form button{
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
   border:1px solid var(--gr-graffiti-accent);
   border-radius:999px;
   background:#000000;

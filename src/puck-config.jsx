@@ -774,6 +774,34 @@ export function pageBackgroundCss(props = {}) {
 }
 
 function createPageContent(pageName = "home") {
+  const homeHeaderButtons = [
+    { text: "Home", url: "index.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+    { text: "Shows", url: "shows.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+    { text: "About", url: "about.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+    { text: "Graffiti Wall", url: "graffiti-wall.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+    { text: "Admin", url: "admin.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
+  ];
+
+  const homeHeaderProps = {
+    backgroundColor: "#000000",
+    lineColor: "#bb00ff",
+    lineShadow: "0 0 24px #bb00ff",
+    showBack: "hide",
+    backText: "Back",
+    backUrl: "index.html",
+    logoUrl: "assets/grave-robber-skull.png",
+    logoAlt: "Grave Robber",
+    logoSize: "52px",
+    logoPlacement: "right",
+    width: "100%",
+    maxWidth: "none",
+    margin: "0",
+    padding: "18px 28px",
+    navPlacement: "center",
+    headerPosition: "full",
+    buttons: homeHeaderButtons
+  };
+
   if (pageName === "contact") {
     return [
       {
@@ -992,28 +1020,7 @@ function createPageContent(pageName = "home") {
         type: "HeaderNav",
         props: {
           id: "graverobber-about-header-1",
-          backgroundColor: "rgba(0,0,0,.86)",
-          lineColor: "rgba(198,40,40,.65)",
-          lineShadow: "0 0 24px rgba(198,40,40,.28)",
-          showBack: "show",
-          backText: "Back",
-          backUrl: "index.html",
-          logoUrl: "assets/grave-robber-skull.png",
-          logoAlt: "Grave Robber",
-          logoSize: "52px",
-          logoPlacement: "right",
-          width: "100%",
-          maxWidth: "none",
-          margin: "0",
-          padding: "18px 28px",
-          navPlacement: "center",
-          headerPosition: "full",
-          buttons: [
-            { text: "Home", url: "index.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Shows", url: "shows.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "About", url: "about.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "0px", borderColor: "transparent", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Graffiti Wall", url: "graffiti-wall.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
-          ]
+          ...homeHeaderProps
         }
       },
       {
@@ -1042,28 +1049,7 @@ function createPageContent(pageName = "home") {
         type: "HeaderNav",
         props: {
           id: "graverobber-graffiti-header-1",
-          backgroundColor: "rgba(0,0,0,.86)",
-          lineColor: "rgba(198,40,40,.65)",
-          lineShadow: "0 0 24px rgba(198,40,40,.28)",
-          showBack: "show",
-          backText: "Back",
-          backUrl: "index.html",
-          logoUrl: "assets/grave-robber-skull.png",
-          logoAlt: "Grave Robber",
-          logoSize: "52px",
-          logoPlacement: "right",
-          width: "100%",
-          maxWidth: "none",
-          margin: "0",
-          padding: "18px 28px",
-          navPlacement: "center",
-          headerPosition: "full",
-          buttons: [
-            { text: "Home", url: "index.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Shows", url: "shows.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "About", url: "about.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Graffiti Wall", url: "graffiti-wall.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "0px", borderColor: "transparent", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
-          ]
+          ...homeHeaderProps
         }
       },
       {
@@ -1314,13 +1300,7 @@ function createPageContent(pageName = "home") {
         navPlacement: "center",
         headerPosition: "full",
         buttons: [
-          { text: "Home", url: "index.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "0px", borderColor: "transparent", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-          { text: "Shows", url: "shows.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-          { text: "Army of the Dead", url: "signup.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-          { text: "About", url: "about.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-          { text: "Graffiti Wall", url: "graffiti-wall.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-          { text: "Buy Coffee", url: "#", backgroundColor: "transparent", textColor: "#00ff04", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 18px rgba(57,255,20,.35)", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-          { text: "Merch", url: "merch.html", buttonType: "dropdown", dropdownLinks: [{ text: "Merch Store", url: "https://graverobber.bigcartel.com/" }], backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
+          ...homeHeaderButtons
         ]
       }
     },
@@ -2737,7 +2717,7 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
                 <label>{props.nameLabel || "Your name"}<input type="text" disabled /></label>
                 <label>{props.messageLabel || "Your message"}<textarea rows="5" disabled /></label>
                 <label>{props.photoLabel || "Photo with the band"}<input type="file" disabled /></label>
-                <label>{props.paintLabel || "Paint"}<canvas width="520" height="260" /></label>
+                <label>{props.paintLabel || "Paint"}<canvas className="gr-graffiti-canvas" width="520" height="260" /></label>
                 <button type="button">{props.submitText || "Send for Approval"}</button>
               </form>
               <div className="gr-graffiti-posts">
