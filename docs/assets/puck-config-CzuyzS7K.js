@@ -1552,6 +1552,8 @@ html:has(#editable-page-root .graverobber-contact-form-section),
   <section
     id="${a}"
     class="puck-section gr-exit-popup-wrap"
+    data-gr-exit-popup="true"
+    data-trigger-distance="${Number(e.exitTriggerDistance||120)}"
     style="${p({background:e.backgroundColor||"transparent",padding:`${e.paddingY||70}px ${e.paddingX||24}px`})}"
   >
     <div class="gr-exit-popup-backdrop"></div>

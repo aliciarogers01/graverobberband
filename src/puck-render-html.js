@@ -1738,6 +1738,8 @@ function renderWelcomeHorrorMessage(props) {
   <section
     id="${popupId}"
     class="puck-section gr-exit-popup-wrap"
+    data-gr-exit-popup="true"
+    data-trigger-distance="${Number(props.exitTriggerDistance || 120)}"
     style="${styleObj({
       background: props.backgroundColor || "transparent",
       padding: `${props.paddingY || 70}px ${props.paddingX || 24}px`

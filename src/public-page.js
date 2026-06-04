@@ -44,6 +44,55 @@ function projectDataIsUsable(projectData, pageName) {
   return true;
 }
 
+function initializeExitPopups(root) {
+  root.querySelectorAll("[data-gr-exit-popup]").forEach(popup => {
+    if (popup.dataset.grExitPopupBound === "true") return;
+    popup.dataset.grExitPopupBound = "true";
+
+    let shown = false;
+    let lastY = null;
+    let hasBeenLowerOnPage = false;
+    const triggerDistance = Number(popup.dataset.triggerDistance || 120);
+
+    function showPopup() {
+      if (shown) return;
+      shown = true;
+      popup.classList.add("is-visible");
+    }
+
+    function hidePopup() {
+      popup.classList.remove("is-visible");
+    }
+
+    document.addEventListener("mousemove", event => {
+      const armedDistance = Math.max(triggerDistance + 180, 260);
+
+      if (event.clientY >= armedDistance) {
+        hasBeenLowerOnPage = true;
+      }
+
+      const movingUp = lastY !== null && event.clientY < lastY;
+      const nearTop = event.clientY <= triggerDistance;
+
+      if (hasBeenLowerOnPage && movingUp && nearTop) {
+        showPopup();
+      }
+
+      lastY = event.clientY;
+    });
+
+    popup.addEventListener("click", event => {
+      if (
+        event.target.classList.contains("gr-exit-popup-backdrop") ||
+        event.target.classList.contains("gr-exit-popup-close") ||
+        event.target.classList.contains("gr-exit-popup-no-thanks")
+      ) {
+        hidePopup();
+      }
+    });
+  });
+}
+
 async function loadPublicPage() {
   const root = document.getElementById("editable-page-root");
   if (!root) return;
@@ -87,6 +136,7 @@ async function loadPublicPage() {
     if (projectDataIsUsable(projectData, pageName)) {
       applyPageBackground(projectData.root?.props);
       root.innerHTML = renderPuckHtml(projectData);
+      initializeExitPopups(root);
       if (pageName === "shows" && !document.getElementById("upcoming-shows")) {
         const showsHtml = `
           <section class="puck-section" style="padding:20px 24px;">
@@ -123,6 +173,7 @@ async function loadPublicPage() {
   const fallbackData = createDefaultPuckData(pageName);
   applyPageBackground(fallbackData.root?.props);
   root.innerHTML = renderPuckHtml(fallbackData);
+  initializeExitPopups(root);
 
   document.documentElement.classList.add("visual-page-ready");
   window.dispatchEvent(new CustomEvent("visualPageRendered", {
