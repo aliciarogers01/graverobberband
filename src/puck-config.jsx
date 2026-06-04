@@ -802,6 +802,54 @@ function createPageContent(pageName = "home") {
     buttons: homeHeaderButtons
   };
 
+  const armyPopupProps = {
+    id: `graverobber-${pageName}-popup-1`,
+    showInEditor: "no",
+    exitTriggerDistance: 70,
+    theme: "toxic",
+    animationStyle: "pop",
+    eyebrow: "WELCOME TO THE GRAVE",
+    title: "Join the Army of the Dead",
+    body: "You have crossed into Grave Robber territory. Join the Army of the Dead and march with us into the noise.",
+    align: "center",
+    titleColor: "#00ff04",
+    titleFont: "Creepster, cursive",
+    titleSize: "clamp(44px, 8vw, 92px)",
+    titleShadow: "0 0 18px #00ff04, 0 0 42px rgba(187,0,255,.85)",
+    bodyColor: "#ffffff",
+    bodyFont: "Special Elite, cursive",
+    bodySize: "20px",
+    backgroundColor: "transparent",
+    cardBackground: "linear-gradient(135deg, rgba(0,0,0,.92), rgba(32,0,46,.88))",
+    borderColor: "#bb00ff",
+    glowColor: "#00ff04",
+    radius: "28px",
+    maxWidth: "920px",
+    paddingY: 70,
+    paddingX: 24,
+    customFontUrl: "",
+    noThanksText: "No Thanks",
+    noThanksBackgroundColor: "transparent",
+    noThanksTextColor: "#ffffff",
+    noThanksBorderColor: "rgba(255,255,255,.45)",
+    buttons: [
+      {
+        text: "Join the Army of the Dead",
+        url: "signup.html",
+        backgroundColor: "#bb00ff",
+        textColor: "#ffffff",
+        fontFamily: "Oswald, sans-serif",
+        fontSize: "16px",
+        borderWidth: "2px",
+        borderColor: "#00ff04",
+        boxShadow: "0 0 24px rgba(0,255,4,.75)",
+        textTransform: "uppercase",
+        radius: "999px",
+        padding: "14px 28px"
+      }
+    ]
+  };
+
   if (pageName === "contact") {
     return [
       {
@@ -1013,6 +1061,10 @@ function createPageContent(pageName = "home") {
         }
       },
       {
+        type: "WelcomeHorrorMessage",
+        props: armyPopupProps
+      },
+      {
         type: "TextBlock",
         props: {
           id: "graverobber-about-empty-1",
@@ -1041,6 +1093,10 @@ function createPageContent(pageName = "home") {
           ...homeHeaderProps,
           showBack: "show"
         }
+      },
+      {
+        type: "WelcomeHorrorMessage",
+        props: armyPopupProps
       },
       {
         type: "GraffitiWall",
