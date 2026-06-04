@@ -76,7 +76,7 @@ async function loadApprovedPosts(root) {
 
     postsRoot.innerHTML = posts.length
       ? posts.map(postHtml).join("")
-      : "<p>No approved graffiti yet.</p>";
+      : "<p>Graffiti posts will show here.</p>";
   } catch (error) {
     postsRoot.innerHTML = "<p>Graffiti posts could not load right now.</p>";
   }
