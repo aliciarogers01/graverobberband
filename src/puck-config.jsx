@@ -824,11 +824,7 @@ function createPageContent(pageName = "home") {
           padding: "18px 28px",
           navPlacement: "center",
           headerPosition: "full",
-          buttons: [
-            { text: "Home", url: "index.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Shows", url: "shows.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Admin", url: "admin.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
-          ]
+          buttons: homeHeaderButtons
         }
       },
       {
@@ -896,11 +892,7 @@ function createPageContent(pageName = "home") {
           padding: "18px 28px",
           navPlacement: "center",
           headerPosition: "full",
-          buttons: [
-            { text: "Home", url: "index.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Shows", url: "shows.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "0px", borderColor: "transparent", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Army of the Dead", url: "signup.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
-          ]
+          buttons: homeHeaderButtons
         }
       },
       {
@@ -966,11 +958,7 @@ function createPageContent(pageName = "home") {
           padding: "18px 28px",
           navPlacement: "center",
           headerPosition: "full",
-          buttons: [
-            { text: "Home", url: "index.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Shows", url: "shows.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Army of the Dead", url: "signup.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "0px", borderColor: "transparent", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
-          ]
+          buttons: homeHeaderButtons
         }
       },
       {
@@ -1020,7 +1008,8 @@ function createPageContent(pageName = "home") {
         type: "HeaderNav",
         props: {
           id: "graverobber-about-header-1",
-          ...homeHeaderProps
+          ...homeHeaderProps,
+          showBack: "show"
         }
       },
       {
@@ -1049,7 +1038,8 @@ function createPageContent(pageName = "home") {
         type: "HeaderNav",
         props: {
           id: "graverobber-graffiti-header-1",
-          ...homeHeaderProps
+          ...homeHeaderProps,
+          showBack: "show"
         }
       },
       {
@@ -1099,13 +1089,7 @@ function createPageContent(pageName = "home") {
           padding: "18px 28px",
           navPlacement: "center",
           headerPosition: "full",
-          buttons: [
-            { text: "Home", url: "index.html", backgroundColor: "transparent", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Shows", url: "shows.html", backgroundColor: "transparent", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Music", url: "index.html#music", backgroundColor: "transparent", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Merch", url: "merch.html", backgroundColor: "transparent", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Contact", url: "contact.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
-          ]
+          buttons: homeHeaderButtons
         }
       },
       {
@@ -1171,12 +1155,7 @@ function createPageContent(pageName = "home") {
           padding: "18px 28px",
           navPlacement: "center",
           headerPosition: "full",
-          buttons: [
-            { text: "Home", url: "index.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Shows", url: "shows.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Merch", url: "merch.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "0px", borderColor: "transparent", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Gallery", url: "gallery.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
-          ]
+          buttons: homeHeaderButtons
         }
       },
       {
@@ -1228,12 +1207,7 @@ function createPageContent(pageName = "home") {
           padding: "18px 28px",
           navPlacement: "center",
           headerPosition: "full",
-          buttons: [
-            { text: "Home", url: "index.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Shows", url: "shows.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Merch", url: "merch.html", backgroundColor: "transparent", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(198,40,40,.55)", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-            { text: "Gallery", url: "gallery.html", backgroundColor: "#c62828", textColor: "#ffffff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "0px", borderColor: "transparent", boxShadow: "none", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
-          ]
+          buttons: homeHeaderButtons
         }
       },
       {
@@ -1283,25 +1257,7 @@ function createPageContent(pageName = "home") {
       type: "HeaderNav",
       props: {
         id: "graverobber-home-header-1",
-        backgroundColor: "rgba(0,0,0,.86)",
-        lineColor: "rgba(198,40,40,.65)",
-        lineShadow: "0 0 24px rgba(198,40,40,.28)",
-        showBack: "hide",
-        backText: "Back",
-        backUrl: "index.html",
-        logoUrl: "assets/grave-robber-skull.png",
-        logoAlt: "Grave Robber",
-        logoSize: "52px",
-        logoPlacement: "left",
-        width: "100%",
-        maxWidth: "none",
-        margin: "0",
-        padding: "18px 28px",
-        navPlacement: "center",
-        headerPosition: "full",
-        buttons: [
-          ...homeHeaderButtons
-        ]
+        ...homeHeaderProps
       }
     },
     {
@@ -2200,11 +2156,11 @@ logoImageShadow: "none",
         navPlacement: "right",
         headerPosition: "full",
         buttons: [
-          { text: "Home", url: "index.html", backgroundColor: "transparent", textColor: "#4dc6e1", fontFamily: "inherit", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(77,198,225,.45)", boxShadow: "0 0 16px rgba(77,198,225,.12)", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-          { text: "Shows", url: "shows.html", backgroundColor: "transparent", textColor: "#4dc6e1", fontFamily: "inherit", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(77,198,225,.45)", boxShadow: "0 0 16px rgba(77,198,225,.12)", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-          { text: "Signup", url: "signup.html", backgroundColor: "transparent", textColor: "#4dc6e1", fontFamily: "inherit", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(77,198,225,.45)", boxShadow: "0 0 16px rgba(77,198,225,.12)", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-          { text: "Contact", url: "contact.html", backgroundColor: "transparent", textColor: "#4dc6e1", fontFamily: "inherit", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(77,198,225,.45)", boxShadow: "0 0 16px rgba(77,198,225,.12)", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
-          { text: "Admin", url: "admin.html", backgroundColor: "transparent", textColor: "#4dc6e1", fontFamily: "inherit", fontSize: "14px", borderWidth: "1px", borderColor: "rgba(77,198,225,.45)", boxShadow: "0 0 16px rgba(77,198,225,.12)", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
+          { text: "Home", url: "index.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+          { text: "Shows", url: "shows.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+          { text: "About", url: "about.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+          { text: "Graffiti Wall", url: "graffiti-wall.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
+          { text: "Admin", url: "admin.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" }
         ]
       },
       render: props => (
