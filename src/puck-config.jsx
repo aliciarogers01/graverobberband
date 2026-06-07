@@ -677,12 +677,12 @@ export const defaultPageBackgroundProps = {
   backgroundStyle: "grave-ombre",
 
   pageBaseColor: "#030000",
-  pageSecondColor: "#160000",
-  pageThirdColor: "#000000",
+  pageSecondColor: "#000000",
+  pageThirdColor: "",
 
-  pageGlowColor: "rgba(198,40,40,.18)",
-  pageSecondGlowColor: "rgba(198,40,40,.10)",
-  pageThirdGlowColor: "rgba(0,0,0,.65)",
+  pageGlowColor: "#00ff04",
+  pageSecondGlowColor: "#000000",
+  pageThirdGlowColor: "",
 
   pageTextColor: "#f5f0e6",
 
@@ -1267,42 +1267,22 @@ function createPageContent(pageName = "home") {
         }
       },
       {
-        type: "TextBlock",
+        type: "GalleryGrid",
         props: {
-          id: "graverobber-gallery-title-1",
-          eyebrow: "Photos from the crypt",
           title: "Gallery",
-          body: "Add photos, flyers, videos, and live shots here.",
-          align: "center",
-          maxWidth: "850px",
+          id: "graverobber-gallery-grid-1",
+          titleColor: "#ffffff",
+          titleFont: "Oswald, sans-serif",
+          titleSize: "2.5rem",
           backgroundColor: "transparent",
           textColor: "#ffffff",
-          paddingY: 70,
+          paddingY: 40,
           paddingX: 24,
-          titleColor: "#ffffff",
-          titleFont: "Creepster, cursive",
-          titleSize: "4rem",
-          bodyColor: "#d6d6d6",
-          bodyFont: "Oswald, sans-serif",
-          bodySize: "1.1rem",
-          buttons: []
-        }
-      },
-      {
-        type: "ImageBlock",
-        props: {
-          id: "graverobber-gallery-image-1",
-          title: "",
-          imageUrl: "assets/grave-robber-logo-stacked.png",
-          imageAlt: "Grave Robber gallery image",
-          width: "520px",
-          radius: "12px",
-          shadow: "0 20px 60px rgba(0,0,0,.55)",
-          align: "center",
-          maxWidth: "900px",
-          backgroundColor: "transparent",
-          paddingY: 30,
-          paddingX: 24
+          layoutMode: "freeform",
+          canvasHeight: "760px",
+          columns: 3,
+          gap: 18,
+          images: []
         }
       }
     ];
@@ -1643,7 +1623,7 @@ export const puckConfig = {
           label: "Design Theme",
           options: [
             { label: "Toxic Grave Pop-Out", value: "toxic" },
-            { label: "Purple Crypt Bounce", value: "crypt" },
+            { label: "Purple Bounce", value: "purple" },
             { label: "Black Fog Fade", value: "fog" },
             { label: "Slasher Slide Left", value: "slide-left" },
             { label: "Possessed Slide Top", value: "slide-top" },
@@ -1957,8 +1937,8 @@ export const puckConfig = {
               .gr-theme-toxic .gr-welcome-title{color:#00ff04!important;filter:drop-shadow(0 0 18px #00ff04);}
               .gr-theme-toxic:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(0,255,4,.08) 0 2px,transparent 2px 18px);pointer-events:none;}
 
-              .gr-theme-crypt{background:linear-gradient(145deg,rgba(17,0,26,.96),rgba(0,0,0,.94))!important;border-color:#bb00ff!important;box-shadow:0 0 42px rgba(187,0,255,.75),inset 0 0 42px rgba(0,255,4,.18)!important;}
-              .gr-theme-crypt .gr-welcome-title{color:#bb00ff!important;letter-spacing:.06em;}
+              .gr-theme-purple{background:linear-gradient(145deg,rgba(17,0,26,.96),rgba(0,0,0,.94))!important;border-color:#bb00ff!important;box-shadow:0 0 42px rgba(187,0,255,.75),inset 0 0 42px rgba(0,255,4,.18)!important;}
+              .gr-theme-purple .gr-welcome-title{color:#bb00ff!important;letter-spacing:.06em;}
 
               .gr-theme-fog{background:radial-gradient(circle at center,rgba(30,30,30,.96),rgba(0,0,0,.98))!important;border-color:rgba(255,255,255,.28)!important;box-shadow:0 0 50px rgba(255,255,255,.26),inset 0 0 40px rgba(255,255,255,.1)!important;}
               .gr-theme-fog .gr-welcome-title{color:#f2f2f2!important;}

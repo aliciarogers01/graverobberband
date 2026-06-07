@@ -460,7 +460,26 @@ function removeShowSocialUrl(index) {
 
   async function saveGalleryImages(nextImages) {
     const normalizedImages = (nextImages || []).map(normalizeGalleryImage);
-    const galleryData = dataWithGalleryImages(freshDefaultData("gallery"), normalizedImages);
+    let baseGalleryData = pageData;
+
+    try {
+      const response = await fetch(`${API_BASE}/visual-pages/${SITE_SLUG}/gallery?_=${Date.now()}`);
+      if (response.ok) {
+        const data = await response.json();
+        const page = data?.page || data || {};
+        let saved = page.project_data;
+
+        if (typeof saved === "string") {
+          saved = JSON.parse(saved);
+        }
+
+        baseGalleryData = cleanSavedData(saved, "gallery");
+      }
+    } catch (error) {
+      console.warn("Saved gallery page could not be loaded before gallery save:", error);
+    }
+
+    const galleryData = dataWithGalleryImages(baseGalleryData, normalizedImages);
 
     const response = await fetch(`${API_BASE}/visual-pages/${SITE_SLUG}/gallery`, {
       method: "PUT",

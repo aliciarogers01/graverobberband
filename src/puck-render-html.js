@@ -1466,6 +1466,7 @@ margin: props.margin || "0"
 }
 
 function renderWelcomeHorrorMessage(props) {
+  const theme = props.theme;
   const particles = Array.from({ length: 8 }).map(() => "<span></span>").join("");
   const buttonsHtml = (props.buttons || []).map(buttonHtml).join("");
   const noThanksHtml = hasText(props.noThanksText)
@@ -1538,8 +1539,8 @@ function renderWelcomeHorrorMessage(props) {
     #editable-page-root .gr-theme-toxic .gr-welcome-title{color:#00ff04!important;filter:drop-shadow(0 0 18px #00ff04);}
     #editable-page-root .gr-theme-toxic:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(0,255,4,.08) 0 2px,transparent 2px 18px);pointer-events:none;}
 
-    #editable-page-root .gr-theme-crypt{background:linear-gradient(145deg,rgba(17,0,26,.96),rgba(0,0,0,.94))!important;border-color:#bb00ff!important;box-shadow:0 0 42px rgba(187,0,255,.75),inset 0 0 42px rgba(0,255,4,.18)!important;}
-    #editable-page-root .gr-theme-crypt .gr-welcome-title{color:#bb00ff!important;letter-spacing:.06em;}
+    #editable-page-root .gr-theme-purple{background:linear-gradient(145deg,rgba(17,0,26,.96),rgba(0,0,0,.94))!important;border-color:#bb00ff!important;box-shadow:0 0 42px rgba(187,0,255,.75),inset 0 0 42px rgba(0,255,4,.18)!important;}
+    #editable-page-root .gr-theme-purple .gr-welcome-title{color:#bb00ff!important;letter-spacing:.06em;}
 
     #editable-page-root .gr-theme-fog{background:radial-gradient(circle at center,rgba(30,30,30,.96),rgba(0,0,0,.98))!important;border-color:rgba(255,255,255,.28)!important;box-shadow:0 0 50px rgba(255,255,255,.26),inset 0 0 40px rgba(255,255,255,.1)!important;}
     #editable-page-root .gr-theme-fog .gr-welcome-title{color:#f2f2f2!important;}
@@ -1778,7 +1779,7 @@ function renderWelcomeHorrorMessage(props) {
     <div class="gr-exit-popup-backdrop"></div>
 
     <div
-      class="gr-welcome-card gr-exit-popup-card gr-theme-${attr(props.theme || "toxic")} gr-anim-${attr(props.animationStyle || "pop")}"
+      class="gr-welcome-card gr-exit-popup-card gr-theme-${attr(theme || "toxic")} gr-anim-${attr(props.animationStyle || "pop")}"
       style="${styleObj({
         "--gr-bg": props.cardBackground || "rgba(0,0,0,.92)",
         "--gr-border": props.borderColor || "#bb00ff",
