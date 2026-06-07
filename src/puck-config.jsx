@@ -2632,6 +2632,15 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
         textColor: colorField("Default Text Color"),
         paddingY: { type: "number", label: "Top/Bottom Padding" },
         paddingX: { type: "number", label: "Left/Right Padding" },
+        layoutMode: {
+          type: "select",
+          label: "Gallery Layout",
+          options: [
+            { label: "Freeform Placement", value: "freeform" },
+            { label: "Grid", value: "grid" }
+          ]
+        },
+        canvasHeight: { type: "text", label: "Freeform Canvas Height" },
         columns: { type: "number", label: "Columns" },
         gap: { type: "number", label: "Gap" },
         images: {
@@ -2640,12 +2649,38 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
           arrayFields: {
             imageUrl: imageUploadField("Image"),
             imageAlt: { type: "text", label: "Alt Text" },
-            caption: { type: "text", label: "Caption" }
+            caption: { type: "text", label: "Caption" },
+            x: { type: "number", label: "X Position %" },
+            y: { type: "number", label: "Y Position %" },
+            width: { type: "text", label: "Width" },
+            rotation: { type: "number", label: "Rotation Degrees" },
+            zIndex: { type: "number", label: "Layer" },
+            radius: { type: "text", label: "Corner Radius" },
+            shadow: { type: "text", label: "Glow / Shadow" },
+            opacity: { type: "number", label: "Opacity %" },
+            objectFit: {
+              type: "select",
+              label: "Image Fit",
+              options: [
+                { label: "Cover", value: "cover" },
+                { label: "Contain", value: "contain" },
+                { label: "Stretch", value: "fill" }
+              ]
+            }
           },
           defaultItemProps: {
             imageUrl: "",
             imageAlt: "Gallery image",
-            caption: ""
+            caption: "",
+            x: 8,
+            y: 8,
+            width: "280px",
+            rotation: 0,
+            zIndex: 1,
+            radius: "16px",
+            shadow: "0 0 34px rgba(57,255,20,.35)",
+            opacity: 100,
+            objectFit: "cover"
           }
         }
       },
@@ -2658,6 +2693,8 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
         textColor: "#ffffff",
         paddingY: 40,
         paddingX: 24,
+        layoutMode: "grid",
+        canvasHeight: "760px",
         columns: 3,
         gap: 18,
         images: []
@@ -2666,9 +2703,26 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
         <SectionShell {...props}>
           <div className="puck-inner">
             {props.title && <h2 className="puck-title" style={{ textAlign: "center", color: props.titleColor || "inherit", fontFamily: props.titleFont || "inherit", fontSize: props.titleSize || "2.5rem" }}>{props.title}</h2>}
-            <div className="puck-gallery-grid" style={{ "--cols": props.columns || 3, "--gap": `${props.gap || 18}px` }}>
+            <div
+              className={props.layoutMode === "freeform" ? "puck-gallery-freeform" : "puck-gallery-grid"}
+              style={props.layoutMode === "freeform" ? { "--gallery-height": props.canvasHeight || "760px" } : { "--cols": props.columns || 3, "--gap": `${props.gap || 18}px` }}
+            >
               {(props.images || []).filter(image => image.imageUrl).map((image, index) => (
-                <figure className="puck-gallery-item" key={index}>
+                <figure
+                  className="puck-gallery-item"
+                  key={index}
+                  style={props.layoutMode === "freeform" ? {
+                    "--gallery-x": `${Number.isFinite(Number(image.x)) ? image.x : 0}%`,
+                    "--gallery-y": `${Number.isFinite(Number(image.y)) ? image.y : 0}%`,
+                    "--gallery-width": image.width || "280px",
+                    "--gallery-rotation": `${Number.isFinite(Number(image.rotation)) ? image.rotation : 0}deg`,
+                    "--gallery-layer": Number.isFinite(Number(image.zIndex)) ? image.zIndex : index + 1,
+                    "--gallery-opacity": Number.isFinite(Number(image.opacity)) ? Math.min(100, Math.max(0, Number(image.opacity))) / 100 : 1,
+                    "--gallery-fit": image.objectFit || "cover",
+                    borderRadius: image.radius || "16px",
+                    boxShadow: image.shadow || "0 0 34px rgba(57,255,20,.35)"
+                  } : undefined}
+                >
                   <img src={image.imageUrl} alt={image.imageAlt || "Gallery image"} />
                   {image.caption && <figcaption>{image.caption}</figcaption>}
                 </figure>

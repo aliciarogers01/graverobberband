@@ -562,6 +562,13 @@ html:has(#editable-page-root .graverobber-contact-form-section),
   gap:var(--gap,18px);
 }
 
+#editable-page-root .puck-gallery-freeform{
+  position:relative;
+  min-height:var(--gallery-height,760px);
+  width:100%;
+  overflow:visible;
+}
+
 #editable-page-root .puck-gallery-item{
   margin:0;
   border-radius:16px;
@@ -577,6 +584,22 @@ html:has(#editable-page-root .graverobber-contact-form-section),
   object-fit:cover;
 }
 
+#editable-page-root .puck-gallery-freeform .puck-gallery-item{
+  position:absolute;
+  left:var(--gallery-x,0%);
+  top:var(--gallery-y,0%);
+  width:var(--gallery-width,280px);
+  z-index:var(--gallery-layer,1);
+  transform:rotate(var(--gallery-rotation,0deg));
+  opacity:var(--gallery-opacity,1);
+}
+
+#editable-page-root .puck-gallery-freeform .puck-gallery-item img{
+  height:auto;
+  max-height:520px;
+  object-fit:var(--gallery-fit,cover);
+}
+
 #editable-page-root .puck-gallery-open{
   display:block;
   cursor:zoom-in;
@@ -589,6 +612,10 @@ html:has(#editable-page-root .graverobber-contact-form-section),
 #editable-page-root .puck-gallery-item:hover{
   transform:scale(1.04);
   box-shadow:0 0 34px rgba(57,255,20,.35);
+}
+
+#editable-page-root .puck-gallery-freeform .puck-gallery-item:hover{
+  transform:rotate(var(--gallery-rotation,0deg)) scale(1.04);
 }
 
 #editable-page-root .puck-gallery-modal{
@@ -1910,6 +1937,8 @@ function renderSocial(props) {
 }
 
 function renderGalleryGrid(props) {
+  const layoutMode = props.layoutMode || "grid";
+  const isFreeform = layoutMode === "freeform";
   const sectionStyle = styleObj({
     background: props.backgroundColor || "transparent",
     color: props.textColor || "inherit",
@@ -1929,8 +1958,24 @@ function renderGalleryGrid(props) {
     .filter(image => hasText(image.imageUrl))
     .map((image, index) => {
       const modalId = `gallery-modal-${index}`;
+      const x = Number.isFinite(Number(image.x)) ? Number(image.x) : 0;
+      const y = Number.isFinite(Number(image.y)) ? Number(image.y) : 0;
+      const rotation = Number.isFinite(Number(image.rotation)) ? Number(image.rotation) : 0;
+      const zIndex = Number.isFinite(Number(image.zIndex)) ? Number(image.zIndex) : index + 1;
+      const opacity = Number.isFinite(Number(image.opacity)) ? Math.min(100, Math.max(0, Number(image.opacity))) / 100 : 1;
+      const itemStyle = isFreeform ? styleObj({
+        "--gallery-x": `${Math.min(100, Math.max(0, x))}%`,
+        "--gallery-y": `${Math.min(100, Math.max(0, y))}%`,
+        "--gallery-width": image.width || "280px",
+        "--gallery-rotation": `${rotation}deg`,
+        "--gallery-layer": zIndex,
+        "--gallery-opacity": opacity,
+        "--gallery-fit": image.objectFit || "cover",
+        borderRadius: image.radius || "16px",
+        boxShadow: image.shadow || "0 0 34px rgba(57,255,20,.35)"
+      }) : "";
       return `
-        <figure class="puck-gallery-item">
+        <figure class="puck-gallery-item" style="${itemStyle}">
           <a href="#${modalId}" class="puck-gallery-open">
             <img src="${attr(image.imageUrl)}" alt="${attr(image.imageAlt || "Gallery image")}">
           </a>
@@ -1949,7 +1994,12 @@ function renderGalleryGrid(props) {
     })
     .join("");
 
-  return `<section class="puck-section" style="${sectionStyle}"><div class="puck-inner">${titleHtml}<div class="puck-gallery-grid" style="--cols:${Number(props.columns || 3)};--gap:${Number(props.gap || 18)}px">${imagesHtml}</div></div></section>`;
+  const galleryClass = isFreeform ? "puck-gallery-freeform" : "puck-gallery-grid";
+  const galleryStyle = isFreeform
+    ? `--gallery-height:${attr(props.canvasHeight || "760px")}`
+    : `--cols:${Number(props.columns || 3)};--gap:${Number(props.gap || 18)}px`;
+
+  return `<section class="puck-section" style="${sectionStyle}"><div class="puck-inner">${titleHtml}<div class="${galleryClass}" style="${galleryStyle}">${imagesHtml}</div></div></section>`;
 }
 
 function renderGraffitiWall(props) {

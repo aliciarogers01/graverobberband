@@ -65,6 +65,49 @@ function freshDefaultData(pageName) {
   return createDefaultPuckData(pageName);
 }
 
+function clampNumber(value, min, max) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return min;
+  return Math.min(max, Math.max(min, number));
+}
+
+function galleryImageDefaults(index = 0) {
+  const column = index % 3;
+  const row = Math.floor(index / 3);
+
+  return {
+    x: Math.min(72, 6 + column * 30),
+    y: Math.min(82, 8 + row * 28),
+    width: "280px",
+    rotation: 0,
+    zIndex: index + 1,
+    radius: "16px",
+    shadow: "0 0 34px rgba(57,255,20,.35)",
+    opacity: 100,
+    objectFit: "cover"
+  };
+}
+
+function normalizeGalleryImage(image = {}, index = 0) {
+  const defaults = galleryImageDefaults(index);
+
+  return {
+    ...image,
+    imageUrl: image.imageUrl || "",
+    imageAlt: image.imageAlt || "Gallery image",
+    caption: image.caption || "",
+    x: clampNumber(image.x ?? defaults.x, 0, 100),
+    y: clampNumber(image.y ?? defaults.y, 0, 100),
+    width: image.width || defaults.width,
+    rotation: Number.isFinite(Number(image.rotation)) ? Number(image.rotation) : defaults.rotation,
+    zIndex: Number.isFinite(Number(image.zIndex)) ? Number(image.zIndex) : defaults.zIndex,
+    radius: image.radius || defaults.radius,
+    shadow: image.shadow || defaults.shadow,
+    opacity: clampNumber(image.opacity ?? defaults.opacity, 0, 100),
+    objectFit: image.objectFit || defaults.objectFit
+  };
+}
+
 function makeSafeBlockId(type, pageName, index) {
   const safeType = String(type || "block").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   return `graverobberpunk-${pageName}-${safeType}-${index + 1}`;
@@ -342,6 +385,8 @@ function removeShowSocialUrl(index) {
   }
 
   function galleryBlock(images) {
+    const normalizedImages = (images || []).map(normalizeGalleryImage);
+
     return {
       type: "GalleryGrid",
       props: {
@@ -354,9 +399,11 @@ function removeShowSocialUrl(index) {
         textColor: "#ffffff",
         paddingY: 40,
         paddingX: 24,
+        layoutMode: "freeform",
+        canvasHeight: "760px",
         columns: 3,
         gap: 18,
-        images
+        images: normalizedImages
       }
     };
   }
@@ -376,7 +423,7 @@ function removeShowSocialUrl(index) {
 
   function extractGalleryImages(data) {
     const block = (data?.content || []).find(item => item.type === "GalleryGrid");
-    return Array.isArray(block?.props?.images) ? block.props.images : [];
+    return Array.isArray(block?.props?.images) ? block.props.images.map(normalizeGalleryImage) : [];
   }
 
   async function loadGalleryImages() {
@@ -403,7 +450,8 @@ function removeShowSocialUrl(index) {
   }
 
   async function saveGalleryImages(nextImages) {
-    const galleryData = dataWithGalleryImages(freshDefaultData("gallery"), nextImages);
+    const normalizedImages = (nextImages || []).map(normalizeGalleryImage);
+    const galleryData = dataWithGalleryImages(freshDefaultData("gallery"), normalizedImages);
 
     const response = await fetch(`${API_BASE}/visual-pages/${SITE_SLUG}/gallery`, {
       method: "PUT",
@@ -420,7 +468,7 @@ function removeShowSocialUrl(index) {
       return;
     }
 
-    setGalleryImages(nextImages);
+    setGalleryImages(normalizedImages);
     setGalleryStatus("Gallery saved.");
   }
 
@@ -441,25 +489,54 @@ function removeShowSocialUrl(index) {
         uploaded.push({
           imageUrl: url,
           imageAlt: file.name,
-          caption: ""
+          caption: "",
+          ...galleryImageDefaults(galleryImages.length + uploaded.length)
         });
       });
     }
 
-    const nextImages = [...galleryImages, ...uploaded];
+    const nextImages = [...galleryImages, ...uploaded].map(normalizeGalleryImage);
     await saveGalleryImages(nextImages);
   }
 
   function updateGalleryImage(index, field, value) {
     const nextImages = galleryImages.map((image, imageIndex) => (
-      imageIndex === index ? { ...image, [field]: value } : image
+      imageIndex === index ? normalizeGalleryImage({ ...image, [field]: value }, imageIndex) : normalizeGalleryImage(image, imageIndex)
     ));
 
     saveGalleryImages(nextImages);
   }
 
+  function nudgeGalleryImage(index, xDelta, yDelta) {
+    const nextImages = galleryImages.map((image, imageIndex) => {
+      if (imageIndex !== index) return normalizeGalleryImage(image, imageIndex);
+
+      const normalized = normalizeGalleryImage(image, imageIndex);
+      return normalizeGalleryImage({
+        ...normalized,
+        x: normalized.x + xDelta,
+        y: normalized.y + yDelta
+      }, imageIndex);
+    });
+
+    saveGalleryImages(nextImages);
+  }
+
+  function moveGalleryLayer(index, direction) {
+    const nextImages = galleryImages.map((image, imageIndex) => {
+      if (imageIndex !== index) return normalizeGalleryImage(image, imageIndex);
+      const normalized = normalizeGalleryImage(image, imageIndex);
+      return normalizeGalleryImage({
+        ...normalized,
+        zIndex: normalized.zIndex + direction
+      }, imageIndex);
+    });
+
+    saveGalleryImages(nextImages);
+  }
+
   function removeGalleryImage(index) {
-    const nextImages = galleryImages.filter((_, imageIndex) => imageIndex !== index);
+    const nextImages = galleryImages.filter((_, imageIndex) => imageIndex !== index).map(normalizeGalleryImage);
     saveGalleryImages(nextImages);
   }
 
@@ -765,7 +842,7 @@ setShowForm(emptyShowForm);
       </section>
 
       <section className="admin-management-grid">
-        <div className="admin-panel">
+        <div className="admin-panel admin-shows-panel">
           <div className="admin-panel-header">
             <h2>Add / Edit / Remove Shows</h2>
             <button type="button" onClick={loadShows}>Reload Shows</button>
@@ -910,9 +987,34 @@ setShowForm(emptyShowForm);
 
           {galleryStatus && <p className="admin-inline-status">{galleryStatus}</p>}
 
-          <div className="admin-list">
+          <div className="admin-gallery-stage" aria-label="Gallery placement preview">
+            {galleryImages.length ? galleryImages.map((image, index) => {
+              const normalized = normalizeGalleryImage(image, index);
+              return normalized.imageUrl ? (
+                <img
+                  key={`${normalized.imageUrl}-preview-${index}`}
+                  src={normalized.imageUrl}
+                  alt={normalized.imageAlt || "Gallery preview"}
+                  className="admin-gallery-stage-image"
+                  style={{
+                    left: `${normalized.x}%`,
+                    top: `${normalized.y}%`,
+                    width: normalized.width,
+                    transform: `rotate(${normalized.rotation}deg)`,
+                    zIndex: normalized.zIndex,
+                    borderRadius: normalized.radius,
+                    boxShadow: normalized.shadow,
+                    opacity: normalized.opacity / 100,
+                    objectFit: normalized.objectFit
+                  }}
+                />
+              ) : null;
+            }) : <p>Gallery images will preview here.</p>}
+          </div>
+
+          <div className="admin-list admin-gallery-editor-list">
             {galleryImages.length ? galleryImages.map((image, index) => (
-              <article className="admin-list-item" key={`${image.imageUrl}-${index}`}>
+              <article className="admin-list-item admin-gallery-editor-item" key={`${image.imageUrl}-${index}`}>
                 {image.imageUrl && <img src={image.imageUrl} alt={image.imageAlt || "Gallery"} className="admin-list-image" />}
 
                 <input
@@ -928,6 +1030,107 @@ setShowForm(emptyShowForm);
                   value={image.caption || ""}
                   onChange={event => updateGalleryImage(index, "caption", event.target.value)}
                 />
+
+                <div className="admin-gallery-control-grid">
+                  <label>
+                    X %
+                    <input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={normalizeGalleryImage(image, index).x}
+                      onChange={event => updateGalleryImage(index, "x", event.target.value)}
+                    />
+                  </label>
+
+                  <label>
+                    Y %
+                    <input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={normalizeGalleryImage(image, index).y}
+                      onChange={event => updateGalleryImage(index, "y", event.target.value)}
+                    />
+                  </label>
+
+                  <label>
+                    Width
+                    <input
+                      type="text"
+                      value={normalizeGalleryImage(image, index).width}
+                      onChange={event => updateGalleryImage(index, "width", event.target.value)}
+                    />
+                  </label>
+
+                  <label>
+                    Rotation
+                    <input
+                      type="number"
+                      value={normalizeGalleryImage(image, index).rotation}
+                      onChange={event => updateGalleryImage(index, "rotation", event.target.value)}
+                    />
+                  </label>
+
+                  <label>
+                    Layer
+                    <input
+                      type="number"
+                      value={normalizeGalleryImage(image, index).zIndex}
+                      onChange={event => updateGalleryImage(index, "zIndex", event.target.value)}
+                    />
+                  </label>
+
+                  <label>
+                    Radius
+                    <input
+                      type="text"
+                      value={normalizeGalleryImage(image, index).radius}
+                      onChange={event => updateGalleryImage(index, "radius", event.target.value)}
+                    />
+                  </label>
+
+                  <label>
+                    Opacity
+                    <input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={normalizeGalleryImage(image, index).opacity}
+                      onChange={event => updateGalleryImage(index, "opacity", event.target.value)}
+                    />
+                  </label>
+
+                  <label>
+                    Fit
+                    <select
+                      value={normalizeGalleryImage(image, index).objectFit}
+                      onChange={event => updateGalleryImage(index, "objectFit", event.target.value)}
+                    >
+                      <option value="cover">Cover</option>
+                      <option value="contain">Contain</option>
+                      <option value="fill">Stretch</option>
+                    </select>
+                  </label>
+                </div>
+
+                <label className="admin-gallery-shadow-field">
+                  Glow / Shadow
+                  <input
+                    type="text"
+                    value={normalizeGalleryImage(image, index).shadow}
+                    onChange={event => updateGalleryImage(index, "shadow", event.target.value)}
+                  />
+                </label>
+
+                <div className="admin-gallery-nudge-row">
+                  <button type="button" onClick={() => nudgeGalleryImage(index, 0, -2)}>Up</button>
+                  <button type="button" onClick={() => nudgeGalleryImage(index, -2, 0)}>Left</button>
+                  <button type="button" onClick={() => nudgeGalleryImage(index, 2, 0)}>Right</button>
+                  <button type="button" onClick={() => nudgeGalleryImage(index, 0, 2)}>Down</button>
+                  <button type="button" onClick={() => moveGalleryLayer(index, 1)}>Layer +</button>
+                  <button type="button" onClick={() => moveGalleryLayer(index, -1)}>Layer -</button>
+                </div>
 
                 <div className="admin-item-actions">
                   <button type="button" className="danger" onClick={() => removeGalleryImage(index)}>Remove Image</button>
