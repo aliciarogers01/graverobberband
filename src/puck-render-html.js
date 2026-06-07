@@ -577,7 +577,8 @@ html:has(#editable-page-root .graverobber-contact-form-section),
   border:1px solid rgba(255,255,255,.12);
 }
 
-#editable-page-root .puck-gallery-item img{
+#editable-page-root .puck-gallery-item img,
+#editable-page-root .puck-gallery-item video{
   display:block;
   width:100%;
   height:260px;
@@ -594,7 +595,8 @@ html:has(#editable-page-root .graverobber-contact-form-section),
   opacity:var(--gallery-opacity,1);
 }
 
-#editable-page-root .puck-gallery-freeform .puck-gallery-item img{
+#editable-page-root .puck-gallery-freeform .puck-gallery-item img,
+#editable-page-root .puck-gallery-freeform .puck-gallery-item video{
   height:auto;
   max-height:520px;
   object-fit:var(--gallery-fit,cover);
@@ -646,7 +648,8 @@ html:has(#editable-page-root .graverobber-contact-form-section),
   text-align:center;
 }
 
-#editable-page-root .puck-gallery-modal-content img{
+#editable-page-root .puck-gallery-modal-content img,
+#editable-page-root .puck-gallery-modal-content video{
   display:block!important;
   width:auto!important;
   height:auto!important;
@@ -1963,6 +1966,14 @@ function renderGalleryGrid(props) {
       const rotation = Number.isFinite(Number(image.rotation)) ? Number(image.rotation) : 0;
       const zIndex = Number.isFinite(Number(image.zIndex)) ? Number(image.zIndex) : index + 1;
       const opacity = Number.isFinite(Number(image.opacity)) ? Math.min(100, Math.max(0, Number(image.opacity))) / 100 : 1;
+      const isVideo = image.mediaType === "video" || /\.(mp4|webm|mov|m4v|ogv)(\?|#|$)/i.test(String(image.imageUrl || ""));
+      const altText = image.imageAlt || (isVideo ? "Gallery video" : "Gallery image");
+      const thumbnailHtml = isVideo
+        ? `<video src="${attr(image.imageUrl)}" muted playsinline preload="metadata"></video>`
+        : `<img src="${attr(image.imageUrl)}" alt="${attr(altText)}">`;
+      const modalMediaHtml = isVideo
+        ? `<video src="${attr(image.imageUrl)}" controls playsinline preload="metadata"></video>`
+        : `<img src="${attr(image.imageUrl)}" alt="${attr(altText)}">`;
       const itemStyle = isFreeform ? styleObj({
         "--gallery-x": `${Math.min(100, Math.max(0, x))}%`,
         "--gallery-y": `${Math.min(100, Math.max(0, y))}%`,
@@ -1976,8 +1987,8 @@ function renderGalleryGrid(props) {
       }) : "";
       return `
         <figure class="puck-gallery-item" style="${itemStyle}">
-          <a href="#${modalId}" class="puck-gallery-open">
-            <img src="${attr(image.imageUrl)}" alt="${attr(image.imageAlt || "Gallery image")}">
+          <a href="#${modalId}" class="puck-gallery-open" aria-label="Open ${attr(altText)}">
+            ${thumbnailHtml}
           </a>
           ${hasText(image.caption) ? `<figcaption>${esc(image.caption)}</figcaption>` : ""}
         </figure>
@@ -1986,7 +1997,7 @@ function renderGalleryGrid(props) {
           <a href="#" class="puck-gallery-modal-backdrop" aria-label="Close gallery image"></a>
           <div class="puck-gallery-modal-content">
             <a href="#" class="puck-gallery-close" aria-label="Close gallery image">×</a>
-            <img src="${attr(image.imageUrl)}" alt="${attr(image.imageAlt || "Gallery image")}">
+            ${modalMediaHtml}
             ${hasText(image.caption) ? `<p>${esc(image.caption)}</p>` : ""}
           </div>
         </div>

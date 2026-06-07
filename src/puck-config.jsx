@@ -2648,6 +2648,14 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
           label: "Gallery Images",
           arrayFields: {
             imageUrl: imageUploadField("Image"),
+            mediaType: {
+              type: "select",
+              label: "Media Type",
+              options: [
+                { label: "Image", value: "image" },
+                { label: "Video", value: "video" }
+              ]
+            },
             imageAlt: { type: "text", label: "Alt Text" },
             caption: { type: "text", label: "Caption" },
             x: { type: "number", label: "X Position %" },
@@ -2670,6 +2678,7 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
           },
           defaultItemProps: {
             imageUrl: "",
+            mediaType: "image",
             imageAlt: "Gallery image",
             caption: "",
             x: 8,
@@ -2723,7 +2732,11 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
                     boxShadow: image.shadow || "0 0 34px rgba(57,255,20,.35)"
                   } : undefined}
                 >
-                  <img src={image.imageUrl} alt={image.imageAlt || "Gallery image"} />
+                  {image.mediaType === "video" || /\.(mp4|webm|mov|m4v|ogv)(\?|#|$)/i.test(String(image.imageUrl || "")) ? (
+                    <video src={image.imageUrl} controls preload="metadata" />
+                  ) : (
+                    <img src={image.imageUrl} alt={image.imageAlt || "Gallery image"} />
+                  )}
                   {image.caption && <figcaption>{image.caption}</figcaption>}
                 </figure>
               ))}

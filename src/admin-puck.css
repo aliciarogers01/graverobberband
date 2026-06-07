@@ -512,7 +512,8 @@ body {
 .admin-gallery-control-grid input,
 .admin-gallery-control-grid select,
 .admin-gallery-shadow-field input,
-.admin-list-item input {
+.admin-list-item input,
+.admin-list-item select {
   width: 100%;
   box-sizing: border-box;
   padding: 9px 10px;

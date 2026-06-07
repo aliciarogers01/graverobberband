@@ -88,13 +88,19 @@ function galleryImageDefaults(index = 0) {
   };
 }
 
+function mediaTypeFromUrl(url = "") {
+  return /\.(mp4|webm|mov|m4v|ogv)(\?|#|$)/i.test(String(url)) ? "video" : "image";
+}
+
 function normalizeGalleryImage(image = {}, index = 0) {
   const defaults = galleryImageDefaults(index);
+  const mediaType = image.mediaType || mediaTypeFromUrl(image.imageUrl);
 
   return {
     ...image,
+    mediaType,
     imageUrl: image.imageUrl || "",
-    imageAlt: image.imageAlt || "Gallery image",
+    imageAlt: image.imageAlt || (mediaType === "video" ? "Gallery video" : "Gallery image"),
     caption: image.caption || "",
     x: clampNumber(image.x ?? defaults.x, 0, 100),
     y: clampNumber(image.y ?? defaults.y, 0, 100),
@@ -354,18 +360,21 @@ function removeShowSocialUrl(index) {
   }));
 }
 
-  async function uploadAdminImage(file, onUploaded) {
+  async function uploadAdminImage(file, onUploaded, options = {}) {
     if (!file) return;
 
-    if (!file.type.startsWith("image/")) {
-      setStatus("Please choose an image file.");
+    const isImage = file.type.startsWith("image/");
+    const isVideo = file.type.startsWith("video/");
+
+    if (!isImage && !(options.allowVideo && isVideo)) {
+      setStatus(options.allowVideo ? "Please choose an image or video file." : "Please choose an image file.");
       return;
     }
 
     const formData = new FormData();
     formData.append("image", file);
 
-    setStatus("Uploading image...");
+    setStatus(`Uploading ${isVideo ? "video" : "image"}...`);
 
     const response = await fetch(`${API_BASE}/uploads/${SITE_SLUG}`, {
       method: "POST",
@@ -376,12 +385,12 @@ function removeShowSocialUrl(index) {
     const data = await response.json();
 
     if (!response.ok || !data.url) {
-      setStatus(data.error || "Image upload failed.");
+      setStatus(data.error || "Media upload failed.");
       return;
     }
 
-    onUploaded(data.url);
-    setStatus("Image uploaded. Save to keep it.");
+    onUploaded(data.url, data.media_type || (isVideo ? "video" : "image"));
+    setStatus(`${isVideo ? "Video" : "Image"} uploaded. Save to keep it.`);
   }
 
   function galleryBlock(images) {
@@ -473,26 +482,27 @@ function removeShowSocialUrl(index) {
   }
 
   async function uploadGalleryImages(files) {
-    const imageFiles = Array.from(files || []).filter(file => file.type.startsWith("image/"));
+    const mediaFiles = Array.from(files || []).filter(file => file.type.startsWith("image/") || file.type.startsWith("video/"));
 
-    if (!imageFiles.length) {
-      setGalleryStatus("Choose one or more image files.");
+    if (!mediaFiles.length) {
+      setGalleryStatus("Choose one or more image or video files.");
       return;
     }
 
-    setGalleryStatus(`Uploading ${imageFiles.length} image(s)...`);
+    setGalleryStatus(`Uploading ${mediaFiles.length} media file(s)...`);
 
     const uploaded = [];
 
-    for (const file of imageFiles) {
-      await uploadAdminImage(file, url => {
+    for (const file of mediaFiles) {
+      await uploadAdminImage(file, (url, mediaType) => {
         uploaded.push({
           imageUrl: url,
+          mediaType,
           imageAlt: file.name,
           caption: "",
           ...galleryImageDefaults(galleryImages.length + uploaded.length)
         });
-      });
+      }, { allowVideo: true });
     }
 
     const nextImages = [...galleryImages, ...uploaded].map(normalizeGalleryImage);
@@ -979,7 +989,7 @@ setShowForm(emptyShowForm);
             <label>Upload Gallery Images</label>
             <input
               type="file"
-              accept="image/*"
+              accept="image/*,video/*"
               multiple
               onChange={event => uploadGalleryImages(event.target.files)}
             />
@@ -990,7 +1000,28 @@ setShowForm(emptyShowForm);
           <div className="admin-gallery-stage" aria-label="Gallery placement preview">
             {galleryImages.length ? galleryImages.map((image, index) => {
               const normalized = normalizeGalleryImage(image, index);
-              return normalized.imageUrl ? (
+              if (!normalized.imageUrl) return null;
+              return normalized.mediaType === "video" ? (
+                <video
+                  key={`${normalized.imageUrl}-preview-${index}`}
+                  src={normalized.imageUrl}
+                  className="admin-gallery-stage-image"
+                  style={{
+                    left: `${normalized.x}%`,
+                    top: `${normalized.y}%`,
+                    width: normalized.width,
+                    transform: `rotate(${normalized.rotation}deg)`,
+                    zIndex: normalized.zIndex,
+                    borderRadius: normalized.radius,
+                    boxShadow: normalized.shadow,
+                    opacity: normalized.opacity / 100,
+                    objectFit: normalized.objectFit
+                  }}
+                  muted
+                  playsInline
+                  preload="metadata"
+                />
+              ) : (
                 <img
                   key={`${normalized.imageUrl}-preview-${index}`}
                   src={normalized.imageUrl}
@@ -1008,14 +1039,28 @@ setShowForm(emptyShowForm);
                     objectFit: normalized.objectFit
                   }}
                 />
-              ) : null;
+              );
             }) : <p>Gallery images will preview here.</p>}
           </div>
 
           <div className="admin-list admin-gallery-editor-list">
             {galleryImages.length ? galleryImages.map((image, index) => (
               <article className="admin-list-item admin-gallery-editor-item" key={`${image.imageUrl}-${index}`}>
-                {image.imageUrl && <img src={image.imageUrl} alt={image.imageAlt || "Gallery"} className="admin-list-image" />}
+                {image.imageUrl && (
+                  normalizeGalleryImage(image, index).mediaType === "video" ? (
+                    <video src={image.imageUrl} className="admin-list-image" controls preload="metadata" />
+                  ) : (
+                    <img src={image.imageUrl} alt={image.imageAlt || "Gallery"} className="admin-list-image" />
+                  )
+                )}
+
+                <select
+                  value={normalizeGalleryImage(image, index).mediaType}
+                  onChange={event => updateGalleryImage(index, "mediaType", event.target.value)}
+                >
+                  <option value="image">Image</option>
+                  <option value="video">Video</option>
+                </select>
 
                 <input
                   type="text"
