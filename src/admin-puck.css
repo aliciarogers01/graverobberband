@@ -309,6 +309,10 @@ body {
   display: none;
 }
 
+.admin-gallery-panel {
+  grid-column: 1 / -1;
+}
+
 .admin-panel-header {
   display: flex;
   align-items: center;
@@ -457,7 +461,7 @@ body {
 
 .admin-gallery-stage {
   position: relative;
-  min-height: 420px;
+  min-height: 920px;
   margin-top: 18px;
   overflow: hidden;
   border: 1px dashed rgba(57,255,20,.48);
@@ -467,6 +471,8 @@ body {
     linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
     rgba(0,0,0,.35);
   background-size: 40px 40px;
+  touch-action: none;
+  user-select: none;
 }
 
 .admin-gallery-stage p {
@@ -480,9 +486,16 @@ body {
   display: block;
   height: auto;
   max-width: min(90%, 520px);
-  max-height: 360px;
+  max-height: 760px;
   transform-origin: center;
   border: 1px solid rgba(255,255,255,.16);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.admin-gallery-stage-image:active {
+  cursor: grabbing;
 }
 
 .admin-gallery-editor-list {
@@ -491,6 +504,25 @@ body {
 
 .admin-gallery-editor-item {
   align-items: start;
+}
+
+.admin-gallery-appearance {
+  width: 100%;
+}
+
+.admin-gallery-appearance summary {
+  width: max-content;
+  padding: 8px 12px;
+  border: 1px solid rgba(57,255,20,.5);
+  border-radius: 999px;
+  background: rgba(0,0,0,.42);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.admin-gallery-appearance[open] summary {
+  margin-bottom: 10px;
 }
 
 .admin-gallery-control-grid {
@@ -577,6 +609,10 @@ body {
 
   .admin-gallery-control-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-gallery-stage {
+    min-height: 680px;
   }
 }
 

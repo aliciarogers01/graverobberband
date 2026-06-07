@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"; 
+import React, { useEffect, useRef, useState } from "react"; 
 import { createRoot } from "react-dom/client";
 import { Puck } from "@puckeditor/core";
 import "@puckeditor/core/puck.css";
@@ -218,6 +218,8 @@ const [showForm, setShowForm] = useState(emptyShowForm);
 
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryStatus, setGalleryStatus] = useState("");
+  const galleryStageRef = useRef(null);
+  const galleryDragRef = useRef(null);
   const [graffitiPosts, setGraffitiPosts] = useState([]);
   const [graffitiStatus, setGraffitiStatus] = useState("");
 
@@ -409,7 +411,7 @@ function removeShowSocialUrl(index) {
         paddingY: 40,
         paddingX: 24,
         layoutMode: "freeform",
-        canvasHeight: "760px",
+        canvasHeight: "920px",
         columns: 3,
         gap: 18,
         images: normalizedImages
@@ -536,19 +538,48 @@ function removeShowSocialUrl(index) {
     saveGalleryImages(nextImages);
   }
 
-  function nudgeGalleryImage(index, xDelta, yDelta) {
-    const nextImages = galleryImages.map((image, imageIndex) => {
-      if (imageIndex !== index) return normalizeGalleryImage(image, imageIndex);
+  function beginGalleryDrag(event, index) {
+    const stage = galleryStageRef.current;
+    if (!stage) return;
 
-      const normalized = normalizeGalleryImage(image, imageIndex);
-      return normalizeGalleryImage({
-        ...normalized,
-        x: normalized.x + xDelta,
-        y: normalized.y + yDelta
-      }, imageIndex);
-    });
+    event.preventDefault();
+    event.currentTarget.setPointerCapture?.(event.pointerId);
 
-    saveGalleryImages(nextImages);
+    const stageRect = stage.getBoundingClientRect();
+    const itemRect = event.currentTarget.getBoundingClientRect();
+
+    galleryDragRef.current = {
+      index,
+      pointerId: event.pointerId,
+      offsetX: event.clientX - itemRect.left,
+      offsetY: event.clientY - itemRect.top,
+      stageRect,
+      nextImages: galleryImages.map(normalizeGalleryImage)
+    };
+  }
+
+  function dragGalleryImage(event) {
+    const drag = galleryDragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    const x = clampNumber(((event.clientX - drag.offsetX - drag.stageRect.left) / drag.stageRect.width) * 100, 0, 100);
+    const y = clampNumber(((event.clientY - drag.offsetY - drag.stageRect.top) / drag.stageRect.height) * 100, 0, 100);
+
+    const nextImages = drag.nextImages.map((image, imageIndex) => (
+      imageIndex === drag.index ? normalizeGalleryImage({ ...image, x, y }, imageIndex) : normalizeGalleryImage(image, imageIndex)
+    ));
+
+    drag.nextImages = nextImages;
+    setGalleryImages(nextImages);
+  }
+
+  function endGalleryDrag(event) {
+    const drag = galleryDragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    event.currentTarget.releasePointerCapture?.(event.pointerId);
+    galleryDragRef.current = null;
+    saveGalleryImages(drag.nextImages);
   }
 
   function moveGalleryLayer(index, direction) {
@@ -998,14 +1029,14 @@ setShowForm(emptyShowForm);
           </div>
         </div>
 
-        <div className="admin-panel">
+        <div className="admin-panel admin-gallery-panel">
           <div className="admin-panel-header">
             <h2>Gallery Uploads</h2>
             <button type="button" onClick={loadGalleryImages}>Reload Gallery</button>
           </div>
 
           <div className="admin-upload-row">
-            <label>Upload Gallery Images</label>
+            <label>Upload Gallery Media</label>
             <input
               type="file"
               accept="image/*,video/*"
@@ -1016,7 +1047,7 @@ setShowForm(emptyShowForm);
 
           {galleryStatus && <p className="admin-inline-status">{galleryStatus}</p>}
 
-          <div className="admin-gallery-stage" aria-label="Gallery placement preview">
+          <div className="admin-gallery-stage" ref={galleryStageRef} aria-label="Drag gallery items to place them on the Gallery page">
             {galleryImages.length ? galleryImages.map((image, index) => {
               const normalized = normalizeGalleryImage(image, index);
               if (!normalized.imageUrl) return null;
@@ -1039,6 +1070,10 @@ setShowForm(emptyShowForm);
                   muted
                   playsInline
                   preload="metadata"
+                  onPointerDown={event => beginGalleryDrag(event, index)}
+                  onPointerMove={dragGalleryImage}
+                  onPointerUp={endGalleryDrag}
+                  onPointerCancel={endGalleryDrag}
                 />
               ) : (
                 <img
@@ -1057,9 +1092,13 @@ setShowForm(emptyShowForm);
                     opacity: normalized.opacity / 100,
                     objectFit: normalized.objectFit
                   }}
+                  onPointerDown={event => beginGalleryDrag(event, index)}
+                  onPointerMove={dragGalleryImage}
+                  onPointerUp={endGalleryDrag}
+                  onPointerCancel={endGalleryDrag}
                 />
               );
-            }) : <p>Gallery images will preview here.</p>}
+            }) : <p>Gallery images and videos will appear here. Upload media, then drag it into place.</p>}
           </div>
 
           <div className="admin-list admin-gallery-editor-list">
@@ -1095,29 +1134,10 @@ setShowForm(emptyShowForm);
                   onChange={event => updateGalleryImage(index, "caption", event.target.value)}
                 />
 
-                <div className="admin-gallery-control-grid">
-                  <label>
-                    X %
-                    <input
-                      type="number"
-                      min="0"
-                      max="100"
-                      value={normalizeGalleryImage(image, index).x}
-                      onChange={event => updateGalleryImage(index, "x", event.target.value)}
-                    />
-                  </label>
+                <details className="admin-gallery-appearance">
+                  <summary>Appearance</summary>
 
-                  <label>
-                    Y %
-                    <input
-                      type="number"
-                      min="0"
-                      max="100"
-                      value={normalizeGalleryImage(image, index).y}
-                      onChange={event => updateGalleryImage(index, "y", event.target.value)}
-                    />
-                  </label>
-
+                <div className="admin-gallery-control-grid admin-gallery-appearance-grid">
                   <label>
                     Width
                     <input
@@ -1133,15 +1153,6 @@ setShowForm(emptyShowForm);
                       type="number"
                       value={normalizeGalleryImage(image, index).rotation}
                       onChange={event => updateGalleryImage(index, "rotation", event.target.value)}
-                    />
-                  </label>
-
-                  <label>
-                    Layer
-                    <input
-                      type="number"
-                      value={normalizeGalleryImage(image, index).zIndex}
-                      onChange={event => updateGalleryImage(index, "zIndex", event.target.value)}
                     />
                   </label>
 
@@ -1186,18 +1197,12 @@ setShowForm(emptyShowForm);
                     onChange={event => updateGalleryImage(index, "shadow", event.target.value)}
                   />
                 </label>
-
-                <div className="admin-gallery-nudge-row">
-                  <button type="button" onClick={() => nudgeGalleryImage(index, 0, -2)}>Up</button>
-                  <button type="button" onClick={() => nudgeGalleryImage(index, -2, 0)}>Left</button>
-                  <button type="button" onClick={() => nudgeGalleryImage(index, 2, 0)}>Right</button>
-                  <button type="button" onClick={() => nudgeGalleryImage(index, 0, 2)}>Down</button>
-                  <button type="button" onClick={() => moveGalleryLayer(index, 1)}>Layer +</button>
-                  <button type="button" onClick={() => moveGalleryLayer(index, -1)}>Layer -</button>
-                </div>
+                </details>
 
                 <div className="admin-item-actions">
-                  <button type="button" className="danger" onClick={() => removeGalleryImage(index)}>Remove Image</button>
+                  <button type="button" onClick={() => moveGalleryLayer(index, 1)}>Bring Forward</button>
+                  <button type="button" onClick={() => moveGalleryLayer(index, -1)}>Send Back</button>
+                  <button type="button" className="danger" onClick={() => removeGalleryImage(index)}>Remove Media</button>
                 </div>
               </article>
             )) : <p>No gallery images yet.</p>}

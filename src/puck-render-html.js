@@ -564,7 +564,7 @@ html:has(#editable-page-root .graverobber-contact-form-section),
 
 #editable-page-root .puck-gallery-freeform{
   position:relative;
-  min-height:var(--gallery-height,760px);
+  min-height:var(--gallery-height,920px);
   width:100%;
   overflow:visible;
 }
@@ -2008,7 +2008,7 @@ function renderGalleryGrid(props) {
 
   const galleryClass = isFreeform ? "puck-gallery-freeform" : "puck-gallery-grid";
   const galleryStyle = isFreeform
-    ? `--gallery-height:${attr(props.canvasHeight || "760px")}`
+    ? `--gallery-height:${attr(props.canvasHeight || "920px")}`
     : `--cols:${Number(props.columns || 3)};--gap:${Number(props.gap || 18)}px`;
 
   return `<section class="puck-section" style="${sectionStyle}"><div class="puck-inner">${titleHtml}<div class="${galleryClass}" style="${galleryStyle}">${imagesHtml}</div></div></section>`;

@@ -1279,7 +1279,7 @@ function createPageContent(pageName = "home") {
           paddingY: 40,
           paddingX: 24,
           layoutMode: "freeform",
-          canvasHeight: "760px",
+          canvasHeight: "920px",
           columns: 3,
           gap: 18,
           images: []
@@ -2683,7 +2683,7 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
         paddingY: 40,
         paddingX: 24,
         layoutMode: "grid",
-        canvasHeight: "760px",
+        canvasHeight: "920px",
         columns: 3,
         gap: 18,
         images: []
@@ -2694,7 +2694,7 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
             {props.title && <h2 className="puck-title" style={{ textAlign: "center", color: props.titleColor || "inherit", fontFamily: props.titleFont || "inherit", fontSize: props.titleSize || "2.5rem" }}>{props.title}</h2>}
             <div
               className={props.layoutMode === "freeform" ? "puck-gallery-freeform" : "puck-gallery-grid"}
-              style={props.layoutMode === "freeform" ? { "--gallery-height": props.canvasHeight || "760px" } : { "--cols": props.columns || 3, "--gap": `${props.gap || 18}px` }}
+              style={props.layoutMode === "freeform" ? { "--gallery-height": props.canvasHeight || "920px" } : { "--cols": props.columns || 3, "--gap": `${props.gap || 18}px` }}
             >
               {(props.images || []).filter(image => image.imageUrl).map((image, index) => (
                 <figure
