@@ -975,7 +975,7 @@ function createPageContent(pageName = "home") {
       {
         type: "Embed",
         props: {
-          html: '<div id="upcoming-shows"></div><div id="no-shows-message" class="empty-state"><h2>Shows Coming Soon</h2><p>Join the Army of the Dead to hear when the next haunt is announced.</p><a href="signup.html" class="primary-btn">Get Notified</a></div><section class="past-shows-section hidden"><h2>Past Shows</h2><div id="past-shows"></div></section>',
+          html: '<script charset="utf-8" src="https://widgetv3.bandsintown.com/main.min.js"></script><a class="bit-widget-initializer" data-artist-name="id_370380" data-app-id="b6eb44f4c7b30b8e877c0dffa1414f0a"></a>',
           backgroundColor: "transparent",
           paddingY: 20,
           paddingX: 24

@@ -93,6 +93,23 @@ function initializeExitPopups(root) {
   });
 }
 
+function executeRenderedScripts(root) {
+  root.querySelectorAll("script").forEach(script => {
+    if (script.dataset.executedRenderedScript === "true") return;
+
+    const replacement = document.createElement("script");
+    Array.from(script.attributes).forEach(attribute => {
+      if (attribute.name !== "data-executed-rendered-script") {
+        replacement.setAttribute(attribute.name, attribute.value);
+      }
+    });
+
+    replacement.dataset.executedRenderedScript = "true";
+    replacement.textContent = script.textContent;
+    script.replaceWith(replacement);
+  });
+}
+
 async function loadPublicPage() {
   const root = document.getElementById("editable-page-root");
   if (!root) return;
@@ -136,27 +153,8 @@ async function loadPublicPage() {
     if (projectDataIsUsable(projectData, pageName)) {
       applyPageBackground(projectData.root?.props);
       root.innerHTML = renderPuckHtml(projectData);
+      executeRenderedScripts(root);
       initializeExitPopups(root);
-      if (pageName === "shows" && !document.getElementById("upcoming-shows")) {
-        const showsHtml = `
-          <section class="puck-section" style="padding:20px 24px;">
-            <div id="upcoming-shows"></div>
-            <div id="no-shows-message" class="empty-state hidden" style="display:none;"></div>
-            <div id="past-shows" style="display:none;"></div>
-          </section>
-        `;
-
-        const footerBlock =
-          root.querySelector(".puck-social-links")?.closest(".puck-section") ||
-          root.querySelector(".social-section") ||
-          root.querySelector("footer");
-
-        if (footerBlock) {
-          footerBlock.insertAdjacentHTML("beforebegin", showsHtml);
-        } else {
-          root.insertAdjacentHTML("beforeend", showsHtml);
-        }
-      }
 
       document.documentElement.classList.add("visual-page-ready");
       window.dispatchEvent(new CustomEvent("visualPageRendered", { detail: { pageName } }));
@@ -173,6 +171,7 @@ async function loadPublicPage() {
   const fallbackData = createDefaultPuckData(pageName);
   applyPageBackground(fallbackData.root?.props);
   root.innerHTML = renderPuckHtml(fallbackData);
+  executeRenderedScripts(root);
   initializeExitPopups(root);
 
   document.documentElement.classList.add("visual-page-ready");
