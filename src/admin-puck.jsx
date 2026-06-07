@@ -74,10 +74,11 @@ function clampNumber(value, min, max) {
 function galleryImageDefaults(index = 0) {
   const column = index % 3;
   const row = Math.floor(index / 3);
+  const topPx = 80 + row * 360;
 
   return {
-    x: Math.min(72, 6 + column * 30),
-    y: Math.min(82, 8 + row * 28),
+    x: column % 2 === 0 ? 6 : 52,
+    y: clampNumber((topPx / 920) * 100, 0, 96),
     width: "280px",
     rotation: 0,
     zIndex: index + 1,
@@ -86,6 +87,23 @@ function galleryImageDefaults(index = 0) {
     opacity: 100,
     objectFit: "cover"
   };
+}
+
+function parseGalleryCanvasHeight(value) {
+  const number = Number(String(value || "").replace(/[^0-9.]/g, ""));
+  return Number.isFinite(number) && number > 0 ? number : 920;
+}
+
+function galleryCanvasHeightFor(images = [], currentHeight = 920) {
+  const normalizedHeight = parseGalleryCanvasHeight(currentHeight);
+  const rows = Math.max(1, Math.ceil((images || []).length / 2));
+  const countHeight = 180 + rows * 420;
+  const lowestImageHeight = (images || []).reduce((max, image, index) => {
+    const normalized = normalizeGalleryImage(image, index);
+    return Math.max(max, (normalized.y / 100) * normalizedHeight + 520);
+  }, 0);
+
+  return Math.ceil(Math.max(920, normalizedHeight, countHeight, lowestImageHeight));
 }
 
 function mediaTypeFromUrl(url = "") {
@@ -218,6 +236,7 @@ const [showForm, setShowForm] = useState(emptyShowForm);
 
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryStatus, setGalleryStatus] = useState("");
+  const [galleryCanvasHeight, setGalleryCanvasHeight] = useState(920);
   const galleryStageRef = useRef(null);
   const galleryDragRef = useRef(null);
   const [graffitiPosts, setGraffitiPosts] = useState([]);
@@ -395,14 +414,16 @@ function removeShowSocialUrl(index) {
     setStatus(`${isVideo ? "Video" : "Image"} uploaded. Save to keep it.`);
   }
 
-  function galleryBlock(images) {
+  function galleryBlock(images, existingProps = {}, canvasHeight = galleryCanvasHeight) {
     const normalizedImages = (images || []).map(normalizeGalleryImage);
+    const height = `${galleryCanvasHeightFor(normalizedImages, canvasHeight)}px`;
 
     return {
       type: "GalleryGrid",
       props: {
+        ...existingProps,
         id: "graverobber-gallery-grid-1",
-        title: "Gallery",
+        title: existingProps.title || "Gallery",
         titleColor: "#ffffff",
         titleFont: "Oswald, sans-serif",
         titleSize: "2.5rem",
@@ -411,7 +432,7 @@ function removeShowSocialUrl(index) {
         paddingY: 40,
         paddingX: 24,
         layoutMode: "freeform",
-        canvasHeight: "920px",
+        canvasHeight: height,
         columns: 3,
         gap: 18,
         images: normalizedImages
@@ -419,15 +440,17 @@ function removeShowSocialUrl(index) {
     };
   }
 
-  function dataWithGalleryImages(data, images) {
+  function dataWithGalleryImages(data, images, canvasHeight = galleryCanvasHeight) {
     const base = normalizePageData(data || freshDefaultData("gallery"), "gallery");
+    const existingGallery = (base.content || []).find(block => block.type === "GalleryGrid");
     const contentWithoutOldGallery = (base.content || []).filter(block => block.type !== "GalleryGrid");
+    const existingProps = existingGallery?.props || {};
 
     return normalizePageData({
       ...base,
       content: [
         ...contentWithoutOldGallery,
-        galleryBlock(images)
+        galleryBlock(images, existingProps, canvasHeight || existingProps.canvasHeight || galleryCanvasHeight)
       ]
     }, "gallery");
   }
@@ -435,6 +458,11 @@ function removeShowSocialUrl(index) {
   function extractGalleryImages(data) {
     const block = (data?.content || []).find(item => item.type === "GalleryGrid");
     return Array.isArray(block?.props?.images) ? block.props.images.map(normalizeGalleryImage) : [];
+  }
+
+  function extractGalleryCanvasHeight(data) {
+    const block = (data?.content || []).find(item => item.type === "GalleryGrid");
+    return parseGalleryCanvasHeight(block?.props?.canvasHeight);
   }
 
   async function loadGalleryImages() {
@@ -451,17 +479,31 @@ function removeShowSocialUrl(index) {
       }
 
       const clean = cleanSavedData(saved, "gallery");
-      setGalleryImages(extractGalleryImages(clean));
+      const loadedImages = extractGalleryImages(clean);
+      const loadedHeight = extractGalleryCanvasHeight(clean);
+      setGalleryImages(loadedImages);
+      setGalleryCanvasHeight(galleryCanvasHeightFor(loadedImages, loadedHeight));
       setGalleryStatus("");
     } catch (error) {
       const fallback = freshDefaultData("gallery");
-      setGalleryImages(extractGalleryImages(fallback));
+      const fallbackImages = extractGalleryImages(fallback);
+      setGalleryImages(fallbackImages);
+      setGalleryCanvasHeight(galleryCanvasHeightFor(fallbackImages, extractGalleryCanvasHeight(fallback)));
       setGalleryStatus("");
     }
   }
 
-  async function saveGalleryImages(nextImages) {
+  async function saveGalleryImages(nextImages, nextCanvasHeight = galleryCanvasHeight) {
+    const previousCanvasHeight = parseGalleryCanvasHeight(nextCanvasHeight);
     const normalizedImages = (nextImages || []).map(normalizeGalleryImage);
+    const normalizedCanvasHeight = galleryCanvasHeightFor(normalizedImages, previousCanvasHeight);
+    const imagesForCanvas = normalizedImages.map((image, index) => {
+      const topPx = (image.y / 100) * previousCanvasHeight;
+      return normalizeGalleryImage({
+        ...image,
+        y: normalizedCanvasHeight === previousCanvasHeight ? image.y : (topPx / normalizedCanvasHeight) * 100
+      }, index);
+    });
     let baseGalleryData = pageData;
 
     try {
@@ -481,7 +523,7 @@ function removeShowSocialUrl(index) {
       console.warn("Saved gallery page could not be loaded before gallery save:", error);
     }
 
-    const galleryData = dataWithGalleryImages(baseGalleryData, normalizedImages);
+    const galleryData = dataWithGalleryImages(baseGalleryData, imagesForCanvas, normalizedCanvasHeight);
 
     const response = await fetch(`${API_BASE}/visual-pages/${SITE_SLUG}/gallery`, {
       method: "PUT",
@@ -498,7 +540,8 @@ function removeShowSocialUrl(index) {
       return;
     }
 
-    setGalleryImages(normalizedImages);
+    setGalleryImages(imagesForCanvas);
+    setGalleryCanvasHeight(normalizedCanvasHeight);
     setGalleryStatus("Gallery saved.");
   }
 
@@ -1047,58 +1090,65 @@ setShowForm(emptyShowForm);
 
           {galleryStatus && <p className="admin-inline-status">{galleryStatus}</p>}
 
-          <div className="admin-gallery-stage" ref={galleryStageRef} aria-label="Drag gallery items to place them on the Gallery page">
-            {galleryImages.length ? galleryImages.map((image, index) => {
-              const normalized = normalizeGalleryImage(image, index);
-              if (!normalized.imageUrl) return null;
-              return normalized.mediaType === "video" ? (
-                <video
-                  key={`${normalized.imageUrl}-preview-${index}`}
-                  src={normalized.imageUrl}
-                  className="admin-gallery-stage-image"
-                  style={{
-                    left: `${normalized.x}%`,
-                    top: `${normalized.y}%`,
-                    width: normalized.width,
-                    transform: `rotate(${normalized.rotation}deg)`,
-                    zIndex: normalized.zIndex,
-                    borderRadius: normalized.radius,
-                    boxShadow: normalized.shadow,
-                    opacity: normalized.opacity / 100,
-                    objectFit: normalized.objectFit
-                  }}
-                  muted
-                  playsInline
-                  preload="metadata"
-                  onPointerDown={event => beginGalleryDrag(event, index)}
-                  onPointerMove={dragGalleryImage}
-                  onPointerUp={endGalleryDrag}
-                  onPointerCancel={endGalleryDrag}
-                />
-              ) : (
-                <img
-                  key={`${normalized.imageUrl}-preview-${index}`}
-                  src={normalized.imageUrl}
-                  alt={normalized.imageAlt || "Gallery preview"}
-                  className="admin-gallery-stage-image"
-                  style={{
-                    left: `${normalized.x}%`,
-                    top: `${normalized.y}%`,
-                    width: normalized.width,
-                    transform: `rotate(${normalized.rotation}deg)`,
-                    zIndex: normalized.zIndex,
-                    borderRadius: normalized.radius,
-                    boxShadow: normalized.shadow,
-                    opacity: normalized.opacity / 100,
-                    objectFit: normalized.objectFit
-                  }}
-                  onPointerDown={event => beginGalleryDrag(event, index)}
-                  onPointerMove={dragGalleryImage}
-                  onPointerUp={endGalleryDrag}
-                  onPointerCancel={endGalleryDrag}
-                />
-              );
-            }) : <p>Gallery images and videos will appear here. Upload media, then drag it into place.</p>}
+          <div className="admin-gallery-stage-viewport">
+            <div
+              className="admin-gallery-stage"
+              ref={galleryStageRef}
+              aria-label="Drag gallery items to place them on the Gallery page"
+              style={{ minHeight: `${galleryCanvasHeight}px` }}
+            >
+              {galleryImages.length ? galleryImages.map((image, index) => {
+                const normalized = normalizeGalleryImage(image, index);
+                if (!normalized.imageUrl) return null;
+                return normalized.mediaType === "video" ? (
+                  <video
+                    key={`${normalized.imageUrl}-preview-${index}`}
+                    src={normalized.imageUrl}
+                    className="admin-gallery-stage-image"
+                    style={{
+                      left: `${normalized.x}%`,
+                      top: `${normalized.y}%`,
+                      width: normalized.width,
+                      transform: `rotate(${normalized.rotation}deg)`,
+                      zIndex: normalized.zIndex,
+                      borderRadius: normalized.radius,
+                      boxShadow: normalized.shadow,
+                      opacity: normalized.opacity / 100,
+                      objectFit: normalized.objectFit
+                    }}
+                    muted
+                    playsInline
+                    preload="metadata"
+                    onPointerDown={event => beginGalleryDrag(event, index)}
+                    onPointerMove={dragGalleryImage}
+                    onPointerUp={endGalleryDrag}
+                    onPointerCancel={endGalleryDrag}
+                  />
+                ) : (
+                  <img
+                    key={`${normalized.imageUrl}-preview-${index}`}
+                    src={normalized.imageUrl}
+                    alt={normalized.imageAlt || "Gallery preview"}
+                    className="admin-gallery-stage-image"
+                    style={{
+                      left: `${normalized.x}%`,
+                      top: `${normalized.y}%`,
+                      width: normalized.width,
+                      transform: `rotate(${normalized.rotation}deg)`,
+                      zIndex: normalized.zIndex,
+                      borderRadius: normalized.radius,
+                      boxShadow: normalized.shadow,
+                      opacity: normalized.opacity / 100,
+                      objectFit: normalized.objectFit
+                    }}
+                    onPointerDown={event => beginGalleryDrag(event, index)}
+                    onPointerMove={dragGalleryImage}
+                    onPointerUp={endGalleryDrag}
+                    onPointerCancel={endGalleryDrag}
+                  />
+                );
+              }) : <p>Gallery images and videos will appear here. Upload media, then drag it into place.</p>}
+            </div>
           </div>
 
           <div className="admin-list admin-gallery-editor-list">

@@ -459,10 +459,19 @@ body {
   box-shadow: 0 12px 30px rgba(0,0,0,.28);
 }
 
+.admin-gallery-stage-viewport {
+  max-height: min(82vh, 980px);
+  margin-top: 18px;
+  overflow: auto;
+  border: 1px solid rgba(57,255,20,.35);
+  border-radius: 18px;
+  background: rgba(0,0,0,.32);
+}
+
 .admin-gallery-stage {
   position: relative;
   min-height: 920px;
-  margin-top: 18px;
+  margin: 0;
   overflow: hidden;
   border: 1px dashed rgba(57,255,20,.48);
   border-radius: 16px;
@@ -613,6 +622,10 @@ body {
 
   .admin-gallery-stage {
     min-height: 680px;
+  }
+
+  .admin-gallery-stage-viewport {
+    max-height: 76vh;
   }
 }
 
