@@ -536,7 +536,20 @@ function removeShowSocialUrl(index) {
     });
 
     if (!response.ok) {
-      setGalleryStatus("Gallery save failed.");
+      let errorMessage = "Gallery save failed.";
+
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorMessage;
+      } catch {
+        // Keep default message.
+      }
+
+      if (response.status === 401) {
+        errorMessage = "Gallery save failed because the admin login expired. Log out, log back in, then upload again.";
+      }
+
+      setGalleryStatus(errorMessage);
       return;
     }
 
