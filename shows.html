@@ -22,35 +22,5 @@
   <script src="api-config.js"></script>
   <script type="module" src="/src/public-page.js"></script>
   <script type="module" src="/src/shows.js"></script>
-<script>
-  document.addEventListener("mousemove", function(event) {
-    const popups = document.querySelectorAll(".gr-exit-popup-wrap:not(.was-triggered)");
-    if (!popups.length) return;
-
-    window.__grLastMouseY = window.__grLastMouseY ?? window.innerHeight;
-
-    const movingUp = event.clientY < window.__grLastMouseY;
-    const nearTop = event.clientY <= 140;
-
-    if (movingUp && nearTop) {
-      popups.forEach(function(popup) {
-        popup.classList.add("is-visible");
-        popup.classList.add("was-triggered");
-      });
-    }
-
-    window.__grLastMouseY = event.clientY;
-  });
-
-  document.addEventListener("click", function(event) {
-    if (
-      event.target.classList.contains("gr-exit-popup-backdrop") ||
-      event.target.classList.contains("gr-exit-popup-close")
-    ) {
-      const popup = event.target.closest(".gr-exit-popup-wrap");
-      if (popup) popup.classList.remove("is-visible");
-    }
-  });
-</script>
 </body>
 </html>

@@ -3,6 +3,20 @@ import { renderPuckHtml, puckPageCss } from "./puck-render-html.js";
 
 const SITE_SLUG = "graverobber";
 
+function handleWelcomePopupForPage(pageName) {
+  const popups = document.querySelectorAll(".gr-exit-popup-wrap");
+
+  if (pageName !== "home") {
+    popups.forEach(popup => popup.remove());
+    return;
+  }
+
+  popups.forEach(popup => {
+    popup.classList.add("is-visible");
+    popup.classList.add("was-triggered");
+  });
+}
+
 function getCurrentPageName() {
   const pageNameFromBody = document.body?.dataset?.page;
 
@@ -153,6 +167,7 @@ async function loadPublicPage() {
     if (projectDataIsUsable(projectData, pageName)) {
       applyPageBackground(projectData.root?.props);
       root.innerHTML = renderPuckHtml(projectData);
+      handleWelcomePopupForPage(pageName);
       executeRenderedScripts(root);
       initializeExitPopups(root);
 
@@ -171,6 +186,7 @@ async function loadPublicPage() {
   const fallbackData = createDefaultPuckData(pageName);
   applyPageBackground(fallbackData.root?.props);
   root.innerHTML = renderPuckHtml(fallbackData);
+  handleWelcomePopupForPage(pageName);
   executeRenderedScripts(root);
   initializeExitPopups(root);
 
