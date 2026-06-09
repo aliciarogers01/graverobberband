@@ -1,4 +1,4 @@
-import{r as f,R as w,j as b}from"./puck-config-BOQTo0Pt.js";import{R as Q}from"./admin-C6EdOHIb.js";import{A as ee}from"./index-CfwmoTKd.js";var W={exports:{}},z={};/**
+import{r as f,R as w,j as b}from"./puck-config-D8cBa07m.js";import{R as Q}from"./admin-Cz0qMcpV.js";import{A as ee}from"./index-CfwmoTKd.js";var W={exports:{}},z={};/**
  * @license React
  * use-sync-external-store-shim.production.js
  *

@@ -648,6 +648,7 @@ html:has(#editable-page-root .graverobber-contact-form-section),
   font-weight:900;
   text-transform:uppercase;
   letter-spacing:.08em;
+  margin-top:8px;
 }
 
 #editable-page-root .gr-graffiti-tool-label span{
