@@ -769,6 +769,22 @@ html:has(#editable-page-root .graverobber-contact-form-section),
   flex-wrap:wrap;
 }
 
+#editable-page-root .gr-graffiti-tool-label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--gr-graffiti-accent);
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+#editable-page-root .gr-graffiti-tool-label span{
+  font-size:12px;
+  line-height:1;
+  white-space:nowrap;
+}
+
 #editable-page-root .gr-graffiti-tools input[type="range"]{
   width:min(130px,100%);
 }
@@ -2042,8 +2058,16 @@ function renderGraffitiWall(props) {
           <label>${esc(props.photoLabel || "Photo with the band")}<input type="file" name="fan_photo" accept="image/*"></label>
           <label>${esc(props.paintLabel || "Paint")}<canvas class="gr-graffiti-canvas" width="520" height="260"></canvas></label>
           <div class="gr-graffiti-tools">
-            <input type="color" name="paint_color" value="#00ff04" aria-label="Paint color">
-            <input type="range" name="paint_size" min="2" max="28" value="8" aria-label="Paint size">
+            <label class="gr-graffiti-tool-label">
+              <span>Paint Color</span>
+              <input type="color" name="paint_color" value="#00ff04" aria-label="Paint color">
+            </label>
+
+            <label class="gr-graffiti-tool-label">
+              <span>Brush Size</span>
+              <input type="range" name="paint_size" min="2" max="28" value="8" aria-label="Brush size">
+            </label>
+
             <button type="button" data-graffiti-clear>Clear Paint</button>
           </div>
           <button type="submit">${esc(props.submitText || "Send for Approval")}</button>
