@@ -1118,10 +1118,6 @@ function createPageContent(pageName = "home") {
         }
       },
       {
-        type: "WelcomeHorrorMessage",
-        props: armyPopupProps
-      },
-      {
         type: "GraffitiWall",
         props: {
           id: "graverobber-graffiti-wall-1",

@@ -1121,6 +1121,39 @@ html:has(#editable-page-root .graverobber-contact-form-section),
     gap:20px!important;
   }
 
+  #editable-page-root .puck-gallery-freeform{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:22px!important;
+    min-height:0!important;
+    height:auto!important;
+    overflow:visible!important;
+  }
+
+  #editable-page-root .puck-gallery-freeform .puck-gallery-item{
+    position:relative!important;
+    left:auto!important;
+    top:auto!important;
+    width:min(100%, 360px)!important;
+    max-width:100%!important;
+    justify-self:center!important;
+    transform:none!important;
+    opacity:1!important;
+    z-index:auto!important;
+  }
+
+  #editable-page-root .puck-gallery-freeform .puck-gallery-item:hover{
+    transform:none!important;
+  }
+
+  #editable-page-root .puck-gallery-freeform .puck-gallery-item img,
+  #editable-page-root .puck-gallery-freeform .puck-gallery-item video{
+    width:100%!important;
+    height:auto!important;
+    max-height:none!important;
+    object-fit:contain!important;
+  }
+
   #editable-page-root .gr-graffiti-layout{
     grid-template-columns:1fr!important;
   }

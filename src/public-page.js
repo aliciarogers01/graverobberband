@@ -4,7 +4,7 @@ import { renderPuckHtml, puckPageCss } from "./puck-render-html.js";
 const SITE_SLUG = "graverobber";
 
 function handleWelcomePopupForPage(pageName) {
-  const popups = document.querySelectorAll(".gr-exit-popup-wrap");
+  const popups = document.querySelectorAll(".gr-exit-popup-wrap, .gr-welcome-section, [data-gr-exit-popup]");
 
   if (pageName !== "home") {
     popups.forEach(popup => popup.remove());
