@@ -507,13 +507,14 @@ function removeShowSocialUrl(index) {
       const loadedHeight = extractGalleryCanvasHeight(clean);
       setGalleryImages(loadedImages);
       setGalleryCanvasHeight(galleryCanvasHeightFor(loadedImages, loadedHeight));
+      if (currentPage === "gallery") {
+        setPageData(clean);
+        setEditorKey(key => key + 1);
+      }
       setGalleryStatus("");
     } catch (error) {
-      const fallback = freshDefaultData("gallery");
-      const fallbackImages = extractGalleryImages(fallback);
-      setGalleryImages(fallbackImages);
-      setGalleryCanvasHeight(galleryCanvasHeightFor(fallbackImages, extractGalleryCanvasHeight(fallback)));
-      setGalleryStatus("");
+      console.warn("Gallery images failed to load:", error);
+      setGalleryStatus("Gallery could not reload from the backend. Your current preview was left alone.");
     }
   }
 
@@ -579,6 +580,10 @@ function removeShowSocialUrl(index) {
 
     setGalleryImages(imagesForCanvas);
     setGalleryCanvasHeight(normalizedCanvasHeight);
+    if (currentPage === "gallery") {
+      setPageData(galleryData);
+      setEditorKey(key => key + 1);
+    }
     setGalleryStatus("Gallery saved.");
   }
 
