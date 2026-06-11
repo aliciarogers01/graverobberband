@@ -1905,6 +1905,8 @@ function renderWelcomeHorrorMessage(props) {
       }
 
       document.addEventListener("mousemove", function(event){
+        if (popup.dataset.disableExitIntent === "true") return;
+
         const armedDistance = Math.max(triggerDistance + 180, 260);
 
         if (event.clientY >= armedDistance) {

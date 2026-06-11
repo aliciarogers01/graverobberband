@@ -14,6 +14,7 @@ function handleWelcomePopupForPage(pageName) {
   popups.forEach(popup => {
     popup.classList.add("is-visible");
     popup.classList.add("was-triggered");
+    popup.dataset.disableExitIntent = "true";
   });
 }
 
@@ -80,6 +81,8 @@ function initializeExitPopups(root) {
     }
 
     document.addEventListener("mousemove", event => {
+      if (popup.dataset.disableExitIntent === "true") return;
+
       const armedDistance = Math.max(triggerDistance + 180, 260);
 
       if (event.clientY >= armedDistance) {
