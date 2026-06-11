@@ -315,19 +315,43 @@ if (saved?.content?.length) {
   async function savePage(data) {
     setStatus(`Saving ${currentPage} page...`);
 
+    const normalizedData = normalizePageData(data, currentPage);
     const body = {
-      project_data: normalizePageData(data, currentPage),
-      html: renderPuckHtml(normalizePageData(data, currentPage)),
+      project_data: normalizedData,
+      html: renderPuckHtml(normalizedData),
       css: puckPageCss()
     };
 
-    const response = await fetch(`${API_BASE}/visual-pages/${SITE_SLUG}/${currentPage}`, {
-      method: "PUT",
-      headers: authHeaders(token),
-      body: JSON.stringify(body)
-    });
+    try {
+      const response = await fetch(`${API_BASE}/visual-pages/${SITE_SLUG}/${currentPage}`, {
+        method: "PUT",
+        headers: authHeaders(token),
+        body: JSON.stringify(body)
+      });
 
-    setStatus(response.ok ? `Saved ${currentPage} page. Refresh the public website to see changes.` : "Save failed. Check backend/login.");
+      if (response.ok) {
+        setStatus(`Saved ${currentPage} page. Refresh the public website to see changes.`);
+        return;
+      }
+
+      let message = `Save failed with status ${response.status}.`;
+      try {
+        const errorData = await response.json();
+        if (errorData?.error) message = errorData.error;
+      } catch (error) {
+        if (response.status === 413) {
+          message = "Save failed because the page is too large. Try smaller media files, then publish again.";
+        }
+      }
+
+      if (response.status === 401) {
+        message = "Save failed because the admin login expired. Log out, log back in, then publish again.";
+      }
+
+      setStatus(message);
+    } catch (error) {
+      setStatus("Save failed because the admin panel could not reach the backend. Check the site URL, connection, or CORS.");
+    }
   }
 
   async function resetPage() {

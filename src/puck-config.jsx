@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"; 
 import { puckPageCss } from "./puck-render-html.js";
 
-const SITE_SLUG = "graverobberpunk";
+const SITE_SLUG = "graverobber";
 
 const fontOptions = [
   "inherit", "Arial, sans-serif", "Helvetica, sans-serif", "Verdana, sans-serif", "Tahoma, sans-serif", "Trebuchet MS, sans-serif", "Georgia, serif", "Times New Roman, serif", "Garamond, serif", "Courier New, monospace", "Lucida Console, monospace", "Impact, sans-serif", "Palatino, serif", "Gill Sans, sans-serif", "Century Gothic, sans-serif",
