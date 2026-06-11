@@ -774,6 +774,21 @@ export function pageBackgroundCss(props = {}) {
 }
 
 function createPageContent(pageName = "home") {
+  const coffeeButton = {
+    text: "☕ Buy Grave Robber a Coffee",
+    url: "https://www.paypal.com/donate/?business=graverobber.punk%40gmail.com&currency_code=USD",
+    backgroundColor: "#000000",
+    textColor: "#bb00ff",
+    fontFamily: "Oswald, sans-serif",
+    fontSize: "14px",
+    borderWidth: "1px",
+    borderColor: "#00ff04",
+    boxShadow: "0 0 24px #00ff04",
+    textTransform: "uppercase",
+    radius: "999px",
+    padding: "10px 16px"
+  };
+
   const homeHeaderButtons = [
     { text: "Home", url: "index.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
     { text: "Shows", url: "shows.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
@@ -1293,7 +1308,8 @@ function createPageContent(pageName = "home") {
       type: "HeaderNav",
       props: {
         id: "graverobber-home-header-1",
-        ...homeHeaderProps
+        ...homeHeaderProps,
+        leftButtons: [coffeeButton]
       }
     },
     {
@@ -1430,7 +1446,7 @@ function createPageContent(pageName = "home") {
           },
           {
             text: "Buy the Band a Coffee",
-            url: "#",
+            url: "https://www.paypal.com/donate/?business=graverobber.punk%40gmail.com&currency_code=USD",
             backgroundColor: "#000000",
             textColor: "#00ff04",
             fontFamily: "Oswald, sans-serif",
@@ -2165,6 +2181,10 @@ logoImageShadow: { type: "text", label: "Logo Image Shadow / Glow", placeholder:
             { label: "Full Browser Width", value: "full" }
           ]
         },
+        leftButtons: {
+          ...buttonArrayField,
+          label: "Far Left Header Buttons"
+        },
         buttons: buttonArrayField
       },
       defaultProps: {
@@ -2191,6 +2211,7 @@ logoImageShadow: "none",
         padding: "22px 40px",
         navPlacement: "right",
         headerPosition: "full",
+        leftButtons: [],
         buttons: [
           { text: "Home", url: "index.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
           { text: "Shows", url: "shows.html", backgroundColor: "#000000", textColor: "#bb00ff", fontFamily: "Oswald, sans-serif", fontSize: "14px", borderWidth: "1px", borderColor: "#00ff04", boxShadow: "0 0 24px #00ff04", textTransform: "uppercase", radius: "999px", padding: "10px 16px" },
@@ -2213,6 +2234,7 @@ logoImageShadow: "none",
           }}
         >
           <div className="puck-header-left">
+            {(props.leftButtons || []).map((button, index) => <ButtonPreview key={`left-${index}`} button={button} />)}
             {props.logoUrl && props.logoPlacement !== "right" && (
 <a
   className="puck-header-logo-link logo-left"

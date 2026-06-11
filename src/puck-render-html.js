@@ -1445,6 +1445,7 @@ function renderFontLoader(props) {
 
 function renderHeaderNav(props) {
   const buttonsHtml = (props.buttons || []).map(buttonHtml).join("");
+  const leftButtonsHtml = (props.leftButtons || []).map(buttonHtml).join("");
   return `<header class="puck-site-header ${props.headerPosition === "full" ? "is-full-width" : ""}" style="${styleObj({
     background: props.backgroundColor || "rgba(0,0,0,.72)",
 borderBottom: props.lineColor ? `1px solid ${props.lineColor}` : "none",
@@ -1455,6 +1456,7 @@ borderBottom: props.lineColor ? `1px solid ${props.lineColor}` : "none",
     padding: props.padding || "22px 40px"
   })}">
     <div class="puck-header-left">
+      ${leftButtonsHtml}
       ${props.logoUrl && props.logoPlacement !== "right" ? `<a class="puck-header-logo-link logo-left" href="index.html" style="${styleObj({ "--logo-size": props.logoSize || "45px", background: props.logoBackgroundColor || "transparent", border: `${props.logoBorderWidth || "0px"} solid ${props.logoBorderColor || "transparent"}`, borderRadius: props.logoRadius || "999px", padding: props.logoPadding || "0px", boxShadow: props.logoBoxShadow || "none", "--logo-image-shadow": props.logoImageShadow || "none" })}"><img class="puck-header-logo" src="${attr(props.logoUrl)}" alt="${attr(props.logoAlt || "Logo")}"></a>` : ""}
       ${props.showBack !== "hide" ? `<a class="puck-header-back" href="${attr(props.backUrl || "index.html")}">${esc(props.backText || "Back")}</a>` : ""}
     </div>
