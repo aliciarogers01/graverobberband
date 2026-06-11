@@ -635,15 +635,16 @@ html:has(#editable-page-root .graverobber-contact-form-section),
 
 #editable-page-root .gr-graffiti-tools{
   display:flex;
-  gap:10px;
-  align-items:center;
+  gap:26px;
+  align-items:flex-start;
   flex-wrap:wrap;
 }
 
 #editable-page-root .gr-graffiti-tool-label{
   display:flex;
-  align-items:center;
-  gap:8px;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:9px;
   color:var(--gr-graffiti-accent);
   font-weight:900;
   text-transform:uppercase;
@@ -653,7 +654,8 @@ html:has(#editable-page-root .graverobber-contact-form-section),
 
 #editable-page-root .gr-graffiti-tool-label span{
   font-size:12px;
-  line-height:1;
+  line-height:14px;
+  min-height:14px;
   white-space:nowrap;
 }
 
