@@ -817,6 +817,11 @@ function createPageContent(pageName = "home") {
     buttons: homeHeaderButtons
   };
 
+  const coffeeBackReplacementProps = {
+    showBack: "hide",
+    leftButtons: [coffeeButton]
+  };
+
   const armyPopupProps = {
     id: `graverobber-${pageName}-popup-1`,
     showInEditor: "no",
@@ -887,7 +892,8 @@ function createPageContent(pageName = "home") {
           padding: "18px 28px",
           navPlacement: "center",
           headerPosition: "full",
-          buttons: homeHeaderButtons
+          buttons: homeHeaderButtons,
+          ...coffeeBackReplacementProps
         }
       },
       {
@@ -955,7 +961,8 @@ function createPageContent(pageName = "home") {
           padding: "18px 28px",
           navPlacement: "center",
           headerPosition: "full",
-          buttons: homeHeaderButtons
+          buttons: homeHeaderButtons,
+          ...coffeeBackReplacementProps
         }
       },
       {
@@ -1021,7 +1028,8 @@ function createPageContent(pageName = "home") {
           padding: "18px 28px",
           navPlacement: "center",
           headerPosition: "full",
-          buttons: homeHeaderButtons
+          buttons: homeHeaderButtons,
+          ...coffeeBackReplacementProps
         }
       },
       {
@@ -1072,7 +1080,7 @@ function createPageContent(pageName = "home") {
         props: {
           id: "graverobber-about-header-1",
           ...homeHeaderProps,
-          showBack: "show"
+          ...coffeeBackReplacementProps
         }
       },
       {
@@ -1106,7 +1114,7 @@ function createPageContent(pageName = "home") {
         props: {
           id: "graverobber-graffiti-header-1",
           ...homeHeaderProps,
-          showBack: "show"
+          ...coffeeBackReplacementProps
         }
       },
       {
@@ -1160,7 +1168,8 @@ function createPageContent(pageName = "home") {
           padding: "18px 28px",
           navPlacement: "center",
           headerPosition: "full",
-          buttons: homeHeaderButtons
+          buttons: homeHeaderButtons,
+          ...coffeeBackReplacementProps
         }
       },
       {
@@ -1226,7 +1235,8 @@ function createPageContent(pageName = "home") {
           padding: "18px 28px",
           navPlacement: "center",
           headerPosition: "full",
-          buttons: homeHeaderButtons
+          buttons: homeHeaderButtons,
+          ...coffeeBackReplacementProps
         }
       },
       {
@@ -1278,7 +1288,8 @@ function createPageContent(pageName = "home") {
           padding: "18px 28px",
           navPlacement: "center",
           headerPosition: "full",
-          buttons: homeHeaderButtons
+          buttons: homeHeaderButtons,
+          ...coffeeBackReplacementProps
         }
       },
       {
