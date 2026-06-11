@@ -63,7 +63,7 @@ function initializeExitPopups(root) {
     if (popup.dataset.grExitPopupBound === "true") return;
     popup.dataset.grExitPopupBound = "true";
 
-    let shown = false;
+    let shown = popup.classList.contains("is-visible") || popup.classList.contains("was-triggered");
     let lastY = null;
     let hasBeenLowerOnPage = false;
     const triggerDistance = Number(popup.dataset.triggerDistance || 120);
@@ -72,6 +72,7 @@ function initializeExitPopups(root) {
       if (shown) return;
       shown = true;
       popup.classList.add("is-visible");
+      popup.classList.add("was-triggered");
     }
 
     function hidePopup() {

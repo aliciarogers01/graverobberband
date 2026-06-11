@@ -1630,7 +1630,7 @@ html:has(#editable-page-root .graverobber-contact-form-section),
       const popup = document.getElementById("${l}");
       if (!popup) return;
 
-      let shown = false;
+      let shown = popup.classList.contains("is-visible") || popup.classList.contains("was-triggered");
       let lastY = null;
       let hasBeenLowerOnPage = false;
 
@@ -1641,6 +1641,7 @@ html:has(#editable-page-root .graverobber-contact-form-section),
 
         shown = true;
         popup.classList.add("is-visible");
+        popup.classList.add("was-triggered");
       }
 
       function hidePopup(){
