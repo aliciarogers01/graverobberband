@@ -315,7 +315,11 @@ if (saved?.content?.length) {
   async function savePage(data) {
     setStatus(`Saving ${currentPage} page...`);
 
-    const normalizedData = normalizePageData(data, currentPage);
+    let normalizedData = normalizePageData(data, currentPage);
+    if (currentPage === "gallery") {
+      normalizedData = await galleryDataForPublish(normalizedData);
+    }
+
     const body = {
       project_data: normalizedData,
       html: renderPuckHtml(normalizedData),
@@ -487,6 +491,48 @@ function removeShowSocialUrl(index) {
   function extractGalleryCanvasHeight(data) {
     const block = (data?.content || []).find(item => item.type === "GalleryGrid");
     return parseGalleryCanvasHeight(block?.props?.canvasHeight);
+  }
+
+  async function galleryDataForPublish(editorData) {
+    let imagesToKeep = galleryImages.length ? galleryImages : extractGalleryImages(editorData);
+    let canvasHeightToKeep = galleryCanvasHeight || extractGalleryCanvasHeight(editorData);
+
+    if (!imagesToKeep.length) {
+      try {
+        const response = await fetch(`${API_BASE}/visual-pages/${SITE_SLUG}/gallery?_=${Date.now()}`);
+        if (response.ok) {
+          const data = await response.json();
+          const page = data?.page || data || {};
+          let saved = page.project_data;
+
+          if (typeof saved === "string") {
+            saved = JSON.parse(saved);
+          }
+
+          const clean = cleanSavedData(saved, "gallery");
+          const savedImages = extractGalleryImages(clean);
+          if (savedImages.length) {
+            imagesToKeep = savedImages;
+            canvasHeightToKeep = extractGalleryCanvasHeight(clean);
+          }
+        }
+      } catch (error) {
+        console.warn("Saved gallery images could not be checked before publish:", error);
+      }
+    }
+
+    if (!imagesToKeep.length) {
+      return editorData;
+    }
+
+    const mergedData = dataWithGalleryImages(editorData, imagesToKeep, canvasHeightToKeep);
+    const mergedImages = extractGalleryImages(mergedData);
+    const mergedHeight = extractGalleryCanvasHeight(mergedData);
+
+    setGalleryImages(mergedImages);
+    setGalleryCanvasHeight(galleryCanvasHeightFor(mergedImages, mergedHeight));
+
+    return mergedData;
   }
 
   async function loadGalleryImages() {
