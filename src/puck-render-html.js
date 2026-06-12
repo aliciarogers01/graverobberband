@@ -1891,17 +1891,34 @@ function renderWelcomeHorrorMessage(props) {
       let hasBeenLowerOnPage = false;
 
       const triggerDistance = ${Number(props.exitTriggerDistance || 120)};
+      const sessionKey = "graverobberWelcomePopupShown";
+
+      function popupWasShownThisVisit(){
+        try {
+          return window.sessionStorage.getItem(sessionKey) === "true";
+        } catch (error) {
+          return false;
+        }
+      }
+
+      function markPopupShownThisVisit(){
+        try {
+          window.sessionStorage.setItem(sessionKey, "true");
+        } catch (error) {}
+      }
 
       function showPopup(){
-        if (shown) return;
+        if (shown || popupWasShownThisVisit()) return;
 
         shown = true;
         popup.classList.add("is-visible");
         popup.classList.add("was-triggered");
+        markPopupShownThisVisit();
       }
 
       function hidePopup(){
         popup.classList.remove("is-visible");
+        markPopupShownThisVisit();
       }
 
       document.addEventListener("mousemove", function(event){

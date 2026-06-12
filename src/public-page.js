@@ -2,6 +2,23 @@ import { createDefaultPuckData, pageBackgroundCss, defaultPageBackgroundProps } 
 import { renderPuckHtml, puckPageCss } from "./puck-render-html.js";
 
 const SITE_SLUG = "graverobber";
+const WELCOME_POPUP_SESSION_KEY = "graverobberWelcomePopupShown";
+
+function welcomePopupWasShownThisVisit() {
+  try {
+    return window.sessionStorage.getItem(WELCOME_POPUP_SESSION_KEY) === "true";
+  } catch (error) {
+    return false;
+  }
+}
+
+function markWelcomePopupShownThisVisit() {
+  try {
+    window.sessionStorage.setItem(WELCOME_POPUP_SESSION_KEY, "true");
+  } catch (error) {
+    // Some privacy modes can block sessionStorage. The popup still works without persistence.
+  }
+}
 
 function handleWelcomePopupForPage(pageName) {
   const popups = document.querySelectorAll(".gr-exit-popup-wrap, .gr-welcome-section, [data-gr-exit-popup]");
@@ -11,11 +28,17 @@ function handleWelcomePopupForPage(pageName) {
     return;
   }
 
+  if (welcomePopupWasShownThisVisit()) {
+    popups.forEach(popup => popup.remove());
+    return;
+  }
+
   popups.forEach(popup => {
     popup.classList.add("is-visible");
     popup.classList.add("was-triggered");
     popup.dataset.disableExitIntent = "true";
   });
+  markWelcomePopupShownThisVisit();
 }
 
 function getCurrentPageName() {
@@ -70,14 +93,16 @@ function initializeExitPopups(root) {
     const triggerDistance = Number(popup.dataset.triggerDistance || 120);
 
     function showPopup() {
-      if (shown) return;
+      if (shown || welcomePopupWasShownThisVisit()) return;
       shown = true;
       popup.classList.add("is-visible");
       popup.classList.add("was-triggered");
+      markWelcomePopupShownThisVisit();
     }
 
     function hidePopup() {
       popup.classList.remove("is-visible");
+      markWelcomePopupShownThisVisit();
     }
 
     document.addEventListener("mousemove", event => {
