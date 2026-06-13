@@ -241,6 +241,8 @@ const [showForm, setShowForm] = useState(emptyShowForm);
   const galleryDragRef = useRef(null);
   const [graffitiPosts, setGraffitiPosts] = useState([]);
   const [graffitiStatus, setGraffitiStatus] = useState("");
+  const [visitorStats, setVisitorStats] = useState({ visitors: 0, date: "" });
+  const [visitorStatus, setVisitorStatus] = useState("");
 
   const [savedBlocks, setSavedBlocks] = useState(() => {
     try {
@@ -922,6 +924,30 @@ setShowForm(emptyShowForm);
     await loadGraffitiPosts();
   }
 
+  async function loadVisitorStats() {
+    setVisitorStatus("Loading visitor count...");
+
+    try {
+      const response = await fetch(`${API_BASE}/visitors/${SITE_SLUG}/today?_=${Date.now()}`, {
+        headers: authHeaders(token)
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        setVisitorStatus(data.error || "Could not load today's visitor count.");
+        return;
+      }
+
+      setVisitorStats({
+        visitors: Number(data.visitors || 0),
+        date: data.date || ""
+      });
+      setVisitorStatus("");
+    } catch (error) {
+      setVisitorStatus("Could not load today's visitor count.");
+    }
+  }
+
 
 
   useEffect(() => {
@@ -930,6 +956,7 @@ setShowForm(emptyShowForm);
       loadShows();
       loadGalleryImages();
       loadGraffitiPosts();
+      loadVisitorStats();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
@@ -970,6 +997,16 @@ setShowForm(emptyShowForm);
           <button type="button" onClick={logout}>Logout</button>
         </div>
       </div>
+
+      <section className="admin-panel admin-visitor-panel">
+        <div>
+          <p className="admin-visitor-label">Today's Home Visitors</p>
+          <strong>{visitorStats.visitors}</strong>
+          <span>{visitorStats.date || "Today"}</span>
+          {visitorStatus && <p className="admin-inline-status">{visitorStatus}</p>}
+        </div>
+        <button type="button" onClick={loadVisitorStats}>Reload Count</button>
+      </section>
 
       <div className="puck-wrapper">
         <AdminEditorErrorBoundary key={`boundary-${currentPage}-${editorKey}`}>

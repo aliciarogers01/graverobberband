@@ -305,6 +305,50 @@ body {
   color: #fff;
 }
 
+.admin-visitor-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 24px 24px 0;
+  border-color: rgba(57,255,20,.42);
+  box-shadow: 0 0 24px rgba(57,255,20,.12);
+}
+
+.admin-visitor-label {
+  margin: 0 0 6px;
+  color: #39ff14;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.admin-visitor-panel strong {
+  display: block;
+  font-size: clamp(2.2rem, 6vw, 4.5rem);
+  line-height: 1;
+}
+
+.admin-visitor-panel span {
+  display: block;
+  margin-top: 6px;
+  color: #f5f0e6;
+  opacity: .78;
+}
+
+.admin-visitor-panel button {
+  width: auto;
+  min-width: 140px;
+  margin: 0;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: #8b3df4;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .admin-shows-panel {
   display: none;
 }
@@ -614,6 +658,15 @@ body {
 @media(max-width: 900px) {
   .admin-management-grid {
     grid-template-columns: 1fr;
+  }
+
+  .admin-visitor-panel {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-visitor-panel button {
+    width: 100%;
   }
 
   .admin-gallery-control-grid {

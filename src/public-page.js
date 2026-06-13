@@ -2,25 +2,44 @@ import { createDefaultPuckData, pageBackgroundCss, defaultPageBackgroundProps } 
 import { renderPuckHtml, puckPageCss } from "./puck-render-html.js";
 
 const SITE_SLUG = "graverobber";
-const WELCOME_POPUP_SESSION_KEY = "graverobberWelcomePopupShown";
 
-function welcomePopupWasShownThisVisit() {
+function cameFromThisSite() {
   try {
-    return window.sessionStorage.getItem(WELCOME_POPUP_SESSION_KEY) === "true";
+    if (!document.referrer) return false;
+    const referrerHost = new URL(document.referrer).hostname.replace(/^www\./, "");
+    const currentHost = window.location.hostname.replace(/^www\./, "");
+    return referrerHost === currentHost;
   } catch (error) {
     return false;
   }
 }
 
-function markWelcomePopupShownThisVisit() {
+function isPageReload() {
   try {
-    window.sessionStorage.setItem(WELCOME_POPUP_SESSION_KEY, "true");
+    const navigation = performance.getEntriesByType?.("navigation")?.[0];
+    return navigation?.type === "reload";
   } catch (error) {
-    // Some privacy modes can block sessionStorage. The popup still works without persistence.
+    return false;
   }
 }
 
-function handleWelcomePopupForPage(pageName) {
+function shouldShowWelcomePopup(pageName) {
+  return pageName === "home" && !cameFromThisSite() && !isPageReload();
+}
+
+async function trackHomeVisitor(API_BASE) {
+  try {
+    await fetch(`${API_BASE}/visitors/${SITE_SLUG}/track`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ page: "home" })
+    });
+  } catch (error) {
+    console.warn("Visitor tracking failed:", error);
+  }
+}
+
+function handleWelcomePopupForPage(pageName, API_BASE) {
   const popups = document.querySelectorAll(".gr-exit-popup-wrap, .gr-welcome-section, [data-gr-exit-popup]");
 
   if (pageName !== "home") {
@@ -28,7 +47,7 @@ function handleWelcomePopupForPage(pageName) {
     return;
   }
 
-  if (welcomePopupWasShownThisVisit()) {
+  if (!shouldShowWelcomePopup(pageName)) {
     popups.forEach(popup => popup.remove());
     return;
   }
@@ -38,7 +57,7 @@ function handleWelcomePopupForPage(pageName) {
     popup.classList.add("was-triggered");
     popup.dataset.disableExitIntent = "true";
   });
-  markWelcomePopupShownThisVisit();
+  trackHomeVisitor(API_BASE);
 }
 
 function getCurrentPageName() {
@@ -93,16 +112,14 @@ function initializeExitPopups(root) {
     const triggerDistance = Number(popup.dataset.triggerDistance || 120);
 
     function showPopup() {
-      if (shown || welcomePopupWasShownThisVisit()) return;
+      if (shown) return;
       shown = true;
       popup.classList.add("is-visible");
       popup.classList.add("was-triggered");
-      markWelcomePopupShownThisVisit();
     }
 
     function hidePopup() {
       popup.classList.remove("is-visible");
-      markWelcomePopupShownThisVisit();
     }
 
     document.addEventListener("mousemove", event => {
@@ -196,7 +213,7 @@ async function loadPublicPage() {
     if (projectDataIsUsable(projectData, pageName)) {
       applyPageBackground(projectData.root?.props);
       root.innerHTML = renderPuckHtml(projectData);
-      handleWelcomePopupForPage(pageName);
+      handleWelcomePopupForPage(pageName, API_BASE);
       executeRenderedScripts(root);
       initializeExitPopups(root);
 
@@ -215,7 +232,7 @@ async function loadPublicPage() {
   const fallbackData = createDefaultPuckData(pageName);
   applyPageBackground(fallbackData.root?.props);
   root.innerHTML = renderPuckHtml(fallbackData);
-  handleWelcomePopupForPage(pageName);
+  handleWelcomePopupForPage(pageName, API_BASE);
   executeRenderedScripts(root);
   initializeExitPopups(root);
 
