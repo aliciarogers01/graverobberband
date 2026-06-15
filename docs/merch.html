@@ -3,9 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    if (location.protocol === "http:" && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+      location.replace(`https://${location.host}${location.pathname}${location.search}${location.hash}`);
+    }
+  </script>
   <title>Merch | Grave Robber</title>
   <meta name="description" content="Official Grave Robber merch.">
-  <link rel="icon" href="/assets/grave-robber-skull-CW-c4m9a.png">
+  <link rel="canonical" href="https://graverobberpunk.com/merch.html">
+  <meta property="og:title" content="Merch | Grave Robber">
+  <meta property="og:site_name" content="Grave Robber">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://graverobberpunk.com/merch.html">
+  <meta property="og:description" content="Official Grave Robber merch.">
+  <meta property="og:image" content="https://graverobberpunk.com/assets/grave-robber-skull.png">
+  <meta property="og:image:secure_url" content="https://graverobberpunk.com/assets/grave-robber-skull.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="1024">
+  <meta property="og:image:alt" content="Grave Robber skull logo">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Merch | Grave Robber">
+  <meta name="twitter:description" content="Official Grave Robber merch.">
+  <meta name="twitter:image" content="https://graverobberpunk.com/assets/grave-robber-skull.png">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" type="image/png" href="/assets/grave-robber-skull.png">
+  <link rel="apple-touch-icon" href="/assets/grave-robber-skull.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Oswald:wght@400;500;700&family=Special+Elite&display=swap" rel="stylesheet">
@@ -22,36 +45,6 @@
   <script type="module" crossorigin src="/assets/public-page-CZwCBnaK.js"></script>
 </head>
 <body data-page="merch">
-  <main id="editable-page-root"></main>
-<script>
-  document.addEventListener("mousemove", function(event) {
-    const popups = document.querySelectorAll(".gr-exit-popup-wrap:not(.was-triggered)");
-    if (!popups.length) return;
-
-    window.__grLastMouseY = window.__grLastMouseY ?? window.innerHeight;
-
-    const movingUp = event.clientY < window.__grLastMouseY;
-    const nearTop = event.clientY <= 140;
-
-    if (movingUp && nearTop) {
-      popups.forEach(function(popup) {
-        popup.classList.add("is-visible");
-        popup.classList.add("was-triggered");
-      });
-    }
-
-    window.__grLastMouseY = event.clientY;
-  });
-
-  document.addEventListener("click", function(event) {
-    if (
-      event.target.classList.contains("gr-exit-popup-backdrop") ||
-      event.target.classList.contains("gr-exit-popup-close")
-    ) {
-      const popup = event.target.closest(".gr-exit-popup-wrap");
-      if (popup) popup.classList.remove("is-visible");
-    }
-  });
-</script>
+  <main id="editable-page-root"></main>
 </body>
 </html>
