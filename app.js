@@ -110,8 +110,50 @@ async function getVisualPage(pageName) {
   return projectData || {};
 }
 
+function walkBlocks(blocks = [], visitor) {
+  blocks.forEach(block => {
+    if (!block) return;
+    visitor(block);
+    Object.values(block.props || {}).forEach(value => {
+      if (Array.isArray(value)) walkBlocks(value.filter(item => item && typeof item === "object" && item.type), visitor);
+    });
+  });
+}
+
 function findBlock(projectData, type) {
-  return (projectData.content || []).find(block => block.type === type);
+  let found = null;
+  walkBlocks(projectData.content || [], block => {
+    if (!found && block.type === type) found = block;
+  });
+  return found;
+}
+
+function findBlocks(projectData, type) {
+  const found = [];
+  walkBlocks(projectData.content || [], block => {
+    if (block.type === type) found.push(block);
+  });
+  return found;
+}
+
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = src;
+    script.charset = "utf-8";
+    script.async = true;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+async function hydrateEmbedScripts(container) {
+  const scripts = Array.from(container.querySelectorAll("script[src]"));
+  scripts.forEach(script => script.remove());
+  for (const script of scripts) {
+    await loadScript(script.src);
+  }
 }
 
 async function renderHome() {
@@ -140,6 +182,16 @@ async function renderShows() {
     const data = await fetchJson(`${window.BAND_API_BASE}/shows/${SITE_SLUG}?_=${Date.now()}`);
     const shows = Array.isArray(data.shows) ? data.shows : [];
     const upcoming = shows.filter(show => !isPastShow(show)).sort((a, b) => new Date(a.show_date) - new Date(b.show_date));
+
+    if (!upcoming.length) {
+      const pageData = await getVisualPage("shows");
+      const embed = findBlocks(pageData, "Embed").find(block => String(block.props?.html || "").includes("bit-widget-initializer"));
+      if (embed?.props?.html) {
+        contentRoot.innerHTML = pageShell("Live", "Shows", "", `<div id="shows-embed" class="embed-wrap">${embed.props.html}</div>`);
+        await hydrateEmbedScripts(document.getElementById("shows-embed"));
+        return;
+      }
+    }
 
     const list = upcoming.length ? upcoming.map(show => `
       <article class="show-card">
@@ -222,7 +274,7 @@ async function renderGallery() {
   try {
     const pageData = await getVisualPage("gallery");
     const galleryBlock = findBlock(pageData, "GalleryGrid");
-    const images = (galleryBlock?.props?.images || []).filter(image => image.imageUrl);
+    const images = (galleryBlock?.props?.images || []).filter(image => image?.imageUrl);
 
     contentRoot.innerHTML = pageShell("Media", "Gallery", "", images.length ? `
       <div class="gallery-grid">
@@ -442,7 +494,7 @@ const renderers = {
 async function renderPage(page) {
   const nextPage = renderers[page] ? page : "home";
   setActiveNav(nextPage);
-  contentRoot.scrollTop = 0;
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   contentRoot.focus({ preventScroll: true });
   await renderers[nextPage]();
 }

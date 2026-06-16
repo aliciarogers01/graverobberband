@@ -23,7 +23,7 @@ body {
 body {
   min-height: 100vh;
   min-height: 100dvh;
-  overflow: hidden;
+  overflow-x: hidden;
   background:
     radial-gradient(circle at center 20%, rgba(0, 255, 4, .52), rgba(0, 60, 0, .22) 34%, transparent 58%),
     linear-gradient(180deg, #000, #030003 62%, #000);
@@ -42,8 +42,7 @@ a {
 .app-shell {
   min-height: 100vh;
   min-height: 100dvh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  display: block;
 }
 
 .app-topbar {
@@ -104,9 +103,6 @@ a {
 }
 
 .app-content {
-  height: 100%;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
   padding: 22px 18px calc(110px + env(safe-area-inset-bottom));
   outline: none;
 }
@@ -235,6 +231,11 @@ a {
 .gallery-grid {
   display: grid;
   gap: 14px;
+}
+
+.embed-wrap {
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .gallery-grid img,
