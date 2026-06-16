@@ -1291,7 +1291,7 @@ function createPageContent(pageName = "home") {
       {
         type: "GalleryGrid",
         props: {
-          title: "Gallery",
+          title: "",
           id: "graverobber-gallery-grid-1",
           titleColor: "#ffffff",
           titleFont: "Oswald, sans-serif",
@@ -2703,7 +2703,7 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
         }
       },
       defaultProps: {
-        title: "Gallery",
+        title: "",
         titleColor: "#ffffff",
         titleFont: "Oswald, sans-serif",
         titleSize: "2.5rem",

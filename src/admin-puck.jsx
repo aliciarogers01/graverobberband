@@ -453,7 +453,7 @@ function removeShowSocialUrl(index) {
       props: {
         ...existingProps,
         id: "graverobber-gallery-grid-1",
-        title: existingProps.title || "Gallery",
+        title: "",
         titleColor: "#ffffff",
         titleFont: "Oswald, sans-serif",
         titleSize: "2.5rem",
@@ -495,9 +495,29 @@ function removeShowSocialUrl(index) {
     return parseGalleryCanvasHeight(block?.props?.canvasHeight);
   }
 
+  function dataWithoutGalleryTitle(data) {
+    if (!data?.content) return data;
+
+    return normalizePageData({
+      ...data,
+      content: data.content.map(block => {
+        if (block?.type !== "GalleryGrid") return block;
+
+        return {
+          ...block,
+          props: {
+            ...(block.props || {}),
+            title: ""
+          }
+        };
+      })
+    }, "gallery");
+  }
+
   async function galleryDataForPublish(editorData) {
-    let imagesToKeep = galleryImages.length ? galleryImages : extractGalleryImages(editorData);
-    let canvasHeightToKeep = galleryCanvasHeight || extractGalleryCanvasHeight(editorData);
+    const cleanEditorData = dataWithoutGalleryTitle(editorData);
+    let imagesToKeep = galleryImages.length ? galleryImages : extractGalleryImages(cleanEditorData);
+    let canvasHeightToKeep = galleryCanvasHeight || extractGalleryCanvasHeight(cleanEditorData);
 
     if (!imagesToKeep.length) {
       try {
@@ -524,10 +544,10 @@ function removeShowSocialUrl(index) {
     }
 
     if (!imagesToKeep.length) {
-      return editorData;
+      return cleanEditorData;
     }
 
-    const mergedData = dataWithGalleryImages(editorData, imagesToKeep, canvasHeightToKeep);
+    const mergedData = dataWithGalleryImages(cleanEditorData, imagesToKeep, canvasHeightToKeep);
     const mergedImages = extractGalleryImages(mergedData);
     const mergedHeight = extractGalleryCanvasHeight(mergedData);
 
@@ -550,7 +570,7 @@ function removeShowSocialUrl(index) {
         saved = JSON.parse(saved);
       }
 
-      const clean = cleanSavedData(saved, "gallery");
+          const clean = dataWithoutGalleryTitle(cleanSavedData(saved, "gallery"));
       const loadedImages = extractGalleryImages(clean);
       const loadedHeight = extractGalleryCanvasHeight(clean);
       setGalleryImages(loadedImages);
@@ -590,7 +610,7 @@ function removeShowSocialUrl(index) {
           saved = JSON.parse(saved);
         }
 
-        baseGalleryData = cleanSavedData(saved, "gallery");
+        baseGalleryData = dataWithoutGalleryTitle(cleanSavedData(saved, "gallery"));
       }
     } catch (error) {
       console.warn("Saved gallery page could not be loaded before gallery save:", error);

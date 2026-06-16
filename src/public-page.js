@@ -101,6 +101,25 @@ function projectDataIsUsable(projectData, pageName) {
   return true;
 }
 
+function preparePublicProjectData(projectData, pageName) {
+  if (!projectData || pageName !== "gallery") return projectData;
+
+  return {
+    ...projectData,
+    content: (projectData.content || []).map(block => {
+      if (block?.type !== "GalleryGrid") return block;
+
+      return {
+        ...block,
+        props: {
+          ...(block.props || {}),
+          title: ""
+        }
+      };
+    })
+  };
+}
+
 function initializeExitPopups(root) {
   root.querySelectorAll("[data-gr-exit-popup]").forEach(popup => {
     if (popup.dataset.grExitPopupBound === "true") return;
@@ -211,8 +230,9 @@ async function loadPublicPage() {
     const projectData = parseProjectData(page.project_data);
 
     if (projectDataIsUsable(projectData, pageName)) {
-      applyPageBackground(projectData.root?.props);
-      root.innerHTML = renderPuckHtml(projectData);
+      const publicProjectData = preparePublicProjectData(projectData, pageName);
+      applyPageBackground(publicProjectData.root?.props);
+      root.innerHTML = renderPuckHtml(publicProjectData);
       handleWelcomePopupForPage(pageName, API_BASE);
       executeRenderedScripts(root);
       initializeExitPopups(root);
