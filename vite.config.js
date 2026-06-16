@@ -17,7 +17,8 @@ export default defineConfig({
         merch: path.resolve(__dirname, "merch.html"),
         gallery: path.resolve(__dirname, "gallery.html"),
         graffitiWall: path.resolve(__dirname, "graffiti-wall.html"),
-        contact: path.resolve(__dirname, "contact.html")
+        contact: path.resolve(__dirname, "contact.html"),
+        privacy: path.resolve(__dirname, "privacy.html")
       }
     }
   }
