@@ -2,50 +2,63 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script>
-    if (location.protocol === "http:" && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
-      location.replace(`https://${location.host}${location.pathname}${location.search}${location.hash}`);
-    }
-  </script>
-  <title>Grave Robber | Official Website</title>
-  <meta name="description" content="Official website for Grave Robber. Horror punk from Fort Wayne, Indiana.">
-  <link rel="canonical" href="https://graverobberpunk.com/">
-  <meta property="og:title" content="Grave Robber">
-  <meta property="og:site_name" content="Grave Robber">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://graverobberpunk.com/">
-  <meta property="og:description" content="Official website for Grave Robber. Horror punk from Fort Wayne, Indiana.">
-  <meta property="og:image" content="https://graverobberpunk.com/assets/grave-robber-skull.png">
-  <meta property="og:image:secure_url" content="https://graverobberpunk.com/assets/grave-robber-skull.png">
-  <meta property="og:image:type" content="image/png">
-  <meta property="og:image:width" content="1024">
-  <meta property="og:image:height" content="1024">
-  <meta property="og:image:alt" content="Grave Robber skull logo">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Grave Robber">
-  <meta name="twitter:description" content="Official website for Grave Robber. Horror punk from Fort Wayne, Indiana.">
-  <meta name="twitter:image" content="https://graverobberpunk.com/assets/grave-robber-skull.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#000000">
-  <link rel="icon" type="image/png" href="/assets/grave-robber-skull.png">
-  <link rel="apple-touch-icon" href="/assets/grave-robber-skull.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Grave Robber">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Grave Robber</title>
+  <meta name="description" content="Grave Robber app. Shows, music, gallery, graffiti wall, merch, booking, and updates.">
+  <link rel="manifest" href="/assets/manifest-BRu8C-fi.webmanifest">
+  <link rel="icon" type="image/png" href="/assets/grave-robber-skull-CW-c4m9a.png">
+  <link rel="apple-touch-icon" href="/assets/grave-robber-skull-CW-c4m9a.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Oswald:wght@400;500;700&family=Special+Elite&display=swap" rel="stylesheet">
-  <style>
-    #editable-page-root {
-      visibility: hidden;
-    }
-
-    html.visual-page-ready #editable-page-root {
-      visibility: visible;
-    }
-  </style>
-  <script type="module" crossorigin src="/assets/puck-config-DpiREEn-.js"></script>
-  <script type="module" crossorigin src="/assets/public-page-CZwCBnaK.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Oswald:wght@400;500;700;800&family=Special+Elite&display=swap" rel="stylesheet">
+  <link rel="stylesheet" crossorigin href="/assets/main-D-KdMTOh.css">
 </head>
-<body data-page="home">
-  <main id="editable-page-root"></main>
+<body>
+  <div id="app" class="app-shell">
+    <header class="app-topbar">
+      <a
+        class="coffee-link"
+        href="https://www.paypal.com/donate/?business=graverobber.punk%40gmail.com&currency_code=USD"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span aria-hidden="true">&#9749;</span>
+        <span>Buy Grave Robber a Coffee</span>
+      </a>
+      <img class="topbar-logo" src="/assets/grave-robber-skull-CW-c4m9a.png" alt="Grave Robber skull logo">
+    </header>
 
+    <main id="app-content" class="app-content" tabindex="-1"></main>
+
+    <nav class="bottom-nav" aria-label="App navigation">
+      <button type="button" class="nav-item is-active" data-page="home">Home</button>
+      <button type="button" class="nav-item" data-page="shows">Shows</button>
+      <button type="button" class="nav-item" data-page="graffiti">Graffiti</button>
+      <button type="button" class="nav-item" data-page="gallery">Gallery</button>
+      <button type="button" class="nav-item" data-page="more">More...</button>
+    </nav>
+
+    <div class="more-sheet" id="more-sheet" aria-hidden="true">
+      <div class="more-panel" role="dialog" aria-modal="true" aria-label="More pages">
+        <div class="more-header">
+          <strong>More Grave Robber</strong>
+          <button type="button" class="icon-button" id="close-more" aria-label="Close more menu">&times;</button>
+        </div>
+        <button type="button" data-page="bio">Bio</button>
+        <button type="button" data-page="signup">Join Army</button>
+        <button type="button" data-page="music">Music</button>
+        <button type="button" data-page="merch">Merch</button>
+        <button type="button" data-page="contact">Contact</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="api-config.js"></script>
+  <script src="api.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

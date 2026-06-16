@@ -1,2 +1,7 @@
 node_modules
 .DS_Store
+android/key.properties
+android/*.jks
+android/*.keystore
+android/app/release
+ios/App/Pods

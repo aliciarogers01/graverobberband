@@ -1,0 +1,19 @@
+{
+  "name": "Grave Robber",
+  "short_name": "Grave Robber",
+  "description": "Grave Robber app for shows, music, gallery, graffiti wall, merch, booking, and updates.",
+  "start_url": "index.html#home",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/grave-robber-skull.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
