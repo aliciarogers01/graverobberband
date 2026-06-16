@@ -6,24 +6,14 @@
     "start": "vite preview --host 0.0.0.0 --port ${PORT:-8080}",
     "dev": "vite --host 0.0.0.0 --port 8082",
     "build": "vite build && node scripts/restore-cname.cjs",
-    "preview": "vite preview --host 0.0.0.0 --port 8082",
-    "cap:sync": "npm run build && cap sync",
-    "android:sync": "npm run build && cap sync android",
-    "android:open": "cap open android",
-    "ios:sync": "npm run build && cap sync ios",
-    "ios:open": "cap open ios"
+    "preview": "vite preview --host 0.0.0.0 --port 8082"
   },
   "dependencies": {
     "@puckeditor/core": "0.21.2",
     "@vitejs/plugin-react": "4.3.4",
+    "vite": "5.4.19",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "vite": "5.4.19"
+    "react-dom": "18.2.0"
   },
-  "devDependencies": {
-    "@capacitor/android": "^7.6.0",
-    "@capacitor/cli": "^7.6.0",
-    "@capacitor/core": "^7.6.0",
-    "@capacitor/ios": "^7.6.0"
-  }
+  "devDependencies": {}
 }
