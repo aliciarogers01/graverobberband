@@ -19,7 +19,8 @@ export default defineConfig({
         gallery: path.resolve(__dirname, "gallery.html"),
         graffitiWall: path.resolve(__dirname, "graffiti-wall.html"),
         contact: path.resolve(__dirname, "contact.html"),
-        privacy: path.resolve(__dirname, "privacy.html")
+        privacy: path.resolve(__dirname, "privacy.html"),
+        terms: path.resolve(__dirname, "terms.html")
       }
     }
   }
