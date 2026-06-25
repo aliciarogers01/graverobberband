@@ -71,14 +71,16 @@ function clampNumber(value, min, max) {
   return Math.min(max, Math.max(min, number));
 }
 
-function galleryImageDefaults(index = 0) {
-  const column = index % 3;
+function galleryImageDefaults(index = 0, canvasHeight = 920) {
+  const xPositions = [5, 37, 69];
+  const column = index % xPositions.length;
   const row = Math.floor(index / 3);
-  const topPx = 80 + row * 360;
+  const topPx = 0 + row * 360;
+  const normalizedCanvasHeight = parseGalleryCanvasHeight(canvasHeight);
 
   return {
-    x: column % 2 === 0 ? 6 : 52,
-    y: clampNumber((topPx / 920) * 100, 0, 96),
+    x: xPositions[column],
+    y: clampNumber((topPx / normalizedCanvasHeight) * 100, 0, 96),
     width: "280px",
     rotation: 0,
     zIndex: index + 1,
@@ -238,6 +240,8 @@ const [showForm, setShowForm] = useState(emptyShowForm);
   const [galleryStatus, setGalleryStatus] = useState("");
   const [galleryCanvasHeight, setGalleryCanvasHeight] = useState(920);
   const galleryStageRef = useRef(null);
+  const galleryStageViewportRef = useRef(null);
+  const galleryPanelRef = useRef(null);
   const galleryDragRef = useRef(null);
   const [graffitiPosts, setGraffitiPosts] = useState([]);
   const [graffitiStatus, setGraffitiStatus] = useState("");
@@ -586,7 +590,7 @@ function removeShowSocialUrl(index) {
     }
   }
 
-  async function saveGalleryImages(nextImages, nextCanvasHeight = galleryCanvasHeight) {
+  async function saveGalleryImages(nextImages, nextCanvasHeight = galleryCanvasHeight, options = {}) {
     const previousCanvasHeight = parseGalleryCanvasHeight(nextCanvasHeight);
     const normalizedImages = (nextImages || []).map(normalizeGalleryImage);
     const normalizedCanvasHeight = galleryCanvasHeightFor(normalizedImages, previousCanvasHeight);
@@ -648,6 +652,12 @@ function removeShowSocialUrl(index) {
 
     setGalleryImages(imagesForCanvas);
     setGalleryCanvasHeight(normalizedCanvasHeight);
+    if (options.scrollToTop) {
+      requestAnimationFrame(() => {
+        galleryStageViewportRef.current?.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        galleryPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
     if (currentPage === "gallery") {
       setPageData(galleryData);
       setEditorKey(key => key + 1);
@@ -666,6 +676,7 @@ function removeShowSocialUrl(index) {
     setGalleryStatus(`Uploading ${mediaFiles.length} media file(s)...`);
 
     const uploaded = [];
+    const currentCanvasHeight = parseGalleryCanvasHeight(galleryCanvasHeight);
 
     for (const file of mediaFiles) {
       await uploadAdminImage(file, (url, mediaType) => {
@@ -673,14 +684,41 @@ function removeShowSocialUrl(index) {
           imageUrl: url,
           mediaType,
           imageAlt: file.name,
-          caption: "",
-          ...galleryImageDefaults(galleryImages.length + uploaded.length)
+          caption: ""
         });
       }, { allowVideo: true });
     }
 
-    const nextImages = [...galleryImages, ...uploaded].map(normalizeGalleryImage);
-    await saveGalleryImages(nextImages);
+    if (!uploaded.length) return;
+
+    const insertedRows = Math.max(1, Math.ceil(uploaded.length / 3));
+    const insertOffsetPx = insertedRows * 360;
+    const nextCanvasHeight = currentCanvasHeight + insertOffsetPx;
+    const maxExistingLayer = galleryImages.reduce((max, image, index) => {
+      const normalized = normalizeGalleryImage(image, index);
+      return Math.max(max, Number(normalized.zIndex) || 0);
+    }, 0);
+    const uploadedImages = uploaded.map((image, index) => {
+      const defaults = galleryImageDefaults(index, nextCanvasHeight);
+
+      return {
+        ...image,
+        ...defaults,
+        y: defaults.y,
+        zIndex: maxExistingLayer + uploaded.length - index
+      };
+    });
+    const shiftedExistingImages = galleryImages.map((image, index) => {
+      const normalized = normalizeGalleryImage(image, index);
+      const currentTopPx = (normalized.y / 100) * currentCanvasHeight;
+
+      return normalizeGalleryImage({
+        ...normalized,
+        y: ((currentTopPx + insertOffsetPx) / nextCanvasHeight) * 100
+      }, index + uploaded.length);
+    });
+    const nextImages = [...uploadedImages, ...shiftedExistingImages].map(normalizeGalleryImage);
+    await saveGalleryImages(nextImages, nextCanvasHeight, { scrollToTop: true });
   }
 
   function updateGalleryImage(index, field, value) {
@@ -1217,7 +1255,7 @@ setShowForm(emptyShowForm);
           </div>
         </div>
 
-        <div className="admin-panel admin-gallery-panel">
+        <div className="admin-panel admin-gallery-panel" ref={galleryPanelRef}>
           <div className="admin-panel-header">
             <h2>Gallery Uploads</h2>
             <button type="button" onClick={loadGalleryImages}>Reload Gallery</button>
@@ -1235,7 +1273,7 @@ setShowForm(emptyShowForm);
 
           {galleryStatus && <p className="admin-inline-status">{galleryStatus}</p>}
 
-          <div className="admin-gallery-stage-viewport">
+          <div className="admin-gallery-stage-viewport" ref={galleryStageViewportRef}>
             <div
               className="admin-gallery-stage"
               ref={galleryStageRef}
