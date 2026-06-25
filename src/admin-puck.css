@@ -514,7 +514,6 @@ body {
 
 .admin-gallery-stage {
   position: relative;
-  min-height: 920px;
   margin: 0;
   overflow: hidden;
   border: 1px dashed rgba(57,255,20,.48);

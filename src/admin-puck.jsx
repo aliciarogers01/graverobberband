@@ -108,6 +108,25 @@ function galleryCanvasHeightFor(images = [], currentHeight = 920) {
   return Math.ceil(Math.max(920, normalizedHeight, countHeight, lowestImageHeight));
 }
 
+function compactGalleryImages(images = []) {
+  const normalizedImages = (images || []).map(normalizeGalleryImage);
+  const rows = Math.max(1, Math.ceil(normalizedImages.length / 3));
+  const compactCanvasHeight = Math.max(360, rows * 360);
+
+  return {
+    canvasHeight: compactCanvasHeight,
+    images: normalizedImages.map((image, index) => {
+      const defaults = galleryImageDefaults(index, compactCanvasHeight);
+
+      return normalizeGalleryImage({
+        ...image,
+        x: defaults.x,
+        y: defaults.y
+      }, index);
+    })
+  };
+}
+
 function mediaTypeFromUrl(url = "") {
   return /\.(mp4|webm|mov|m4v|ogv)(\?|#|$)/i.test(String(url)) ? "video" : "image";
 }
@@ -593,7 +612,9 @@ function removeShowSocialUrl(index) {
   async function saveGalleryImages(nextImages, nextCanvasHeight = galleryCanvasHeight, options = {}) {
     const previousCanvasHeight = parseGalleryCanvasHeight(nextCanvasHeight);
     const normalizedImages = (nextImages || []).map(normalizeGalleryImage);
-    const normalizedCanvasHeight = galleryCanvasHeightFor(normalizedImages, previousCanvasHeight);
+    const normalizedCanvasHeight = options.trimCanvas
+      ? parseGalleryCanvasHeight(nextCanvasHeight)
+      : galleryCanvasHeightFor(normalizedImages, previousCanvasHeight);
     const imagesForCanvas = normalizedImages.map((image, index) => {
       const topPx = (image.y / 100) * previousCanvasHeight;
       return normalizeGalleryImage({
@@ -787,8 +808,8 @@ function removeShowSocialUrl(index) {
   }
 
   function removeGalleryImage(index) {
-    const nextImages = galleryImages.filter((_, imageIndex) => imageIndex !== index).map(normalizeGalleryImage);
-    saveGalleryImages(nextImages);
+    const compacted = compactGalleryImages(galleryImages.filter((_, imageIndex) => imageIndex !== index));
+    saveGalleryImages(compacted.images, compacted.canvasHeight, { trimCanvas: true, scrollToTop: true });
   }
 
   function saveSavedBlocks(nextBlocks) {
