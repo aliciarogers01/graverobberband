@@ -26,6 +26,47 @@ function styleObj(styles = {}) {
     .join(";");
 }
 
+function parseGalleryHeight(value) {
+  const number = Number(String(value || "").replace(/[^0-9.]/g, ""));
+  return Number.isFinite(number) && number > 0 ? number : 920;
+}
+
+function compactFreeformGallery(props = {}) {
+  const images = (props.images || []).filter(image => hasText(image.imageUrl));
+  if ((props.layoutMode || "grid") !== "freeform" || !images.length) return props;
+
+  const sourceHeight = parseGalleryHeight(props.canvasHeight);
+  const minTop = images.reduce((min, image) => {
+    const y = Number.isFinite(Number(image.y)) ? Number(image.y) : 0;
+    return Math.min(min, (Math.min(100, Math.max(0, y)) / 100) * sourceHeight);
+  }, Infinity);
+  const compactedImages = images.map((image, index) => {
+    const y = Number.isFinite(Number(image.y)) ? Number(image.y) : 0;
+    const topPx = ((Math.min(100, Math.max(0, y)) / 100) * sourceHeight) - minTop;
+    const x = Number.isFinite(Number(image.x)) ? image.x : (index % 3) * 32 + 5;
+    return {
+      ...image,
+      x,
+      yPx: Math.max(0, topPx)
+    };
+  });
+  const bottomPx = compactedImages.reduce((max, image) => {
+    const width = Number(String(image.width || "280").replace(/[^0-9.]/g, "")) || 280;
+    const estimatedHeight = Math.min(520, Math.max(170, width * 0.72));
+    return Math.max(max, image.yPx + estimatedHeight + 22);
+  }, 0);
+  const compactHeight = Math.max(260, Math.ceil(bottomPx));
+
+  return {
+    ...props,
+    canvasHeight: `${compactHeight}px`,
+    images: compactedImages.map(image => ({
+      ...image,
+      y: compactHeight ? (image.yPx / compactHeight) * 100 : 0
+    }))
+  };
+}
+
 function textStyle(props = {}, prefix = "") {
   return {
     fontSize: props[`${prefix}Size`] || "inherit",
@@ -564,7 +605,7 @@ html:has(#editable-page-root .graverobber-contact-form-section),
 
 #editable-page-root .puck-gallery-freeform{
   position:relative;
-  min-height:var(--gallery-height,920px);
+  height:var(--gallery-height,920px);
   width:100%;
   overflow:visible;
 }
@@ -1998,6 +2039,7 @@ function renderSocial(props) {
 }
 
 function renderGalleryGrid(props) {
+  props = compactFreeformGallery(props);
   const layoutMode = props.layoutMode || "grid";
   const isFreeform = layoutMode === "freeform";
   const sectionStyle = styleObj({

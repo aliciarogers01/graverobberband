@@ -469,7 +469,9 @@ function removeShowSocialUrl(index) {
 
   function galleryBlock(images, existingProps = {}, canvasHeight = galleryCanvasHeight) {
     const normalizedImages = (images || []).map(normalizeGalleryImage);
-    const height = `${galleryCanvasHeightFor(normalizedImages, canvasHeight)}px`;
+    const height = normalizedImages.length
+      ? `${parseGalleryCanvasHeight(canvasHeight)}px`
+      : `${galleryCanvasHeightFor(normalizedImages, canvasHeight)}px`;
 
     return {
       type: "GalleryGrid",

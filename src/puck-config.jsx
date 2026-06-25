@@ -38,6 +38,48 @@ function clone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
+function parseGalleryHeight(value) {
+  const number = Number(String(value || "").replace(/[^0-9.]/g, ""));
+  return Number.isFinite(number) && number > 0 ? number : 920;
+}
+
+function compactFreeformGalleryProps(props = {}) {
+  const images = (props.images || []).filter(image => image.imageUrl);
+  if ((props.layoutMode || "grid") !== "freeform" || !images.length) return props;
+
+  const sourceHeight = parseGalleryHeight(props.canvasHeight);
+  const minTop = images.reduce((min, image) => {
+    const y = Number.isFinite(Number(image.y)) ? Number(image.y) : 0;
+    return Math.min(min, (Math.min(100, Math.max(0, y)) / 100) * sourceHeight);
+  }, Infinity);
+  const compactedImages = images.map((image, index) => {
+    const y = Number.isFinite(Number(image.y)) ? Number(image.y) : 0;
+    const topPx = ((Math.min(100, Math.max(0, y)) / 100) * sourceHeight) - minTop;
+    const x = Number.isFinite(Number(image.x)) ? image.x : (index % 3) * 32 + 5;
+
+    return {
+      ...image,
+      x,
+      yPx: Math.max(0, topPx)
+    };
+  });
+  const bottomPx = compactedImages.reduce((max, image) => {
+    const width = Number(String(image.width || "280").replace(/[^0-9.]/g, "")) || 280;
+    const estimatedHeight = Math.min(520, Math.max(170, width * 0.72));
+    return Math.max(max, image.yPx + estimatedHeight + 22);
+  }, 0);
+  const compactHeight = Math.max(260, Math.ceil(bottomPx));
+
+  return {
+    ...props,
+    canvasHeight: `${compactHeight}px`,
+    images: compactedImages.map(image => ({
+      ...image,
+      y: compactHeight ? (image.yPx / compactHeight) * 100 : 0
+    }))
+  };
+}
+
 function getUploadHeaders() {
   const token = localStorage.getItem("adminToken") || "";
   return token ? { Authorization: `Bearer ${token}` } : {};
@@ -2717,19 +2759,22 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
         gap: 18,
         images: []
       },
-      render: props => (
-        <SectionShell {...props}>
+      render: props => {
+        const galleryProps = compactFreeformGalleryProps(props);
+
+        return (
+        <SectionShell {...galleryProps}>
           <div className="puck-inner">
-            {props.title && <h2 className="puck-title" style={{ textAlign: "center", color: props.titleColor || "inherit", fontFamily: props.titleFont || "inherit", fontSize: props.titleSize || "2.5rem" }}>{props.title}</h2>}
+            {galleryProps.title && <h2 className="puck-title" style={{ textAlign: "center", color: galleryProps.titleColor || "inherit", fontFamily: galleryProps.titleFont || "inherit", fontSize: galleryProps.titleSize || "2.5rem" }}>{galleryProps.title}</h2>}
             <div
-              className={props.layoutMode === "freeform" ? "puck-gallery-freeform" : "puck-gallery-grid"}
-              style={props.layoutMode === "freeform" ? { "--gallery-height": props.canvasHeight || "920px" } : { "--cols": props.columns || 3, "--gap": `${props.gap || 18}px` }}
+              className={galleryProps.layoutMode === "freeform" ? "puck-gallery-freeform" : "puck-gallery-grid"}
+              style={galleryProps.layoutMode === "freeform" ? { "--gallery-height": galleryProps.canvasHeight || "920px" } : { "--cols": galleryProps.columns || 3, "--gap": `${galleryProps.gap || 18}px` }}
             >
-              {(props.images || []).filter(image => image.imageUrl).map((image, index) => (
+              {(galleryProps.images || []).filter(image => image.imageUrl).map((image, index) => (
                 <figure
                   className="puck-gallery-item"
                   key={index}
-                  style={props.layoutMode === "freeform" ? {
+                  style={galleryProps.layoutMode === "freeform" ? {
                     "--gallery-x": `${Number.isFinite(Number(image.x)) ? image.x : 0}%`,
                     "--gallery-y": `${Number.isFinite(Number(image.y)) ? image.y : 0}%`,
                     "--gallery-width": image.width || "280px",
@@ -2752,7 +2797,8 @@ buttonBoxShadow: { type: "text", label: "Button Glow / Shadow" },
             </div>
           </div>
         </SectionShell>
-      )
+        );
+      }
     },
     GraffitiWall: {
       label: "02 Add Block: Graffiti Wall",
