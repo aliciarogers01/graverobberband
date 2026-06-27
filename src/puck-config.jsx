@@ -745,7 +745,7 @@ export const defaultPageBackgroundProps = {
   pageGradientAngle: "180deg",
 
   pageGlowPosition: "center 18%",
-  pageGlowSize: "34%",
+  pageGlowSize: "35%",
 
   pageSecondGlowPosition: "center 70%",
   pageSecondGlowSize: "45%",
@@ -755,6 +755,35 @@ export const defaultPageBackgroundProps = {
 
   customBackgroundCss: ""
 };
+
+const BACKGROUND_SETTINGS_MIGRATION = "2026-06-27-glow-layout-v1";
+const migratedBackgroundSettings = {
+  pageGradientAngle: "180deg",
+  pageGlowPosition: "center 18%",
+  pageGlowSize: "35%",
+  pageSecondGlowPosition: "center 70%",
+  pageSecondGlowSize: "45%",
+  pageThirdGlowPosition: "center center",
+  pageThirdGlowSize: "75%"
+};
+
+export function migratePageBackgroundSettings(data) {
+  if (!data?.root || data.root.props?.backgroundSettingsMigration === BACKGROUND_SETTINGS_MIGRATION) {
+    return data;
+  }
+
+  return {
+    ...data,
+    root: {
+      ...data.root,
+      props: {
+        ...(data.root.props || {}),
+        ...migratedBackgroundSettings,
+        backgroundSettingsMigration: BACKGROUND_SETTINGS_MIGRATION
+      }
+    }
+  };
+}
 
 export function pageBackgroundCss(props = {}) {
   const settings = { ...defaultPageBackgroundProps, ...(props || {}) };
@@ -768,7 +797,7 @@ export function pageBackgroundCss(props = {}) {
   const angle = settings.pageGradientAngle || "180deg";
 
   const pos1 = settings.pageGlowPosition || "center 18%";
-  const size1 = settings.pageGlowSize || "34%";
+  const size1 = settings.pageGlowSize || "35%";
   const pos2 = settings.pageSecondGlowPosition || "center 70%";
   const size2 = settings.pageSecondGlowSize || "45%";
   const pos3 = settings.pageThirdGlowPosition || "center center";

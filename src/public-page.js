@@ -1,4 +1,4 @@
-import { createDefaultPuckData, pageBackgroundCss, defaultPageBackgroundProps } from "./puck-config.jsx";
+import { createDefaultPuckData, pageBackgroundCss, defaultPageBackgroundProps, migratePageBackgroundSettings } from "./puck-config.jsx";
 import { renderPuckHtml, puckPageCss } from "./puck-render-html.js";
 
 const SITE_SLUG = "graverobber";
@@ -230,7 +230,9 @@ async function loadPublicPage() {
     const projectData = parseProjectData(page.project_data);
 
     if (projectDataIsUsable(projectData, pageName)) {
-      const publicProjectData = preparePublicProjectData(projectData, pageName);
+      const publicProjectData = migratePageBackgroundSettings(
+        preparePublicProjectData(projectData, pageName)
+      );
       applyPageBackground(publicProjectData.root?.props);
       root.innerHTML = renderPuckHtml(publicProjectData);
       handleWelcomePopupForPage(pageName, API_BASE);

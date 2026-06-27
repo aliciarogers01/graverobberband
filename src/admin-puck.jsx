@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { Puck } from "@puckeditor/core";
 import "@puckeditor/core/puck.css";
 import "./admin-puck.css";
-import { puckConfig, createDefaultPuckData, defaultPuckData, puckEditorCss } from "./puck-config.jsx";
+import { puckConfig, createDefaultPuckData, defaultPuckData, migratePageBackgroundSettings, puckEditorCss } from "./puck-config.jsx";
 import { renderPuckHtml, puckPageCss } from "./puck-render-html.js";
 
 const API_BASE = window.BAND_API_BASE;
@@ -183,7 +183,7 @@ function normalizePageData(data, pageName) {
     };
   });
 
-  return {
+  return migratePageBackgroundSettings({
     root: {
       ...(fallback.root || {}),
       ...(data?.root || {}),
@@ -194,7 +194,7 @@ function normalizePageData(data, pageName) {
       }
     },
     content
-  };
+  });
 }
 
 function savedDataBelongsToAnotherSite(saved) {
