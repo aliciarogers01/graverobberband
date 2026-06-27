@@ -757,15 +757,7 @@ export const defaultPageBackgroundProps = {
 };
 
 const BACKGROUND_SETTINGS_MIGRATION = "2026-06-27-glow-layout-v1";
-const migratedBackgroundSettings = {
-  pageGradientAngle: "180deg",
-  pageGlowPosition: "center 18%",
-  pageGlowSize: "35%",
-  pageSecondGlowPosition: "center 70%",
-  pageSecondGlowSize: "45%",
-  pageThirdGlowPosition: "center center",
-  pageThirdGlowSize: "75%"
-};
+const migratedBackgroundSettings = { ...defaultPageBackgroundProps };
 
 export function migratePageBackgroundSettings(data) {
   if (!data?.root || data.root.props?.backgroundSettingsMigration === BACKGROUND_SETTINGS_MIGRATION) {
@@ -856,6 +848,22 @@ export function pageBackgroundCss(props = {}) {
   }
 
   return `radial-gradient(circle at ${pos1}, ${glow1}, transparent ${size1}), radial-gradient(circle at ${pos2}, ${glow2}, transparent ${size2}), linear-gradient(180deg, ${color2}, ${base})`;
+}
+
+export function pageBackgroundStyle(props = {}) {
+  const settings = { ...defaultPageBackgroundProps, ...(props || {}) };
+  const background = pageBackgroundCss(settings);
+
+  if (!/gradient\(/i.test(background)) {
+    return { background };
+  }
+
+  return {
+    backgroundColor: settings.pageBaseColor || "#030000",
+    backgroundImage: background,
+    backgroundSize: "100% 1000px",
+    backgroundRepeat: "no-repeat"
+  };
 }
 
 function createPageContent(pageName = "home") {
@@ -1720,6 +1728,10 @@ export const puckConfig = {
         type: "textarea",
         label: "Custom Background CSS",
         placeholder: "Example: radial-gradient(circle, red, black)"
+      },
+      backgroundSettingsMigration: {
+        type: "custom",
+        render: ({ value }) => <input type="hidden" value={value || ""} readOnly />
       }
     },
     render: ({ children, ...props }) => (
@@ -1727,7 +1739,7 @@ export const puckConfig = {
         data-page={props.pageName || undefined}
         style={{
           minHeight: "100vh",
-          background: pageBackgroundCss(props),
+          ...pageBackgroundStyle(props),
           color: props.pageTextColor || "#f5f0e6"
         }}
       >

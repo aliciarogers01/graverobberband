@@ -1,4 +1,4 @@
-import { createDefaultPuckData, pageBackgroundCss, defaultPageBackgroundProps, migratePageBackgroundSettings } from "./puck-config.jsx";
+import { createDefaultPuckData, pageBackgroundStyle, defaultPageBackgroundProps, migratePageBackgroundSettings } from "./puck-config.jsx";
 import { renderPuckHtml, puckPageCss } from "./puck-render-html.js";
 
 const SITE_SLUG = "graverobber";
@@ -205,7 +205,6 @@ async function loadPublicPage() {
 
   function applyPageBackground(rootProps = {}) {
     const pageSettings = { ...defaultPageBackgroundProps, ...(rootProps || {}) };
-    const background = pageBackgroundCss(pageSettings);
     const fallbackColor = pageSettings.pageBaseColor || "#030000";
 
     document.documentElement.style.background = fallbackColor;
@@ -213,8 +212,7 @@ async function loadPublicPage() {
     document.body.style.color = pageSettings.pageTextColor || "#f5f0e6";
 
     root.style.minHeight = "100vh";
-    root.style.background = background;
-    root.style.backgroundRepeat = "no-repeat";
+    Object.assign(root.style, pageBackgroundStyle(pageSettings));
     root.style.color = pageSettings.pageTextColor || "#f5f0e6";
   }
 

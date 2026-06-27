@@ -64,7 +64,7 @@ function clone(value) {
 }
 
 function freshDefaultData(pageName) {
-  return createDefaultPuckData(pageName);
+  return migratePageBackgroundSettings(createDefaultPuckData(pageName));
 }
 
 function clampNumber(value, min, max) {
@@ -161,7 +161,7 @@ function makeSafeBlockId(type, pageName, index) {
 }
 
 function normalizePageData(data, pageName) {
-  const fallback = freshDefaultData(pageName);
+  const fallback = createDefaultPuckData(pageName);
   const sourceContent = Array.isArray(data?.content) ? data.content.filter(Boolean) : fallback.content;
   const allowedTypes = new Set(Object.keys(puckConfig.components || {}));
   const safeSourceContent = sourceContent.filter(block => block?.type && allowedTypes.has(block.type));
