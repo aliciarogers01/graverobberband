@@ -335,7 +335,7 @@ export function puckPageCss() {
 
 [data-page="gallery"],
 body[data-page="gallery"] #editable-page-root{
-  background-size:100% 100vh!important;
+  background-size:100% 1000px!important;
   background-repeat:no-repeat!important;
   background-color:#030000!important;
 }
@@ -346,49 +346,14 @@ body[data-page="gallery"] #editable-page-root{
   margin-top:0!important;
   position:relative;
   z-index:20;
-  background:
-    radial-gradient(circle at center top, rgba(0,255,4,.72), rgba(0,255,4,.28) 26%, rgba(0,0,0,0) 56%),
-    #000000!important;
+  background:transparent!important;
   padding:30px 24px 80px!important;
   border-bottom:0!important;
-  overflow:hidden!important;
+  overflow:visible!important;
 }
 
 #editable-page-root .graverobber-contact-form-section::before{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:34px;
-  transform:translateX(-50%);
-  width:min(1100px, calc(100% + 180px));
-  height:760px;
-
-  background:
-    radial-gradient(
-      ellipse at center,
-      rgba(0,0,0,.96) 0%,
-      rgba(0,0,0,.92) 26%,
-      rgba(0,0,0,.82) 42%,
-      rgba(0,0,0,.58) 58%,
-      rgba(0,0,0,.28) 74%,
-      rgba(0,0,0,0) 100%
-    );
-
-  filter:blur(18px);
-
-  z-index:0;
-  pointer-events:none;
-}
-
-#editable-page-root .graverobber-contact-inner{
-  position:relative;
-  z-index:2;
-}
-
-body:has(#editable-page-root .graverobber-contact-form-section),
-html:has(#editable-page-root .graverobber-contact-form-section),
-#editable-page-root:has(.graverobber-contact-form-section){
-  background:#000000!important;
+  display:none!important;
 }
 
 #editable-page-root .graverobber-contact-form-section + .puck-spacer,
@@ -398,7 +363,7 @@ html:has(#editable-page-root .graverobber-contact-form-section),
 
 #editable-page-root .graverobber-contact-form-section ~ .puck-section,
 #editable-page-root .graverobber-contact-form-section ~ footer{
-  background:#000000!important;
+  background:transparent!important;
   border-top:0!important;
 }
 
