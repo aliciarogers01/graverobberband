@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react"; 
 import { puckPageCss } from "./puck-render-html.js";
+import privacyPageSource from "../privacy.html?raw";
+import termsPageSource from "../terms.html?raw";
 
 const SITE_SLUG = "graverobber";
 
@@ -36,6 +38,18 @@ const socialPlatformOptions = [
 
 function clone(value) {
   return JSON.parse(JSON.stringify(value));
+}
+
+function legalPageHtml(source) {
+  const content = source.match(/<!-- PUCK_LEGAL_START -->([\s\S]*?)<!-- PUCK_LEGAL_END -->/i)?.[1] || "";
+  const styles = Array.from(source.matchAll(/<style>([\s\S]*?)<\/style>/gi))
+    .map(match => match[1])
+    .join("\n");
+
+  return `<style>${styles}
+.puck-legal-page{width:100vw;margin-left:calc(50% - 50vw);}
+.puck-legal-page .site-header,.puck-legal-page .policy-wrap{max-width:none;}
+</style><div class="puck-legal-page">${content}</div>`;
 }
 
 function parseGalleryHeight(value) {
@@ -816,6 +830,21 @@ export function pageBackgroundCss(props = {}) {
 }
 
 function createPageContent(pageName = "home") {
+  if (pageName === "privacy" || pageName === "terms") {
+    return [
+      {
+        type: "Embed",
+        props: {
+          id: `graverobber-${pageName}-page-1`,
+          html: legalPageHtml(pageName === "privacy" ? privacyPageSource : termsPageSource),
+          backgroundColor: "transparent",
+          paddingY: 0,
+          paddingX: 0
+        }
+      }
+    ];
+  }
+
   const coffeeButton = {
     text: "☕ Buy Grave Robber a Coffee",
     url: "https://www.paypal.com/donate/?business=graverobber.punk%40gmail.com&currency_code=USD",

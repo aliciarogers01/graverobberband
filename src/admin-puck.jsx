@@ -17,7 +17,9 @@ const PAGE_OPTIONS = [
   { value: "merch", label: "Merch Page" },
   { value: "gallery", label: "Gallery Page" },
   { value: "graffiti-wall", label: "Graffiti Wall Page" },
-  { value: "contact", label: "Contact Page" }
+  { value: "contact", label: "Contact Page" },
+  { value: "privacy", label: "Privacy Page" },
+  { value: "terms", label: "Terms Page" }
 ];
 
 function authHeaders(token) {

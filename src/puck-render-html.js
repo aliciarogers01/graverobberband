@@ -528,6 +528,14 @@ html:has(#editable-page-root .graverobber-contact-form-section),
   text-decoration:none!important;
 }
 
+#editable-page-root .puck-section:not(.puck-site-header):not(.gr-exit-popup-wrap),
+#editable-page-root .puck-section:not(.puck-site-header):not(.gr-exit-popup-wrap)::before,
+#editable-page-root .puck-section:not(.puck-site-header):not(.gr-exit-popup-wrap)::after{
+  border-top:0!important;
+  border-bottom:0!important;
+  outline:0!important;
+}
+
 #editable-page-root .puck-site-header{
   display:grid;
   grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
