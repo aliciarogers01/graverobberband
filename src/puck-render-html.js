@@ -333,6 +333,13 @@ export function puckPageCss() {
   overflow-x:visible!important;
 }
 
+[data-page="gallery"],
+body[data-page="gallery"] #editable-page-root{
+  background-size:100% 100vh!important;
+  background-repeat:no-repeat!important;
+  background-color:#030000!important;
+}
+
 #editable-page-root .puck-spacer{width:100%;}
 
 #editable-page-root .graverobber-contact-form-section{

@@ -476,9 +476,6 @@ function removeShowSocialUrl(index) {
     return {
       type: "GalleryGrid",
       props: {
-        ...existingProps,
-        id: "graverobber-gallery-grid-1",
-        title: "",
         titleColor: "#ffffff",
         titleFont: "Oswald, sans-serif",
         titleSize: "2.5rem",
@@ -487,9 +484,12 @@ function removeShowSocialUrl(index) {
         paddingY: 40,
         paddingX: 24,
         layoutMode: "freeform",
-        canvasHeight: height,
         columns: 3,
         gap: 18,
+        ...existingProps,
+        id: "graverobber-gallery-grid-1",
+        title: "",
+        canvasHeight: height,
         images: normalizedImages
       }
     };

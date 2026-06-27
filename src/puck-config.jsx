@@ -1666,6 +1666,7 @@ export const puckConfig = {
     },
     render: ({ children, ...props }) => (
       <div
+        data-page={props.pageName || undefined}
         style={{
           minHeight: "100vh",
           background: pageBackgroundCss(props),
