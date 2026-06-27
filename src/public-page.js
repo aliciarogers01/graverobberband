@@ -206,13 +206,15 @@ async function loadPublicPage() {
   function applyPageBackground(rootProps = {}) {
     const pageSettings = { ...defaultPageBackgroundProps, ...(rootProps || {}) };
     const background = pageBackgroundCss(pageSettings);
+    const fallbackColor = pageSettings.pageBaseColor || "#030000";
 
-    document.documentElement.style.background = background;
-    document.body.style.background = background;
+    document.documentElement.style.background = fallbackColor;
+    document.body.style.background = fallbackColor;
     document.body.style.color = pageSettings.pageTextColor || "#f5f0e6";
 
     root.style.minHeight = "100vh";
     root.style.background = background;
+    root.style.backgroundRepeat = "no-repeat";
     root.style.color = pageSettings.pageTextColor || "#f5f0e6";
   }
 
